@@ -1,0 +1,30 @@
+{% extends 'boilerplate/layout.html' %}
+{% block content %}
+    <section>
+        {% if not current_user.is_authenticated %}
+            <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Welcome to Flask Boilerplate</h1>
+                <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Your simple, yet opinionated, boilerplate for Flask projects.</p>
+            </div>
+        {% else %}
+            <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Welcome back, {{ current_user.first_name }}.</h1>
+                <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">You are signed in.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <body class="bg-gray-100">
+    <!-- Header Section -->
+    <header class="bg-cover bg-center h-screen" style="background-image: url('{{ url_for('static', filename='images/pferd.jpg') }}');">
+        <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
+            <h1 class="text-5xl text-white font-bold">Willkommen im Fahrverein!</h1>
+        </div>
+    </header>
+
+    <!-- Footer -->
+    <footer class="bg-white text-center py-4">
+        <p class="text-gray-700">© 2024 Fahrverein - Alle Rechte vorbehalten</p>
+    </footer>
+</body>
+{% endblock %}
