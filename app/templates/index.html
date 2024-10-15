@@ -1,17 +1,31 @@
 {% extends 'boilerplate/layout.html' %}
 {% block content %}
-    <section>
-        {% if not current_user.is_authenticated %}
-            <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Willkommen auf der Homepage des Fahrverein Planetal e.V.</h1>
-                <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Your simple, yet opinionated, boilerplate for Flask projects.</p>
-            </div>
-        {% else %}
-            <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Wilkommen zurück, {{ current_user.first_name }}.</h1>
-                <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Du bist jetzt eingeloggt.</p>
-            </div>
-        {% endif %}
-    </section>
-</body>
+<section>
+    {% if not current_user.is_authenticated %}
+        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                Herzlich Willkommen beim Fahrverein Planetal e.V.
+            </h1>
+            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+                Ihr Treffpunkt für Fahrer, Reiter und Pferdefreunde jeden Alters!
+            </p>
+            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+                Unsere Geschichte begann im Jahr 2012, als wir unseren Verein im malerischen Ortsteil Reckahn ins Leben riefen. Seither
+                organisieren wir Ausfahrten und Ausritte durch die umliegenden Wälder und Wiesen.
+            </p>
+            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+                Jedes Jahr veranstalten wir den Kutschertag im Herbst – ein Event, das immer mehr Pferdefreunde anzieht.
+            </p>
+        </div>
+    {% else %}
+        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                Willkommen zurück, {{ current_user.first_name }}.
+            </h1>
+            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+                Du bist jetzt eingeloggt. Erfahre mehr über unsere neuesten Events und Aktivitäten.
+            </p>
+        </div>
+    {% endif %}
+</section>
 {% endblock %}
