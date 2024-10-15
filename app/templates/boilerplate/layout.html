@@ -13,17 +13,18 @@
     <title>{% if title %}{{ title }} - {% endif %}{{ config['APP_NAME'] }}</title>
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" />
 </head>
-<body class="bg-slate-50">
-{% include 'boilerplate/nav.html' %}
+<body class="bg-slate-50 min-h-screen flex flex-col">
+    {% include 'boilerplate/nav.html' %}
+    
+    <div class="flex-grow">
+        {% block content %}
+        {% endblock %}
+    </div>
 
-{% block content %}
-{% endblock %}
-
-{% include 'boilerplate/footer.html' %}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    {% include 'boilerplate/footer.html' %}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 </body>
 </html>
