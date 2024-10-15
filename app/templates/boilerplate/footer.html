@@ -1,3 +1,24 @@
-<footer class="bg-white text-center py-4"></footer>
-        <p class="text-gray-700">© 2024 Fahrverein Planetal e.V. - Alle Rechte vorbehalten</p>
+<footer class="bg-gray-800 text-white py-8 mt-auto">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row items-center justify-center md:space-x-8">
+      <!-- Info Block -->
+      <div class="text-center md:text-right">
+        <h3 class="text-lg font-semibold">Fahrverein Planetal e.V.</h3>
+        <p class="text-gray-400">© 2024 Alle Rechte vorbehalten</p>
+      </div>
+
+      <!-- Vertikale Linie im Desktop-Modus -->
+      <div class="hidden md:block border-l border-gray-600 h-12 mx-4"></div>
+
+      <!-- Horizontale Linie im Mobile-Modus -->
+      <div class="block md:hidden w-full border-t border-gray-600 my-4"></div>
+
+      <!-- Links -->
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 text-center">
+        <a href="#" class="text-gray-400 hover:text-white transition-colors">Impressum</a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors">Datenschutz</a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors">Kontakt</a>
+      </div>
+    </div>
+  </div>
 </footer>
