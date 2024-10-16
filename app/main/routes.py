@@ -33,6 +33,6 @@ def index():
     )
 
 
-@main.route("/main", methods=["GET"])
-def main():
-    return render_template("main/index.html")
+@main.route("/verein", methods=["GET"])
+def verein():
+    return render_template("main/verein.html")
