@@ -1,0 +1,79 @@
+{% extends 'boilerplate/layout.html' %}
+{% block content %}
+<section class="py-16 bg-white dark:bg-gray-900">
+    <div class="max-w-screen-xl mx-auto px-4 text-center lg:px-12">
+        <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-12">Unser Vorstand</h1>
+
+        <div class="grid gap-8 lg:grid-cols-2">
+            <!-- Vorsitzende -->
+            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
+                <img src="https://via.placeholder.com/150" alt="Vorsitzende" class="w-32 h-32 rounded-full mb-4">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Jacquelin Bredt</h2>
+                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Diejenige, die den Laden zusammenhält – mit Charme und einem Telefon in der Hand."</p>
+                <p class="text-gray-500 dark:text-gray-400 mt-4">T. 0162 9177860</p>
+                <p class="text-gray-500 dark:text-gray-400">
+                    <a href="mailto:jacquelin.bredt@web.de" class="text-gray-700 hover:text-black dark:text-gray-400 dark:hover:text-white">
+                        jacquelin.bredt@web.de
+                    </a>
+                </p>
+            </div>
+
+            <!-- Stellvertretende Vorsitzende -->
+            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
+                <img src="https://via.placeholder.com/150" alt="Stellvertretende Vorsitzende" class="w-32 h-32 rounded-full mb-4">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Denise Matthe</h2>
+                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Die ruhige Hand, die das Ruder übernimmt, wenn's mal stürmisch wird."</p>
+                <!-- Keine weiteren Kontaktinformationen nötig -->
+            </div>
+
+            <!-- Kassenwart -->
+            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
+                <img src="https://via.placeholder.com/150" alt="Kassenwart" class="w-32 h-32 rounded-full mb-4">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Stefanie-Kirstin Sailer</h2>
+                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Die, die weiß, wo jeder Cent steckt – und immer den Überblick behält."</p>
+            </div>
+
+            <!-- Jugendwart -->
+            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
+                <img src="https://via.placeholder.com/150" alt="Jugendwart" class="w-32 h-32 rounded-full mb-4">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Janneck Lehmann</h2>
+                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Der Jugendflüsterer und Web-Guru – bringt alles ins Netz."</p>
+            </div>
+
+            <!-- Schriftführer -->
+            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
+                <img src="https://via.placeholder.com/150" alt="Schriftführer" class="w-32 h-32 rounded-full mb-4">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Sarah Hohmann</h2>
+                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Schreibt schneller als die meisten reden können."</p>
+            </div>
+
+            <!-- Social Media -->
+            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
+                <img src="https://via.placeholder.com/150" alt="Social Media" class="w-32 h-32 rounded-full mb-4">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Christina Herrmann</h2>
+                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Teilt alles – und findet immer den perfekten Hashtag."</p>
+            </div>
+        </div>
+
+        <!-- Kontaktformular (optional) -->
+        <div class="mt-12">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Kontaktieren Sie uns</h2>
+            <form action="/send" method="post" class="grid gap-6">
+                <div>
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ihr Name</label>
+                    <input type="text" id="name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white rounded-lg block w-full p-3">
+                </div>
+                <div>
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ihre E-Mail</label>
+                    <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white rounded-lg block w-full p-3">
+                </div>
+                <div>
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nachricht</label>
+                    <textarea id="message" name="message" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white rounded-lg block w-full p-3"></textarea>
+                </div>
+                <button type="submit" class="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Nachricht senden</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

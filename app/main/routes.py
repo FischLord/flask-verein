@@ -36,3 +36,8 @@ def index():
 @main.route("/verein", methods=["GET"])
 def verein():
     return render_template("main/verein.html")
+
+
+@main.route("/kontakt", methods=["GET"])
+def kontakt():
+    return render_template("main/kontakt.html")
