@@ -1,4 +1,4 @@
-<footer class="bg-gray-800 text-white py-8 mt-auto">
+<footer class="bg-gray-800 text-white py-8 mt-10">
   <div class="container mx-auto px-4">
     <div class="flex flex-col md:flex-row items-center justify-center md:space-x-8">
       <!-- Info Block -->
@@ -17,7 +17,7 @@
       <div class="flex flex-col items-center space-y-4 text-center">
         <a href="#" class="text-gray-400 hover:text-white transition-colors">Impressum</a>
         <a href="#" class="text-gray-400 hover:text-white transition-colors">Datenschutz</a>
-        <a href="#" class="text-gray-400 hover:text-white transition-colors">Kontakt</a>
+        <a href="{{ url_for('main.kontakt') }}" class="text-gray-400 hover:text-white transition-colors">Kontakt</a>
       </div>
     </div>
   </div>
