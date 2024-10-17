@@ -41,3 +41,8 @@ def verein():
 @main.route("/kontakt", methods=["GET"])
 def kontakt():
     return render_template("main/kontakt.html")
+
+
+@main.route("/impressum", methods=["GET"])
+def impressum():
+    return render_template("main/impressum.html")
