@@ -1,11 +1,5 @@
-{#-
-    Boilerplate - Base Template
-    ------------------------------------------------------------
-    Jinja2 base template. This is the template that all other
-    templates extend from.
--#}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de" class="h-full">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +9,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" />
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col">
+<body class="bg-slate-50 flex flex-col min-h-screen h-full m-0 p-0">
     {% include 'boilerplate/nav.html' %}
     
     <div class="flex-grow">
