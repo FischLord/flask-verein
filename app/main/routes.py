@@ -1,6 +1,8 @@
-from flask import render_template, __version__
+from flask import render_template, current_app, __version__, abort
 from app.main import main
-from os import environ
+import os
+from markupsafe import Markup
+
 
 # Versions of Python, Flask as well as other packages (displayed on the index)
 # This can be removed if you don't want to display this information
@@ -29,8 +31,64 @@ def index():
         flask_wtf_version=flask_wtf_version,
         wtforms_version=wtforms_version,
         dotenv_version=dotenv_version.__version__,
-        debug_enabled=environ.get("FLASK_DEBUG"),
+        debug_enabled=os.environ.get("FLASK_DEBUG"),
     )
+
+@main.app_context_processor
+def inject_reports():
+    berichte_path = os.path.join(current_app.static_folder, 'berichte')
+    # Falls `app/static/berichte` nicht existiert, beenden wir früh
+    if not os.path.isdir(berichte_path):
+        return dict(reports=[])
+
+    # Alle Ordner in `berichte/` einlesen
+    folder_names = []
+    for name in os.listdir(berichte_path):
+        folder_path = os.path.join(berichte_path, name)
+        # Nur wenn es ein Ordner ist, wird er aufgenommen
+        if os.path.isdir(folder_path):
+            folder_names.append(name)
+
+    # Sortierung (optional, z.B. alphabetisch, oder Jahr absteigend)
+    folder_names.sort(reverse=True)
+
+    return dict(reports=folder_names)
+
+@main.route('/berichte/<folder>')
+def erlebnisberichte(folder):
+    # Pfad zum gewünschten Unterordner im static/berichte/-Verzeichnis
+    base_path = os.path.join(current_app.static_folder, 'berichte')
+    target_path = os.path.join(base_path, folder)
+
+    # Prüfen, ob der Ordner existiert
+    if not os.path.isdir(target_path):
+        abort(404)
+
+    # Bilder einsammeln
+    images = []
+    for file_name in os.listdir(target_path):
+        if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+            images.append(file_name)
+    images.sort()
+
+    # Textdatei laden (optional)
+    text_file_path = os.path.join(target_path, 'text.txt')
+    text_content = ""
+    if os.path.isfile(text_file_path):
+        with open(text_file_path, 'r', encoding='utf-8') as f:
+            text_content = f.read()
+
+    # Template rendern, Daten mitgeben
+    return render_template('main/berichte.html', folder_name=folder, images=images, text=text_content)
+
+# Janneck: Benötigt damit Zeilenumbrüche aus Text datei angezeigt werden
+@main.app_template_filter('nl2br')
+def nl2br_filter(s):
+    if not s:
+        return ""
+    return Markup(s.replace('\n', '<br>'))
+
+
 
 
 @main.route("/verein", methods=["GET"])
