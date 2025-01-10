@@ -1,0 +1,25 @@
+{% extends 'boilerplate/layout.html' %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+    <h1 class="text-3xl font-bold mb-4">
+        Erlebnisbericht: {{ folder_name }}
+    </h1>
+
+    {% if text %}
+    <div class="mb-8 p-4 bg-slate-50 rounded shadow-sm">
+        {{ text | nl2br }}
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {% for img in images %}
+        <div class="bg-white rounded overflow-hidden shadow-md">
+            <img src="{{ url_for('static', filename='berichte/'~folder_name~'/'~img) }}" alt="{{ img }}"
+                class="w-full h-auto object-cover" />
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
