@@ -2,10 +2,6 @@ from flask import render_template, current_app, __version__, abort
 from app.main import main
 import os
 from markupsafe import Markup
-
-
-# Versions of Python, Flask as well as other packages (displayed on the index)
-# This can be removed if you don't want to display this information
 from platform import python_version
 from pip import __version__ as pip_version
 from flask_login import __version__ as flask_login_version
@@ -67,7 +63,7 @@ def erlebnisberichte(folder):
     # Bilder einsammeln
     images = []
     for file_name in os.listdir(target_path):
-        if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+        if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
             images.append(file_name)
     images.sort()
 
