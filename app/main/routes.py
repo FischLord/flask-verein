@@ -100,3 +100,7 @@ def kontakt():
 @main.route("/impressum", methods=["GET"])
 def impressum():
     return render_template("main/impressum.html")
+
+@main.route('/veranstaltungen')
+def veranstaltungen():
+    return render_template('main/veranstaltungen.html')
