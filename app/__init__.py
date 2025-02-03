@@ -21,6 +21,9 @@ def create_app(config_class=Config):
 
     app.register_blueprint(main)
 
+    from app.main.formcenter import formcenter
+    app.register_blueprint(formcenter, url_prefix='/formcenter')
+
     from app.auth import auth as auth
 
     app.register_blueprint(auth)

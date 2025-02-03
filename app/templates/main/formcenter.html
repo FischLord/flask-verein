@@ -1,0 +1,33 @@
+{% extends 'boilerplate/layout.html' %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6 text-center">Formularcenter</h1>
+  
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    {% for file in files %}
+    <div class="bg-white p-4 rounded shadow hover:shadow-lg transition">
+      <div class="flex items-center space-x-4">
+        <div class="flex-shrink-0">
+          <!-- PDF-Icon (anpassbar, hier als SVG) -->
+          <svg class="w-12 h-12 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V8.414a2 2 0 00-.586-1.414l-4.414-4.414A2 2 0 0011.586 2H4z"/>
+          </svg>
+        </div>
+        <div class="flex-grow">
+          <h2 class="text-lg font-semibold break-words">{{ file.name }}</h2>
+          <p class="text-sm text-gray-600">{{ file.type }} &middot; {{ file.size }}</p>
+        </div>
+      </div>
+      <div class="flex space-x-2 mt-4">
+        <a href="{{ url_for('static', filename='forms/' ~ file.name) }}" target="_blank" class="flex-1 text-center px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+          Vorschau
+        </a>
+        <a href="{{ url_for('static', filename='forms/' ~ file.name) }}" download class="flex-1 text-center px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Download
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
