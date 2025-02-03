@@ -1,25 +1,36 @@
 {% extends 'boilerplate/layout.html' %}
 {% block content %}
 <div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6 text-center">
+    Erlebnisbericht: {{ folder_name }}
+  </h1>
 
-    <h1 class="text-3xl font-bold mb-4">
-        Erlebnisbericht: {{ folder_name }}
-    </h1>
+  {% if text %}
+  <div class="mb-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded shadow-sm">
+    <p class="text-gray-800 font-serif italic">
+      {{ text | nl2br }}
+    </p>
+  </div>
+  {% endif %}
 
-    {% if text %}
-    <div class="mb-8 p-4 bg-slate-50 rounded shadow-sm">
-        {{ text | nl2br }}
-    </div>
-    {% endif %}
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {% for img in images %}
-        <div class="bg-white rounded overflow-hidden shadow-md">
-            <img src="{{ url_for('static', filename='berichte/'~folder_name~'/'~img) }}" alt="{{ img }}"
-                class="w-full h-auto object-cover" />
-        </div>
+  <!-- Galerie: 2 Spalten auf kleinen, 4 Spalten auf größeren Bildschirmen -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {# Wir teilen die Bilder in 4 Spalten auf. Dazu iterieren wir über einen Index von 0 bis 3,
+       und innerhalb jedes Spalten-Blocks gehen wir über alle Bilder und zeigen nur jene,
+       deren Index modulo 4 dem aktuellen Spalten-Index entspricht. #}
+    {% for col in range(4) %}
+      <div class="grid gap-4">
+        {% for i in range(images|length) %}
+          {% if i % 4 == col %}
+            <div>
+              <img class="h-auto max-w-full rounded-lg" 
+                   src="{{ url_for('static', filename='berichte/' ~ folder_name ~ '/' ~ images[i]) }}" 
+                   alt="{{ images[i] }}">
+            </div>
+          {% endif %}
         {% endfor %}
-    </div>
-
+      </div>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}
