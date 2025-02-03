@@ -1,95 +1,130 @@
 {% extends 'boilerplate/layout.html' %}
 {% block content %}
+<section class="py-16 bg-gray-50">
+  <div class="max-w-screen-xl mx-auto px-4 lg:px-12">
+    <!-- Seitenüberschrift -->
+    <header class="text-center mb-16">
+      <h1 class="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">
+        Über unseren Verein
+      </h1>
+      <p class="text-lg text-gray-600">Erfahren Sie mehr über unsere Geschichte, Aktivitäten und Zukunftspläne.</p>
+    </header>
 
-<section>
-    <div class="max-w-screen-xl mx-auto px-4 text-center lg:px-12">
-        <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-12">Über unseren Verein</h1>
-        
-        <!-- Über uns -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Über uns</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Wir sind ein lebhafter Verein im Herzen des Hohen Fläming mit etwa 40 Pferdeliebhabern, die ihre Freizeit gerne gemeinsam mit dem Pferd genießen – sei es vor der Kutsche oder im Sattel. Besonders stolz sind wir auf unsere aktiven Jugendsportler und den starken Zusammenhalt in der Gemeinschaft. 
-                Unser Verein unterstützt auch umliegende Pferdesportvereine bei der Organisation und Durchführung von Turnieren und Trainings. Auch wenn bei uns niemand verpflichtet ist, feste Stunden zu leisten, legen wir Wert darauf, gemeinsam Veranstaltungen zu planen und durchzuführen – denn Zusammenhalt macht uns stark!
-            </p>
+    <!-- Obere Karten-Gruppe -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16 mt-4">
+      <!-- Karte: Über uns -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Farbstreifen oben -->
+        <div class="h-2 bg-blue-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Über uns</h2>
+          <p class="text-gray-600 text-base">
+            Wir sind ein lebhafter Verein im Herzen des Hohen Fläming mit ca. 40 Pferdeliebhabern, die ihre Freizeit gerne gemeinsam mit dem Pferd genießen – sei es vor der Kutsche oder im Sattel. Unsere aktive Jugendarbeit und der starke Zusammenhalt zeichnen uns aus.
+          </p>
         </div>
+      </div>
 
-        <!-- Geschichte und Ursprung -->
-        <!-- Geschichte und Ursprung -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Geschichte und Ursprung</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400 mb-8">
-                Unser Verein hat eine bewegte Geschichte hinter sich. Nach einigen Schwierigkeiten haben engagierte Mitglieder den Verein neu aufgebaut und mit frischer Motivation zu dem gemacht, was er heute ist. 
-                Besonders stolz sind wir auf unseren 80x40 Dressurplatz, der mit viel Liebe zum Detail gestaltet wurde. Über dem Eingang hängt ein Schild mit unserem Vereinsnamen, das dem Platz eine ganz besondere Atmosphäre verleiht.
-            </p>
-            <!-- Vereinsschriftzug-Bild -->
-            <div class="w-full">
-                <img src="{{ url_for('static', filename='vereinsschriftzug.jpg') }}" alt="Vereinsschriftzug" class="w-full h-auto object-cover">
+      <!-- Karte: Geschichte & Ursprung -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-green-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Geschichte & Ursprung</h2>
+          <div class="md:flex md:space-x-6">
+            <div class="md:w-1/2 text-gray-600 text-base mb-4 md:mb-0">
+              <p class="mb-4">
+                Unser Verein hat eine bewegte Geschichte – nach einigen Herausforderungen haben engagierte Mitglieder den Verein neu aufgebaut und mit frischer Motivation geformt.
+              </p>
+              <p>
+                Besonders stolz sind wir auf unseren 80x40 Dressurplatz, der mit viel Liebe zum Detail gestaltet wurde.
+              </p>
             </div>
         </div>
-
-
-
-        <!-- Aktivitäten und Veranstaltungen -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Aktivitäten und Veranstaltungen</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Unsere Veranstaltungen bieten jedes Jahr vielfältige Möglichkeiten, das Vereinsleben aktiv zu gestalten. Besonders beliebt ist unser jährlicher Kutschertag, der das Highlight für Groß und Klein ist – sowohl für Teilnehmer als auch für Zuschauer. 
-                Leider musste dieser während der Corona-Zeit ausfallen, doch inzwischen freuen wir uns, ihn wieder regelmäßig ausrichten zu können. Neben dem Kutschertag veranstalten wir auch Trainings und kleinere Turniere, die immer großen Anklang finden.
-            </p>
+        <div class="md:w-1/2">
+          <img src="{{ url_for('static', filename='vereinsschriftzug.jpg') }}" alt="Vereinsschriftzug" class="w-full h-auto object-cover rounded">
         </div>
-
-        <!-- Erfolge im Pferdesport -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Erfolge im Pferdesport</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Wir sind besonders stolz auf unsere erfolgreichen jungen Sportler. Helene Matthe und Janneck Lehmann haben es bis in den Landeskader geschafft und konnten bereits Kreismeistertitel und sogar Landesmeistertitel gewinnen. 
-                Beide haben ihre Anfänge auf lokalen Turnieren gemacht und sich stetig weiterentwickelt. Ihre Erfolge sind ein großes Vorbild für unseren Verein.
-            </p>
         </div>
+      </div>
 
-        <!-- Pferdearten und -rassen -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Pferdearten und -rassen</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Bei uns gibt es eine bunte Vielfalt an Pferderassen – von Ponys bis zu großen Pferden, von Friesen bis Lewitzern. Es gibt keine Verpflichtung, eine bestimmte Pferderasse zu haben, sodass jeder Pferdefreund bei uns einen Platz findet.
-            </p>
+      <!-- Karte: Aktivitäten & Veranstaltungen -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-purple-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Aktivitäten & Veranstaltungen</h2>
+          <p class="text-gray-600 text-base">
+            Unser jährlicher Kutschertag sowie diverse Turniere und Trainings füllen unser Vereinsleben mit abwechslungsreichen Events – ideal für Teilnehmer und Zuschauer.
+          </p>
         </div>
+      </div>
 
-        <!-- Mitglieder und Gemeinschaft -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Mitglieder und Gemeinschaft</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Unsere Gemeinschaft lebt von der Freude am Miteinander. Neue Mitglieder sind jederzeit willkommen und werden bei uns schnell integriert. 
-                Wir bemühen uns, eine entspannte und freundliche Atmosphäre zu schaffen, ohne direkte Pflichten, aber mit der Möglichkeit, sich aktiv am Vereinsleben zu beteiligen. 
-                Neben den sportlichen Aktivitäten organisieren wir auch gesellige Veranstaltungen wie unsere jährliche Weihnachtsfeier und regelmäßige Vereinsversammlungen, bei denen man gemütlich beisammen sitzt.
-            </p>
+      <!-- Karte: Erfolge im Pferdesport -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-yellow-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Erfolge im Pferdesport</h2>
+          <p class="text-gray-600 text-base">
+            Unsere jungen Sportler, wie Helene Matthe und Janneck Lehmann, haben beeindruckende Titel errungen, die als Inspiration für alle Mitglieder dienen.
+          </p>
         </div>
-
-        <!-- Soziales Engagement -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Soziales Engagement</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Wir sind fest in der Dorfgemeinschaft verwurzelt und engagieren uns regelmäßig bei Festen in den umliegenden Dörfern. Ob Ponyreiten, Hufeisenwerfen oder der Grillstand – wir sind gerne dabei, wenn es darum geht, das Dorfleben zu bereichern und den Kontakt zu den Bewohnern zu pflegen.
-            </p>
-        </div>
-
-        <!-- Ausbildung und Schulung -->
-        <div class="mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Ausbildung und Schulung</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Unsere Mitglieder haben immer die Möglichkeit, sich weiterzubilden. In der Vergangenheit haben wir erfolgreiche Trainings organisiert, und für die Zukunft planen wir weitere Schulungen. Besonders beliebt ist unser Frühjahrstraining, bei dem unsere Mitglieder vergünstigt teilnehmen können.
-            </p>
-        </div>
-
-        <!-- Zukünftige Pläne -->
-        <div>
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Zukünftige Pläne</h2>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                Wir wollen weiterhin an unserem Vereinsziel arbeiten, die Ausbildung unserer Mitglieder zu fördern und den Zusammenhalt im Verein zu stärken. Wir freuen uns auf die kommenden Jahre und hoffen, noch viele neue Mitglieder in unserer Gemeinschaft begrüßen zu dürfen.
-            </p>
-        </div>
+      </div>
     </div>
-</section>
 
+    <!-- Untere Karten-Gruppe -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <!-- Karte: Pferdearten & -rassen -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-red-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Pferdearten & -rassen</h2>
+          <p class="text-gray-600 text-base">
+            Von Ponys bis zu großen Pferden – bei uns findet jeder Pferdefreund seinen Platz, ganz ohne Zwang.
+          </p>
+        </div>
+      </div>
+
+      <!-- Karte: Mitglieder & Gemeinschaft -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-indigo-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Mitglieder & Gemeinschaft</h2>
+          <p class="text-gray-600 text-base">
+            Unsere Gemeinschaft lebt von der Freude am Miteinander. Neue Mitglieder werden herzlich aufgenommen und schnell integriert.
+          </p>
+        </div>
+      </div>
+
+      <!-- Karte: Soziales Engagement -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-teal-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Soziales Engagement</h2>
+          <p class="text-gray-600 text-base">
+            Wir engagieren uns aktiv in der Dorfgemeinschaft – von Ponyreiten bis hin zu lokalen Festen bereichern wir das Dorfleben.
+          </p>
+        </div>
+      </div>
+
+      <!-- Karte: Ausbildung & Schulung -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-orange-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Ausbildung & Schulung</h2>
+          <p class="text-gray-600 text-base">
+            Durch regelmäßige Trainings und Schulungen bieten wir unseren Mitgliedern vielfältige Möglichkeiten zur Weiterentwicklung.
+          </p>
+        </div>
+      </div>
+
+      <!-- Karte: Zukünftige Pläne (über beide Spalten) -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden md:col-span-2">
+        <div class="h-2 bg-pink-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Zukünftige Pläne</h2>
+          <p class="text-gray-600 text-base">
+            Wir blicken in die Zukunft: Mehr Schulungen, stärkere Gemeinschaft und der kontinuierliche Ausbau unseres Vereinslebens stehen im Fokus.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
