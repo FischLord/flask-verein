@@ -104,3 +104,7 @@ def impressum():
 @main.route('/veranstaltungen')
 def veranstaltungen():
     return render_template('main/veranstaltungen.html')
+
+@main.route('/vereinsdaten')
+def vereinsdaten():
+    return render_template('main/vereinsdaten.html')
