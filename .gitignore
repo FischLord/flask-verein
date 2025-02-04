@@ -130,3 +130,5 @@ dmypy.json
 .DS_Store
 getmiportantthings.sh
 flask_project_overview.txt
+
+/app/static/forms/*
