@@ -69,62 +69,82 @@
     </div>
 
     <!-- Untere Karten-Gruppe -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-      <!-- Karte: Pferdearten & -rassen -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="h-2 bg-red-500"></div>
-        <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Pferdearten & -rassen</h2>
-          <p class="text-gray-600 text-base">
-            Von Ponys bis zu großen Pferden – bei uns findet jeder Pferdefreund seinen Platz, ganz ohne Zwang.
-          </p>
-        </div>
-      </div>
-
-      <!-- Karte: Mitglieder & Gemeinschaft -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="h-2 bg-indigo-500"></div>
-        <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Mitglieder & Gemeinschaft</h2>
-          <p class="text-gray-600 text-base">
-            Unsere Gemeinschaft lebt von der Freude am Miteinander. Neue Mitglieder werden herzlich aufgenommen und schnell integriert.
-          </p>
-        </div>
-      </div>
-
-      <!-- Karte: Soziales Engagement -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="h-2 bg-teal-500"></div>
-        <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Soziales Engagement</h2>
-          <p class="text-gray-600 text-base">
-            Wir engagieren uns aktiv in der Dorfgemeinschaft – von Ponyreiten bis hin zu lokalen Festen bereichern wir das Dorfleben.
-          </p>
-        </div>
-      </div>
-
-      <!-- Karte: Ausbildung & Schulung -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="h-2 bg-orange-500"></div>
-        <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Ausbildung & Schulung</h2>
-          <p class="text-gray-600 text-base">
-            Durch regelmäßige Trainings und Schulungen bieten wir unseren Mitgliedern vielfältige Möglichkeiten zur Weiterentwicklung.
-          </p>
-        </div>
-      </div>
-
-      <!-- Karte: Zukünftige Pläne (über beide Spalten) -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden md:col-span-2">
-        <div class="h-2 bg-pink-500"></div>
-        <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Zukünftige Pläne</h2>
-          <p class="text-gray-600 text-base">
-            Wir blicken in die Zukunft: Mehr Schulungen, stärkere Gemeinschaft und der kontinuierliche Ausbau unseres Vereinslebens stehen im Fokus.
-          </p>
-        </div>
+    <!-- Untere Karten-Gruppe -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <!-- Karte: Pferdearten & -rassen -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="h-2 bg-red-500"></div>
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-3">Pferdearten & -rassen</h2>
+        <p class="text-gray-600 text-base">
+          Von Ponys bis zu großen Pferden – bei uns findet jeder Pferdefreund seinen Platz, ganz ohne Zwang.
+        </p>
       </div>
     </div>
+  
+    <!-- Karte: Mitglieder & Gemeinschaft -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="h-2 bg-indigo-500"></div>
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-3">Mitglieder & Gemeinschaft</h2>
+        <p class="text-gray-600 text-base">
+          Unsere Gemeinschaft lebt von der Freude am Miteinander. Neue Mitglieder werden herzlich aufgenommen und schnell integriert.
+        </p>
+      </div>
+    </div>
+  
+    <!-- Karte: Soziales Engagement -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="h-2 bg-teal-500"></div>
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-3">Soziales Engagement</h2>
+        <p class="text-gray-600 text-base">
+          Wir engagieren uns aktiv in der Dorfgemeinschaft – von Ponyreiten bis hin zu lokalen Festen bereichern wir das Dorfleben.
+        </p>
+      </div>
+    </div>
+  
+    <!-- Karte: Ausbildung & Schulung -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="h-2 bg-orange-500"></div>
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-3">Ausbildung & Schulung</h2>
+        <p class="text-gray-600 text-base">
+          Durch regelmäßige Trainings und Schulungen bieten wir unseren Mitgliedern vielfältige Möglichkeiten zur Weiterentwicklung.
+        </p>
+      </div>
+    </div>
+  
+    <!-- Neue Karte: Vereinsdaten & Rechtliches -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+        <div class="h-2 bg-gray-800"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsdaten & Rechtliches</h2>
+          <p class="text-gray-600 text-base mb-4">
+            Hier finden Sie unsere Geschäftsadresse, FN-/LSB-Nummern, Bankverbindung und Hinweise zu den Mitgliedsbeiträgen.
+          </p>
+          <div class="text-right">
+            <a href="{{ url_for('main.vereinsdaten') }}" class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition">
+              Mehr erfahren
+            </a>
+          </div>
+        </div>
+      </div>
+      
+  
+  
+    <!-- Karte: Zukünftige Pläne (über beide Spalten) -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden md:col-span-2">
+      <div class="h-2 bg-pink-500"></div>
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-3">Zukünftige Pläne</h2>
+        <p class="text-gray-600 text-base">
+          Wir blicken in die Zukunft: Mehr Schulungen, stärkere Gemeinschaft und der kontinuierliche Ausbau unseres Vereinslebens stehen im Fokus.
+        </p>
+      </div>
+    </div>
+  </div>
+  
   </div>
 </section>
 {% endblock %}
