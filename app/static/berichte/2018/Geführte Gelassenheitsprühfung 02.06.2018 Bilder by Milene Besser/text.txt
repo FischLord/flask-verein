@@ -1,0 +1,12 @@
+Erläuterung der Anpassungen
+
+    Notiz-Style für den Textbericht:
+    Der Container mit dem Berichtstext verwendet einen hellen Gelbton (bg-yellow-50) und eine linke farbige Border (border-yellow-400), kombiniert mit einer Serifenschrift und kursivem Stil – so entsteht der Eindruck einer handschriftlichen Notiz.
+
+    Galerie im Masonry-Stil:
+    Anstelle eines starren Grids werden die Bilder mit Hilfe der Tailwind‑Utilities für CSS‑Columns (columns-1 sm:columns-2 md:columns-3) angezeigt. Jeder Bild-Container erhält zusätzlich die Klasse break-inside-avoid, um zu verhindern, dass ein einzelnes Element zwischen den Spalten aufgeteilt wird. Mit dem hover:scale-105‑Effekt wird ein sanfter Zoom beim Überfahren mit der Maus erreicht.
+
+    Modal für Bildvergrößerung:
+    Mittels eines einfachen Modals, das per JavaScript bei einem Klick auf ein Bild aktiviert wird, können Nutzer die Bilder in einer größeren Ansicht betrachten. Das Modal schließt sich wieder, wenn der Schließen-Button betätigt wird oder außerhalb des Bildes geklickt wird.
+
+Diese Lösung sorgt dafür, dass der Erlebnisbericht modern, verspielt und übersichtlich wirkt – sowohl in der Darstellung des Textes als auch der Galerie. Falls du noch weitere Anpassungen oder Fragen hast, stehe ich bereit.

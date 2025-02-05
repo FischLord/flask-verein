@@ -49,10 +49,9 @@ def inject_reports():
     folder_names.sort(reverse=True)
 
     return dict(reports=folder_names)
-
 @main.route('/berichte/<folder>')
 def erlebnisberichte(folder):
-    # Pfad zum gewünschten Unterordner im static/berichte/-Verzeichnis
+    # Pfad zum gewünschten Ordner im static/berichte/-Verzeichnis
     base_path = os.path.join(current_app.static_folder, 'berichte')
     target_path = os.path.join(base_path, folder)
 
@@ -60,22 +59,54 @@ def erlebnisberichte(folder):
     if not os.path.isdir(target_path):
         abort(404)
 
-    # Bilder einsammeln
-    images = []
-    for file_name in os.listdir(target_path):
-        if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
-            images.append(file_name)
-    images.sort()
+    # Prüfen, ob der Ordner Unterordner enthält
+    subdirs = [name for name in os.listdir(target_path)
+               if os.path.isdir(os.path.join(target_path, name))]
 
-    # Textdatei laden (optional)
-    text_file_path = os.path.join(target_path, 'text.txt')
-    text_content = ""
-    if os.path.isfile(text_file_path):
-        with open(text_file_path, 'r', encoding='utf-8') as f:
-            text_content = f.read()
+    if subdirs:
+        # Es gibt Unterordner – wir behandeln dies als Mehrfachberichte (z. B. Jahr mit mehreren Events)
+        events = []
+        for subdir in sorted(subdirs):
+            event_path = os.path.join(target_path, subdir)
+            # Bilder einsammeln
+            images = []
+            for file_name in os.listdir(event_path):
+                if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                    images.append(file_name)
+            images.sort()
 
-    # Template rendern, Daten mitgeben
-    return render_template('main/berichte.html', folder_name=folder, images=images, text=text_content)
+            # Textdatei laden (optional)
+            text_file_path = os.path.join(event_path, 'text.txt')
+            text_content = ""
+            if os.path.isfile(text_file_path):
+                with open(text_file_path, 'r', encoding='utf-8') as f:
+                    text_content = f.read()
+
+            events.append({
+                'name': subdir,
+                'images': images,
+                'text': text_content,
+            })
+
+        # multi=True signalisiert im Template, dass mehrere Events vorhanden sind
+        return render_template('main/berichte.html', folder_name=folder, events=events, multi=True)
+    else:
+        # Kein Unterordner – alter Einzelbericht-Modus
+        images = []
+        for file_name in os.listdir(target_path):
+            if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                images.append(file_name)
+        images.sort()
+
+        # Textdatei laden (optional)
+        text_file_path = os.path.join(target_path, 'text.txt')
+        text_content = ""
+        if os.path.isfile(text_file_path):
+            with open(text_file_path, 'r', encoding='utf-8') as f:
+                text_content = f.read()
+
+        # multi=False signalisiert im Template den Einzelbericht-Modus
+        return render_template('main/berichte.html', folder_name=folder, images=images, text=text_content, multi=False)
 
 # Janneck: Benötigt damit Zeilenumbrüche aus Text datei angezeigt werden
 @main.app_template_filter('nl2br')
