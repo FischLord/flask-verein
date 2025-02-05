@@ -139,3 +139,7 @@ def veranstaltungen():
 @main.route('/vereinsdaten')
 def vereinsdaten():
     return render_template('main/vereinsdaten.html')
+
+@main.route('/datenschutz')
+def datenschutz():
+    return render_template('main/datenschutz.html')
