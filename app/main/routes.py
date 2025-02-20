@@ -12,6 +12,7 @@ from dotenv import version as dotenv_version
 from flask_wtf import __version__ as flask_wtf_version
 from wtforms import __version__ as wtforms_version
 import urllib.parse
+from datetime import datetime
 
 
 @main.route("/", methods=["GET"])
@@ -149,40 +150,68 @@ def datenschutz():
 def robots():
     return send_from_directory(current_app.static_folder, 'robots.txt')
 
-@main.route('/sitemap.xml')
-def sitemap():
-    sitemap_xml = generate_sitemap(current_app)
-    response = make_response(sitemap_xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
-
 def generate_sitemap(app):
     """
-    Generiert eine XML Sitemap für alle öffentlichen Routen
+    Generiert eine Google-konforme XML Sitemap für alle öffentlichen Routen
     """
-    # Basis URL der Website (später mit ihrer echten Domain ersetzen)
-    base_url = "https://fahrverein-planetal.de"  
+    base_url = "https://fahrverein-planetal.de"
     
-    # Liste aller URLs
-    pages = []
-    
-    # Alle Routen durchgehen
-    for rule in app.url_map.iter_rules():
-        # Ignore-Regeln für bestimmte Endpoints
-        if "GET" in rule.methods and not rule.arguments and \
-           not rule.endpoint.startswith(('static', 'admin')):
-            pages.append(urllib.parse.urljoin(base_url, rule.rule))
-    
-    # XML erstellen
+    # XML Header mit allen erforderlichen Schemas
     sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
-    sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
+    sitemap_xml += '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
+    sitemap_xml += '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n'
+    sitemap_xml += '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n'
     
-    for page in pages:
-        sitemap_xml += '  <url>\n'
-        sitemap_xml += f'    <loc>{page}</loc>\n'
-        sitemap_xml += '    <changefreq>weekly</changefreq>\n'
-        sitemap_xml += '  </url>\n'
+    # Liste der Routen die ausgeschlossen werden sollen
+    excluded_routes = {
+        'static', 'admin', 'login', 'logout', 'register',
+        'robots.txt', 'sitemap.xml'
+    }
+    
+    # Dictionary für Seitenprioritäten und Änderungshäufigkeiten
+    page_settings = {
+        '/': {'priority': '1.0', 'changefreq': 'daily'},
+        '/verein': {'priority': '0.8', 'changefreq': 'weekly'},
+        '/veranstaltungen': {'priority': '0.8', 'changefreq': 'daily'},
+        '/kontakt': {'priority': '0.7', 'changefreq': 'monthly'},
+        '/vereinsdaten': {'priority': '0.7', 'changefreq': 'monthly'},
+        '/formcenter/': {'priority': '0.5', 'changefreq': 'weekly'},
+        '/impressum': {'priority': '0.3', 'changefreq': 'yearly'},
+        '/datenschutz': {'priority': '0.3', 'changefreq': 'yearly'}
+    }
+    
+    # Aktuelles Datum und Zeit im ISO 8601 Format
+    current_datetime = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S+00:00')
+    
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and not rule.arguments:
+            endpoint = rule.endpoint.split('.')[-1]
+            path = rule.rule
+            
+            # Überspringe ausgeschlossene Routen
+            if any(excl in endpoint for excl in excluded_routes) or \
+               any(excl in path for excl in excluded_routes):
+                continue
+                
+            url = urllib.parse.urljoin(base_url, path)
+            settings = page_settings.get(path, {'priority': '0.5', 'changefreq': 'monthly'})
+            
+            sitemap_xml += '  <url>\n'
+            sitemap_xml += f'    <loc>{url}</loc>\n'
+            sitemap_xml += f'    <lastmod>{current_datetime}</lastmod>\n'
+            sitemap_xml += f'    <changefreq>{settings["changefreq"]}</changefreq>\n'
+            sitemap_xml += f'    <priority>{settings["priority"]}</priority>\n'
+            sitemap_xml += '  </url>\n'
     
     sitemap_xml += '</urlset>'
-    
     return sitemap_xml
+
+@main.route('/sitemap.xml')
+def sitemap():
+    """Generate and serve sitemap.xml"""
+    sitemap_xml = generate_sitemap(current_app)
+    response = make_response(sitemap_xml)
+    response.headers['Content-Type'] = 'application/xml'
+    response.headers['X-Robots-Tag'] = 'noindex'
+    return response
