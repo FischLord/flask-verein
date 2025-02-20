@@ -1,72 +1,113 @@
 {% extends 'boilerplate/layout.html' %}
-{% block content %}
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-6 text-center">
-    {% if multi %}
-      Berichte: {{ folder_name }}
-    {% else %}
-      Erlebnisbericht: {{ folder_name }}
-    {% endif %}
-  </h1>
+{% block content %}<article class="container mx-auto px-4 py-8" itemscope itemtype="http://schema.org/Article">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-900" itemprop="headline">
+      {% if multi %}
+        Veranstaltungsberichte: {{ folder_name }}
+      {% else %}
+        Erlebnisbericht: {{ folder_name }}
+      {% endif %}
+    </h1>
+    <meta itemprop="datePublished" content="{{ folder_name }}">
+  </header>
 
   {% if multi %}
     {# Mehrere Berichte werden angezeigt #}
     {% for event in events %}
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">{{ event.name }}</h2>
+      <section class="mb-12" itemscope itemtype="http://schema.org/Event">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800" itemprop="name">{{ event.name }}</h2>
 
         {% if event.text %}
         <div class="mb-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded shadow-sm">
-          <p class="text-gray-800 font-serif italic">
+          <p class="text-gray-800 font-serif italic" itemprop="description">
             {{ event.text | nl2br }}
           </p>
         </div>
         {% endif %}
 
-        <!-- Galerie: 2 Spalten auf kleinen, 4 Spalten auf größeren Bildschirmen -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Bildergalerie mit optimierten Metadaten -->
+        {% if event.images %}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" itemscope itemtype="http://schema.org/ImageGallery">
           {% for col in range(4) %}
             <div class="grid gap-4">
               {% for i in range(event.images|length) %}
                 {% if i % 4 == col %}
-                  <div>
-                    <img class="h-auto max-w-full rounded-lg" 
+                  <figure class="relative group" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+                    <img class="h-auto max-w-full rounded-lg transition-transform duration-300 hover:scale-105" 
                          src="{{ url_for('static', filename='berichte/' ~ folder_name ~ '/' ~ event.name ~ '/' ~ event.images[i]) }}" 
-                         alt="{{ event.images[i] }}">
-                  </div>
+                         alt="Bild von {{ event.name }} - {{ event.images[i].split('.')[0] }} - Fahrverein Planetal"
+                         loading="lazy"
+                         itemprop="contentUrl">
+                    <meta itemprop="name" content="{{ event.name }} - {{ event.images[i] }}">
+                    <meta itemprop="description" content="Foto von {{ event.name }} beim Fahrverein Planetal e.V. in Reckahn">
+                  </figure>
                 {% endif %}
               {% endfor %}
             </div>
           {% endfor %}
         </div>
+        {% endif %}
       </section>
     {% endfor %}
   {% else %}
     {# Einzelbericht wird angezeigt #}
-    {% if text %}
-    <div class="mb-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded shadow-sm">
-      <p class="text-gray-800 font-serif italic">
-        {{ text | nl2br }}
-      </p>
-    </div>
-    {% endif %}
+    <div itemscope itemtype="http://schema.org/Article">
+      {% if text %}
+      <div class="mb-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded shadow-sm">
+        <p class="text-gray-800 font-serif italic" itemprop="articleBody">
+          {{ text | nl2br }}
+        </p>
+      </div>
+      {% endif %}
 
-    <!-- Galerie: 2 Spalten auf kleinen, 4 Spalten auf größeren Bildschirmen -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {% for col in range(4) %}
-        <div class="grid gap-4">
-          {% for i in range(images|length) %}
-            {% if i % 4 == col %}
-              <div>
-                <img class="h-auto max-w-full rounded-lg" 
-                     src="{{ url_for('static', filename='berichte/' ~ folder_name ~ '/' ~ images[i]) }}" 
-                     alt="{{ images[i] }}">
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endfor %}
+      <!-- Optimierte Bildergalerie für Einzelbericht -->
+      {% if images %}
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4" itemscope itemtype="http://schema.org/ImageGallery">
+        {% for col in range(4) %}
+          <div class="grid gap-4">
+            {% for i in range(images|length) %}
+              {% if i % 4 == col %}
+                <figure class="relative group" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+                  <img class="h-auto max-w-full rounded-lg transition-transform duration-300 hover:scale-105" 
+                       src="{{ url_for('static', filename='berichte/' ~ folder_name ~ '/' ~ images[i]) }}" 
+                       alt="Ereignisbild {{ folder_name }} - {{ images[i].split('.')[0] }} - Fahrverein Planetal"
+                       loading="lazy"
+                       itemprop="contentUrl">
+                  <meta itemprop="name" content="{{ folder_name }} - {{ images[i] }}">
+                  <meta itemprop="description" content="Foto vom {{ folder_name }} beim Fahrverein Planetal e.V. in Reckahn">
+                </figure>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
   {% endif %}
-</div>
+
+  <!-- Strukturierte Daten für Google Search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{% if multi %}Veranstaltungsberichte{% else %}Erlebnisbericht{% endif %}: {{ folder_name }}",
+    "description": "Bilder und Berichte von {{ folder_name }} beim Fahrverein Planetal e.V. in Reckahn",
+    {% if multi and events and events[0].images %}
+    "image": "{{ url_for('static', filename='berichte/' ~ folder_name ~ '/' ~ events[0].name ~ '/' ~ events[0].images[0]) }}",
+    {% elif not multi and images %}
+    "image": "{{ url_for('static', filename='berichte/' ~ folder_name ~ '/' ~ images[0]) }}",
+    {% endif %}
+    "datePublished": "{{ folder_name }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Fahrverein Planetal e.V.",
+      "url": "{{ url_for('main.index', _external=True) }}"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ url_for('main.erlebnisberichte', folder=folder_name, _external=True) }}"
+    }
+  }
+  </script>
+</article>
 {% endblock %}
