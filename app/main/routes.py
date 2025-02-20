@@ -71,7 +71,7 @@ def erlebnisberichte(folder):
             # Bilder einsammeln
             images = []
             for file_name in os.listdir(event_path):
-                if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                if file_name.lower().endswith(('.webp')):
                     images.append(file_name)
             images.sort()
 
