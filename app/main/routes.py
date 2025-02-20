@@ -1,4 +1,4 @@
-from flask import render_template, current_app, __version__, abort
+from flask import render_template, current_app, __version__, abort, url_for, make_response, send_from_directory, current_app
 from app.main import main
 import os
 from markupsafe import Markup
@@ -11,6 +11,7 @@ from jinja2 import __version__ as jinja2_version
 from dotenv import version as dotenv_version
 from flask_wtf import __version__ as flask_wtf_version
 from wtforms import __version__ as wtforms_version
+import urllib.parse
 
 
 @main.route("/", methods=["GET"])
@@ -143,3 +144,45 @@ def vereinsdaten():
 @main.route('/datenschutz')
 def datenschutz():
     return render_template('main/datenschutz.html')
+
+@main.route('/robots.txt')
+def robots():
+    return send_from_directory(current_app.static_folder, 'robots.txt')
+
+@main.route('/sitemap.xml')
+def sitemap():
+    sitemap_xml = generate_sitemap(current_app)
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+def generate_sitemap(app):
+    """
+    Generiert eine XML Sitemap für alle öffentlichen Routen
+    """
+    # Basis URL der Website (später mit ihrer echten Domain ersetzen)
+    base_url = "https://fahrverein-planetal.de"  
+    
+    # Liste aller URLs
+    pages = []
+    
+    # Alle Routen durchgehen
+    for rule in app.url_map.iter_rules():
+        # Ignore-Regeln für bestimmte Endpoints
+        if "GET" in rule.methods and not rule.arguments and \
+           not rule.endpoint.startswith(('static', 'admin')):
+            pages.append(urllib.parse.urljoin(base_url, rule.rule))
+    
+    # XML erstellen
+    sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    
+    for page in pages:
+        sitemap_xml += '  <url>\n'
+        sitemap_xml += f'    <loc>{page}</loc>\n'
+        sitemap_xml += '    <changefreq>weekly</changefreq>\n'
+        sitemap_xml += '  </url>\n'
+    
+    sitemap_xml += '</urlset>'
+    
+    return sitemap_xml
