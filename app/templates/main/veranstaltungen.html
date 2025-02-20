@@ -2,105 +2,153 @@
 {% block content %}
 <section class="py-16">
   <div class="max-w-screen-xl mx-auto px-4 lg:px-12">
-    <!-- Seitenüberschrift -->
+    <!-- Seitenüberschrift mit strukturierten Daten -->
     <header class="text-center mb-16">
       <h1 class="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">
-        Termine & Veranstaltungen
+        Veranstaltungen & Termine 2025
       </h1>
       <p class="text-lg text-gray-600">
-        Hier informieren wir über unsere Veranstaltungen, Trainingstage und Aktivitäten.
+        Entdecken Sie unsere Veranstaltungen, Trainingstage und Fahrsport-Aktivitäten in Reckahn, Brandenburg.
       </p>
     </header>
 
-    <!-- Hinweis zur Teilnehmerbegrenzung -->
-    <div class="mb-12 bg-blue-50 border-l-4 border-blue-500 p-4 rounded mt-4">
+    <!-- Wichtiger Hinweis -->
+    <div class="mb-12 bg-blue-50 border-l-4 border-blue-500 p-4 rounded mt-4" role="alert">
       <p class="text-gray-700 text-base">
-        Bitte beachtet, dass an bestimmten Terminen nur eine begrenzte Teilnehmeranzahl möglich ist.
+        <strong>Wichtiger Hinweis:</strong> Aufgrund der hohen Nachfrage ist bei einigen Veranstaltungen die Teilnehmerzahl begrenzt. Frühe Anmeldung wird empfohlen.
       </p>
     </div>
 
-    <!-- Zukunftspläne -->
-    <div class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Pläne für die Zukunft</h2>
+    <!-- Zukunftspläne mit semantischer Struktur -->
+    <article class="mb-16 mt-4">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Entwicklungsprojekte 2025 - Fahrverein Planetal</h2>
       <div class="space-y-6">
         <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-          <h3 class="text-2xl font-semibold text-gray-700 mb-2">Wiederherstellung des “Dachdeckerhindernisses”</h3>
+          <h3 class="text-2xl font-semibold text-gray-700 mb-2">Neues Dachdeckerhindernis für Fahrsport-Training</h3>
           <p class="text-gray-600">
             Wir planen die Wiederherstellung eines Fahrhindernisses mit Berg, das früher als “Dachdeckerhindernis” bekannt war. Dies bietet unseren Mitgliedern die Möglichkeit, ihre fahrerischen Fähigkeiten zu verbessern und herausfordernde Strecken zu meistern.
           </p>
         </div>
         <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-          <h3 class="text-2xl font-semibold text-gray-700 mb-2">Neuer Reitplatz</h3>
+          <h3 class="text-2xl font-semibold text-gray-700 mb-2">Erweiterter Reitplatz für optimales Training</h3>
           <p class="text-gray-600">
-            Wir streben an, einen großzügigen Reitplatz (40×20m oder größer) zu realisieren, der unseren Reitern mehr Raum für Training und Aktivitäten bietet.
+            Unser neuer 40×20m Reitplatz wird Trainingsmöglichkeiten für Reiter und Fahrer bieten. 
+            Die großzügige Anlage ermöglicht einen Taum für Trainingseinheiten und Veranstaltungen in Reckahn.
           </p>
         </div>
       </div>
+    </article>
+
+    <!-- Vereins-Logo mit optimiertem Alt-Text -->
+    <div class="mb-16 mt-4">
+      <img src="{{ url_for('static', filename='vereinsschriftzug.webp') }}" 
+           alt="Fahrverein Planetal e.V. - Vereinsschriftzug in Reckahn über dem Trainingsplatz" 
+           class="w-full h-auto object-contain rounded-lg shadow-md"
+           loading="lazy">
     </div>
 
-    <!-- Trenner: Vereins-Schriftzug als visuelles Element -->
-    <div class="mb-16 mt-4">
-      <img src="{{ url_for('static', filename='vereinsschriftzug.jpg') }}" alt="Vereinsschriftzug" class="w-full h-auto object-contain rounded-lg shadow-md">
-    </div>
-
-    <!-- 9. Reckahner Kutschertag -->
-    <div class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">9. Reckahner Kutschertag</h2>
+    <!-- Hauptveranstaltung mit strukturierten Daten -->
+    <article class="mb-16 mt-4" itemscope itemtype="http://schema.org/Event">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4" itemprop="name">11. Reckahner Kutschertag 2025</h2>
       <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-        <p class="text-lg text-gray-700 mb-4">
-          Am 16. September 2023 ab 10:00 Uhr findet unser 9. Reckahner Kutschertag statt – inklusive Dressur (FA2), Aktionsralley und Hindernisfahren. Treffpunkt ist der Reit-/Fahrplatz in Kloster Lehnin OT Reckahn Göttiner Landstr.
+        <meta itemprop="startDate" content="2025-09-16T10:00">
+        <meta itemprop="location" content="Reit-/Fahrplatz, Göttiner Landstr., Kloster Lehnin OT Reckahn, Brandenburg">
+        <p class="text-lg text-gray-700 mb-4" itemprop="description">
+          Seien Sie dabei beim 11. Reckahner Kutschertag am xx. September 2025 ab 10:00 Uhr. 
+          Erleben Sie Dressuren (FA2), eine abwechslungsreiche Aktionsralley und 
+          spannungsreiches Hindernisfahren. Treffpunkt: Reit-/Fahrplatz in Kloster Lehnin OT Reckahn, Göttiner Landstr.
         </p>
-        <!-- Download-Karten für Veranstaltungsformulare -->
+        
+        <!-- Anmeldeformulare mit verbesserten Beschreibungen -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Download-Karte 1 -->
           <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">FA-2 Fahraufgabe</h3>
-            <p class="text-sm text-gray-600 mb-2">Adobe Acrobat Dokument 73.1 KB</p>
-            <a href="{{ url_for('static', filename='forms/FA-2 Fahraufgabe.pdf') }}" download class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Download
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Dressurprüfung FA-2</h3>
+            <p class="text-sm text-gray-600 mb-2">Offizielle Fahraufgabe</p>
+            <a href="{{ url_for('static', filename='forms/FA-2 Fahraufgabe.pdf') }}" 
+               download 
+               class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+               title="FA-2 Fahraufgabe herunterladen">
+              Aufgabe herunterladen
             </a>
           </div>
-          <!-- Download-Karte 2 -->
           <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Nennungsformular Fahrer 2023</h3>
-            <p class="text-sm text-gray-600 mb-2">Adobe Acrobat Dokument 350.3 KB</p>
-            <a href="{{ url_for('static', filename='forms/Nennungsformular Fahrer 2023.pdf') }}" download class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Download
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Anmeldung Kutschenfahrer</h3>
+            <p class="text-sm text-gray-600 mb-2">Nennungsformular 2025</p>
+            <a href="{{ url_for('static', filename='forms/Nennungsformular Fahrer 2023.pdf') }}" 
+               download 
+               class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+               title="Nennungsformular für Fahrer herunterladen">
+              Formular herunterladen
             </a>
           </div>
-          <!-- Download-Karte 3 -->
           <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Nennungsformular Reiter 2023</h3>
-            <p class="text-sm text-gray-600 mb-2">Adobe Acrobat Dokument 348.1 KB</p>
-            <a href="{{ url_for('static', filename='forms/Nennungsformular Reiter 2023.pdf') }}" download class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Download
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Anmeldung Reiter</h3>
+            <p class="text-sm text-gray-600 mb-2">Nennungsformular 2025</p>
+            <a href="{{ url_for('static', filename='forms/Nennungsformular Reiter 2023.pdf') }}" 
+               download 
+               class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+               title="Nennungsformular für Reiter herunterladen">
+              Formular herunterladen
             </a>
           </div>
         </div>
       </div>
-    </div>
+    </article>
 
-    <!-- Anmeldung zum Kutschertag -->
-    <div class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Anmeldung zu unserem Kutschertag</h2>
+    <!-- Anmeldeinfos mit strukturierten Kontaktdaten -->
+    <article class="mb-16 mt-4">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Anmeldung zum Kutschertag 2025</h2>
       <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
         <p class="text-lg text-gray-700 mb-4">
-          Liebe Vereinsmitglieder,
+          Liebe Pferdesportfreunde und Vereinsmitglieder,
         </p>
         <p class="text-lg text-gray-700 mb-4">
-          Wir freuen uns, dass so viele von euch Interesse an unserem kommenden Kutschertag haben. Um eine reibungslose Anmeldung zu gewährleisten, könnt ihr eure Anmeldungen auf folgende Weise einreichen:
+          Die Anmeldung für den 11. Reckahner Kutschertag 2025 ist ab August möglich. Sichern Sie sich Ihren Startplatz für unser diesjährigen Kutschertag in Reckahn.
         </p>
-        <ul class="list-disc list-inside text-gray-700 mb-4">
-          <li><strong>Jacquelin und Denise:</strong> Per WhatsApp oder im Vereinsbriefkasten.</li>
-          <li><strong>E-Mail:</strong> Schickt eure Anmeldung an <a href="mailto:fvplanetal@web.de" class="text-blue-600 hover:underline">fvplanetal@web.de</a>.</li>
-        </ul>
-        <p class="text-lg text-gray-700">
-          Sportliche Grüße,<br>
-          FV Planetal e.V.
-        </p>
+        <div itemscope itemtype="http://schema.org/Organization">
+          <h3 class="text-xl font-bold mb-4">Anmeldewege:</h3>
+          <ul class="list-disc list-inside text-gray-700 mb-4">
+            <li><strong>Persönlich:</strong> Bei Jacquelin und Denise über WhatsApp oder im Vereinsbriefkasten</li>
+            <li><strong>Per E-Mail:</strong> <a href="mailto:fvplanetal@web.de" class="text-blue-600 hover:underline" itemprop="email">fvplanetal@web.de</a></li>
+          </ul>
+          <p class="text-lg text-gray-700">
+            Mit sportlichen Grüßen,<br>
+            <span itemprop="name">Fahrverein Planetal e.V.</span>
+          </p>
+        </div>
       </div>
-    </div>
+    </article>
 
   </div>
 </section>
+
+{# Strukturierte Daten für Google Search #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportsEvent",
+  "name": "10. Reckahner Kutschertag 2025",
+  "startDate": "2025-09-16T10:00",
+  "location": {
+    "@type": "Place",
+    "name": "Reit-/Fahrplatz Reckahn",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Göttiner Landstr.",
+      "addressLocality": "Kloster Lehnin OT Reckahn",
+      "addressRegion": "Brandenburg",
+      "addressCountry": "DE"
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Fahrverein Planetal e.V.",
+    "email": "fvplanetal@web.de"
+  },
+  "description": "Traditioneller Kutschertag mit Dressurprüfung FA2, Aktionsralley und Hindernisfahren. Ein Highlight im Brandenburger Fahrsport.",
+  "eventStatus": "EventScheduled",
+  "eventAttendanceMode": "OfflineEventAttendanceMode",
+  "sport": "Fahrsport"
+}
+</script>
 {% endblock %}

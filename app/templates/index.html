@@ -6,16 +6,16 @@
             <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
                 Herzlich Willkommen beim Fahrverein Planetal e.V.
             </h1>
-            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                Ihr Treffpunkt für Fahrer, Reiter und Pferdefreunde jeden Alters!
-            </p>
-            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                Unsere Geschichte begann im Jahr 2012, als wir unseren Verein im malerischen Ortsteil Reckahn ins Leben riefen. Seither
-                organisieren wir Ausfahrten und Ausritte durch die umliegenden Wälder und Wiesen.
-            </p>
-            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                Jedes Jahr veranstalten wir den Kutschertag im Herbst – ein Event, das immer mehr Pferdefreunde anzieht.
-            </p>
+            <div class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+                <h2 class="text-2xl font-bold mb-4">Ihr Treffpunkt für Fahrer, Reiter und Pferdefreunde jeden Alters!</h2>
+                <p class="mb-4">
+                    Seit 2012 verbinden wir im malerischen Ortsteil Reckahn Tradition und Leidenschaft für den Pferdesport. 
+                    Unsere regelmäßigen Ausfahrten und Ausritte durch die brandenburgische Natur bieten einzigartige Erlebnisse für alle Pferdefreunde.
+                </p>
+                <p class="mb-4">
+                    Der jährliche Kutschertag im Herbst ist unser Höhepunkt - ein Event, das Pferdefreunde aus der ganzen Region zusammenbringt.
+                </p>
+            </div>
         </div>
     {% else %}
         <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
@@ -27,20 +27,30 @@
             </p>
         </div>
     {% endif %}
+    
     <div id="promo-carousel" class="relative w-full mb-8" data-carousel="static">
         <!-- Carousel wrapper -->
         <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
             <!-- Slide 1 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ url_for('static', filename='promo1.webp') }}" class="absolute block w-full h-full object-cover" alt="Promo Bild 1">
+                <img src="{{ url_for('static', filename='promo1.webp') }}" 
+                     class="absolute block w-full h-full object-cover" 
+                     alt="Kutschfahrt durch die malerische Landschaft von Reckahn"
+                     loading="lazy">
             </div>
             <!-- Slide 2 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ url_for('static', filename='promo2.webp') }}" class="absolute block w-full h-full object-cover" alt="Promo Bild 2">
+                <img src="{{ url_for('static', filename='promo2.webp') }}" 
+                     class="absolute block w-full h-full object-cover" 
+                     alt="Pferdesport und Kutschenfahren im Fahrverein Planetal"
+                     loading="lazy">
             </div>
             <!-- Slide 3 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ url_for('static', filename='promo3.webp') }}" class="absolute block w-full h-full object-cover" alt="Promo Bild 3">
+                <img src="{{ url_for('static', filename='promo3.webp') }}" 
+                     class="absolute block w-full h-full object-cover" 
+                     alt="Jährlicher Kutschertag im Fahrverein Planetal"
+                     loading="lazy">
             </div>
         </div>
         <!-- Slider controls -->
@@ -49,7 +59,7 @@
                 <svg aria-hidden="true" class="w-6 h-6 text-white dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
-                <span class="sr-only">Previous</span>
+                <span class="sr-only">Vorheriges Bild</span>
             </span>
         </button>
         <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
@@ -57,43 +67,41 @@
                 <svg aria-hidden="true" class="w-6 h-6 text-white dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
-                <span class="sr-only">Next</span>
+                <span class="sr-only">Nächstes Bild</span>
             </span>
         </button>
     </div>
 
-    <div class="bg-white dark:bg-gray-900 py-16">
+    <article class="bg-white dark:bg-gray-900 py-16">
         <div class="max-w-screen-xl mx-auto px-4 text-center lg:px-12">
             <h2 class="mb-6 text-3xl font-extrabold tracking-tight leading-tight text-gray-900 dark:text-white">
-                Unsere Gemeinschaft
+                Unsere Gemeinschaft im Fahrverein Planetal
             </h2>
             <p class="mb-8 text-lg font-normal text-gray-500 dark:text-gray-400">
                 Im Fahrverein Planetal e.V. steht die Freude am gemeinsamen Erleben mit Pferd und Kutsche im Mittelpunkt. 
                 Ob bei unseren gemeinsamen Ausfahrten durch die Natur oder dem Turniersport – bei uns findet jeder seinen Platz.
             </p>
             <div class="flex flex-wrap justify-center gap-8">
-                <div class="max-w-sm rounded-lg shadow-lg bg-white dark:bg-gray-800 p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Turniersport</h3>
+                <article class="max-w-sm rounded-lg shadow-lg bg-white dark:bg-gray-800 p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Turniersport in Brandenburg</h3>
                     <p class="mt-4 text-gray-500 dark:text-gray-400">
-                        Einige unserer Mitglieder nehmen erfolgreich an Turnieren teil und glänzen mit beeindruckenden Ergebnissen in verschiedenen Disziplinen.
+                        Unsere Mitglieder nehmen erfolgreich an regionalen und überregionalen Turnieren teil. Wir glänzen mit beeindruckenden Ergebnissen in verschiedenen Fahrsport-Disziplinen.
                     </p>
-                </div>
-                <div class="max-w-sm rounded-lg shadow-lg bg-white dark:bg-gray-800 p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Gemeinsame Ausfahrten</h3>
+                </article>
+                <article class="max-w-sm rounded-lg shadow-lg bg-white dark:bg-gray-800 p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Kutschfahrten in Reckahn</h3>
                     <p class="mt-4 text-gray-500 dark:text-gray-400">
                         Unsere Ausfahrten durch die malerischen Wälder und Wiesen rund um Reckahn bieten die perfekte Gelegenheit, die Natur zu genießen.
                     </p>
-                </div>
-                <div class="max-w-sm rounded-lg shadow-lg bg-white dark:bg-gray-800 p-6">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Veranstaltungen</h3>
+                </article>
+                <article class="max-w-sm rounded-lg shadow-lg bg-white dark:bg-gray-800 p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Kutschertag & Events</h3>
                     <p class="mt-4 text-gray-500 dark:text-gray-400">
                         Unser jährlicher Kutschertag im Herbst ist das Highlight der Saison und zieht jedes Jahr immer mehr Teilnehmer und Zuschauer an.
                     </p>
-                </div>
+                </article>
             </div>
         </div>
-    </div>
-
-
+    </article>
 </section>
 {% endblock %}

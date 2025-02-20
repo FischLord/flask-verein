@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="de" class="h-full">
+<html lang="de" class="h-full" itemscope itemtype="https://schema.org/Organization">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Der Fahrverein Planetal e.V. in Reckahn, Brandenburg - Ein Verein für Kutschfahrten, Reitsport und Pferdefreunde. Gemeinsame Ausfahrten, Turniere und jährlicher Kutschertag.">
+  <meta name="keywords" content="FV Planetal e.V., Planetal, Fahrverein Planetal, Kutschfahrten Brandenburg, Reitsport Reckahn, Kutschertag, Pferdesport Brandenburg, Fahrverein Reckahn, Reckahn">
+  <meta name="author" content="Fahrverein Planetal e.V.">
+
+  <!-- Open Graph Meta-Tags für soziale Medien -->
+  <meta property="og:title" content="{% if title %}{{ title }} - {% endif %}Fahrverein Planetal e.V.">
+  <meta property="og:description" content="Der Fahrverein Planetal e.V. in Reckahn - Ihr Verein für Kutschfahrten, Reitsport und Pferdefreunde.">
+  <meta property="og:image" content="{{ url_for('static', filename='logo.webp') }}">
+  <meta property="og:url" content="https://fahrverein-planetal.de">
+  <meta property="og:type" content="website">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://fahrverein-planetal.de{{ request.path }}">
+
+
   <title>{% if title %}{{ title }} - {% endif %}{{ config['APP_NAME'] }}</title>
-  <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='logo.webp') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" />
 </head>
 <body class="bg-slate-50 flex flex-col min-h-screen m-0 p-0">
