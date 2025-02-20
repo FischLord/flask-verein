@@ -1,150 +1,201 @@
 {% extends 'boilerplate/layout.html' %}
 {% block content %}
-<section class="py-16">
+<section class="py-16" itemscope itemtype="http://schema.org/SportsClub">
   <div class="max-w-screen-xl mx-auto px-4 lg:px-12">
     <!-- Seitenüberschrift -->
     <header class="text-center mb-16">
-      <h1 class="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">
-        Über unseren Verein
+      <h1 class="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4" itemprop="name">
+        Fahrverein Planetal e.V. in Reckahn
       </h1>
-      <p class="text-lg text-gray-600">Erfahren Sie mehr über unsere Geschichte, Aktivitäten und Zukunftspläne.</p>
+      <p class="text-lg text-gray-600" itemprop="description">
+        Tradition und Leidenschaft für Pferde seit 2012 - Kutschfahrten, Reitsport und Gemeinschaft.
+      </p>
     </header>
 
     <!-- Obere Karten-Gruppe -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16 mt-4">
       <!-- Karte: Über uns -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- Farbstreifen oben -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="h-2 bg-blue-500"></div>
         <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Über uns</h2>
-          <p class="text-gray-600 text-base">
-            Wir sind ein lebhafter Verein im Herzen des Hohen Fläming mit ca. 40 Pferdeliebhabern, die ihre Freizeit gerne gemeinsam mit dem Pferd genießen – sei es vor der Kutsche oder im Sattel. Unsere aktive Jugendarbeit und der starke Zusammenhalt zeichnen uns aus.
-          </p>
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Über den Fahrverein</h2>
+          <div itemprop="description">
+            <p class="text-gray-600 text-base">
+              Der Fahrverein Planetal e.V. vereint etwa 25 engagierte Pferdeliebhaber im Herzen des Hohen Fläming. 
+              Unsere Mitglieder teilen die Begeisterung für Kutschfahrten und Reitsport in der malerischen Umgebung von Reckahn. 
+              Besonders stolz sind wir auf unsere aktive Jugendarbeit und den starken Zusammenhalt in der Vereinsgemeinschaft.
+            </p>
+          </div>
         </div>
-      </div>
+      </article>
 
       <!-- Karte: Geschichte & Ursprung -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="h-2 bg-green-500"></div>
         <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Geschichte & Ursprung</h2>
-          <div class="md:flex md:space-x-6">
-            <div class="md:w-1/2 text-gray-600 text-base mb-4 md:mb-0">
-              <p class="mb-4">
-                Unser Verein hat eine bewegte Geschichte – nach einigen Herausforderungen haben engagierte Mitglieder den Verein neu aufgebaut und mit frischer Motivation geformt.
-              </p>
-              <p>
-                Besonders stolz sind wir auf unseren 80x40 Dressurplatz, der mit viel Liebe zum Detail gestaltet wurde.
-              </p>
-            </div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsgeschichte in Reckahn</h2>
+          <div class="text-gray-600 text-base mb-4">
+        <p class="mb-4" itemprop="foundingDate" content="2012">
+          Seit der Gründung im Jahr 2012 hat sich unser Verein kontinuierlich weiterentwickelt. 
+          Dank des Engagements unserer Mitglieder verfügen wir heute über moderne Trainingsanlagen.
+        </p>
+        <p>
+          Unser 80x40 Meter Dressurplatz bietet optimale Bedingungen für Training und Turniere im Fahrsport.
+        </p>
+          </div>
+          <div>
+        <img src="{{ url_for('static', filename='vereinsschriftzug.webp') }}" 
+             alt="Fahrverein Planetal e.V. - Vereinsschriftzug in Reckahn über dem Trainingsplatz" 
+             class="w-full h-auto object-cover rounded"
+             loading="lazy"
+             itemprop="image">
+          </div>
         </div>
-        <div class="md:w-1/2">
-          <img src="{{ url_for('static', filename='vereinsschriftzug.webp') }}" alt="Vereinsschriftzug" class="w-full h-auto object-cover rounded">
-        </div>
-        </div>
-      </div>
+      </article>
 
       <!-- Karte: Aktivitäten & Veranstaltungen -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="h-2 bg-purple-500"></div>
         <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Aktivitäten & Veranstaltungen</h2>
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Fahrsport-Events & Turniere</h2>
           <p class="text-gray-600 text-base">
-            Unser jährlicher Kutschertag sowie diverse Turniere und Trainings füllen unser Vereinsleben mit abwechslungsreichen Events – ideal für Teilnehmer und Zuschauer.
+            Der jährliche Reckahner Kutschertag ist unser Highlight im Veranstaltungskalender. 
+            Zusätzlich bieten wir Trainings für Fahrer und Reiter vieler Leistungsstufen.
+            Weiterhin begleiten wir die Nachbarvereine bei Turnieren und Veranstaltungen in der Region. 
           </p>
         </div>
-      </div>
+      </article>
 
       <!-- Karte: Erfolge im Pferdesport -->
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="h-2 bg-yellow-500"></div>
         <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Erfolge im Pferdesport</h2>
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Sportliche Erfolge</h2>
           <p class="text-gray-600 text-base">
-            Unsere jungen Sportler, wie Helene Matthe und Janneck Lehmann, haben beeindruckende Titel errungen, die als Inspiration für alle Mitglieder dienen.
+            Unsere Nachwuchssportler, darunter Helene Matthe und Janneck Lehmann, erreichen bemerkenswerte Erfolge 
+            im Brandenburger Fahrsport und inspirieren damit unsere gesamte Vereinsjugend.
           </p>
         </div>
-      </div>
+      </article>
     </div>
 
     <!-- Untere Karten-Gruppe -->
-    <!-- Untere Karten-Gruppe -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-    <!-- Karte: Pferdearten & -rassen -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="h-2 bg-red-500"></div>
-      <div class="p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-3">Pferdearten & -rassen</h2>
-        <p class="text-gray-600 text-base">
-          Von Ponys bis zu großen Pferden – bei uns findet jeder Pferdefreund seinen Platz, ganz ohne Zwang.
-        </p>
-      </div>
-    </div>
-  
-    <!-- Karte: Mitglieder & Gemeinschaft -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="h-2 bg-indigo-500"></div>
-      <div class="p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-3">Mitglieder & Gemeinschaft</h2>
-        <p class="text-gray-600 text-base">
-          Unsere Gemeinschaft lebt von der Freude am Miteinander. Neue Mitglieder werden herzlich aufgenommen und schnell integriert.
-        </p>
-      </div>
-    </div>
-  
-    <!-- Karte: Soziales Engagement -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="h-2 bg-teal-500"></div>
-      <div class="p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-3">Soziales Engagement</h2>
-        <p class="text-gray-600 text-base">
-          Wir engagieren uns aktiv in der Dorfgemeinschaft – von Ponyreiten bis hin zu lokalen Festen bereichern wir das Dorfleben.
-        </p>
-      </div>
-    </div>
-  
-    <!-- Karte: Ausbildung & Schulung -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="h-2 bg-orange-500"></div>
-      <div class="p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-3">Ausbildung & Schulung</h2>
-        <p class="text-gray-600 text-base">
-          Durch regelmäßige Trainings und Schulungen bieten wir unseren Mitgliedern vielfältige Möglichkeiten zur Weiterentwicklung.
-        </p>
-      </div>
-    </div>
-  
-    <!-- Neue Karte: Vereinsdaten & Rechtliches -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <!-- Karte: Pferdearten & -rassen -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-red-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Vielfalt im Pferdesport</h2>
+          <p class="text-gray-600 text-base">
+            In unserem Verein sind alle Pferderassen willkommen - vom wendigen Pony bis zum eleganten Großpferd. 
+            Wir fördern die individuelle Entwicklung von Pferd und Fahrer oder Reiter.
+          </p>
+        </div>
+      </article>
+
+      <!-- Karte: Mitglieder & Gemeinschaft -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-indigo-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsgemeinschaft in Reckahn</h2>
+          <p class="text-gray-600 text-base">
+            Unser Verein lebt von der aktiven Gemeinschaft der Pferdefreunde. 
+            Neue Mitglieder sind herzlich willkommen und werden schnell Teil unserer Vereinsfamilie.
+          </p>
+        </div>
+      </article>
+
+      <!-- Karte: Soziales Engagement -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-teal-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Engagement in der Region</h2>
+          <p class="text-gray-600 text-base">
+            Als aktiver Teil der Dorfgemeinschaft Reckahn gestalten wir das lokale Leben mit. 
+            Von Ponyreiten bei Dorffesten bis zu öffentlichen Kutschfahrten - wir sind für alle da.
+          </p>
+        </div>
+      </article>
+
+      <!-- Karte: Ausbildung & Schulung -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-2 bg-orange-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Fahrsport-Ausbildung</h2>
+          <p class="text-gray-600 text-base">
+            Profitieren Sie von unseren Trainingsangeboten im Fahrsport und Reiten. 
+            Regelmäßige Schulungen und Trainings garantieren die stetige Weiterentwicklung unserer Mitglieder.
+          </p>
+        </div>
+      </article>
+
+      <!-- Karte: Vereinsdaten & Rechtliches -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
         <div class="h-2 bg-gray-800"></div>
         <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsdaten & Rechtliches</h2>
-          <p class="text-gray-600 text-base mb-4">
-            Hier finden Sie unsere Geschäftsadresse, FN-/LSB-Nummern, Bankverbindung und Hinweise zu den Mitgliedsbeiträgen.
-          </p>
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsinformationen</h2>
+          <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+            <p class="text-gray-600 text-base mb-4">
+              Offizielle Informationen zum Fahrverein Planetal e.V. - 
+              Mitgliedschaft, Beiträge und Kontaktdaten.
+            </p>
+          </div>
           <div class="text-right">
-            <a href="{{ url_for('main.vereinsdaten') }}" class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition">
+            <a href="{{ url_for('main.vereinsdaten') }}" 
+               class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
+               title="Vereinsdaten und Mitgliedschaft">
               Mehr erfahren
             </a>
           </div>
         </div>
-      </div>
-      
-  
-  
-    <!-- Karte: Zukünftige Pläne (über beide Spalten) -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden md:col-span-2">
-      <div class="h-2 bg-pink-500"></div>
-      <div class="p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-3">Zukünftige Pläne</h2>
-        <p class="text-gray-600 text-base">
-          Wir blicken in die Zukunft: Mehr Schulungen, stärkere Gemeinschaft und der kontinuierliche Ausbau unseres Vereinslebens stehen im Fokus.
-        </p>
-      </div>
+      </article>
+
+      <!-- Karte: Zukünftige Pläne -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden md:col-span-2">
+        <div class="h-2 bg-pink-500"></div>
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsentwicklung 2025</h2>
+          <p class="text-gray-600 text-base">
+            Der Fahrverein Planetal e.V. entwickelt sich stetig weiter: 
+            Ausbau der Trainingsanlagen, Erweiterung der Schulungsangebote und 
+            Stärkung unserer Dorfgemeinschaft in Reckahn sowie in der Region.
+          </p>
+        </div>
+      </article>
     </div>
   </div>
-  
-  </div>
 </section>
+
+{# Strukturierte Daten für Google Search #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportsClub",
+  "name": "Fahrverein Planetal e.V.",
+  "description": "Pferdesportverein in Reckahn mit Schwerpunkt auf Kutschfahrten und Reitsport. Aktive Jugendarbeit und regelmäßige Veranstaltungen im Hohen Fläming.",
+  "foundingDate": "2012",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Reckahn",
+    "addressRegion": "Brandenburg",
+    "addressCountry": "DE"
+  },
+  "member": {
+    "@type": "Organization",
+    "name": "Landessportbund Brandenburg"
+  },
+  "event": {
+    "@type": "SportsEvent",
+    "name": "Reckahner Kutschertag",
+    "description": "Jährliches Fahrsport-Event mit Dressurprüfungen und Hindernisfahren"
+  },
+  "facility": [
+    {
+      "@type": "SportsActivityLocation",
+      "name": "Dressurplatz Reckahn",
+      "description": "80x40 Meter Dressurplatz für Training und Wettkämpfe"
+    }
+  ]
+}
+</script>
 {% endblock %}
