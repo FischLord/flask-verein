@@ -138,3 +138,7 @@ logs/
 
 # SQLite database (should be in .env or generated)
 *.db
+
+# Node.js
+node_modules/
+package-lock.json
