@@ -1,4 +1,10 @@
-from flask import render_template, current_app, __version__, abort, url_for, make_response, send_from_directory, current_app
+from flask import (
+    render_template,
+    current_app,
+    __version__,
+    abort,
+    make_response,
+)
 from app.main import main
 import os
 from markupsafe import Markup
@@ -32,6 +38,23 @@ def index():
         debug_enabled=os.environ.get("FLASK_DEBUG"),
     )
 
+
+def get_allowed_report_folders() -> set[str]:
+    """
+    Gibt eine Menge aller erlaubten Berichtsordner zurück.
+    Automatisch generiert aus dem berichte/-Verzeichnis.
+    """
+    berichte_path = os.path.join(current_app.static_folder, 'berichte')
+    if not os.path.isdir(berichte_path):
+        return set()
+
+    return {
+        name for name in os.listdir(berichte_path)
+        if os.path.isdir(os.path.join(berichte_path, name))
+        and not name.startswith('.')  # Versteckte Ordner ausschließen
+    }
+
+
 @main.app_context_processor
 def inject_reports():
     berichte_path = os.path.join(current_app.static_folder, 'berichte')
@@ -51,8 +74,19 @@ def inject_reports():
     folder_names.sort(reverse=True)
 
     return dict(reports=folder_names)
+
+
 @main.route('/berichte/<folder>')
-def erlebnisberichte(folder):
+def erlebnisberichte(folder: str):
+    # Path-Traversal-Schutz: Nur erlaubte Ordner zulassen
+    allowed_folders = get_allowed_report_folders()
+    if folder not in allowed_folders:
+        abort(404)
+
+    # Zusätzlicher Schutz gegen Path-Traversal-Zeichen
+    if '..' in folder or '/' in folder or '\\' in folder:
+        abort(400)
+
     # Pfad zum gewünschten Ordner im static/berichte/-Verzeichnis
     base_path = os.path.join(current_app.static_folder, 'berichte')
     target_path = os.path.join(base_path, folder)
@@ -66,7 +100,7 @@ def erlebnisberichte(folder):
                if os.path.isdir(os.path.join(target_path, name))]
 
     if subdirs:
-        # Es gibt Unterordner – wir behandeln dies als Mehrfachberichte (z. B. Jahr mit mehreren Events)
+        # Es gibt Unterordner – wir behandeln dies als Mehrfachberichte
         events = []
         for subdir in sorted(subdirs):
             event_path = os.path.join(target_path, subdir)
@@ -90,8 +124,12 @@ def erlebnisberichte(folder):
                 'text': text_content,
             })
 
-        # multi=True signalisiert im Template, dass mehrere Events vorhanden sind
-        return render_template('main/berichte.html', folder_name=folder, events=events, multi=True)
+        return render_template(
+            'main/berichte.html',
+            folder_name=folder,
+            events=events,
+            multi=True
+        )
     else:
         # Kein Unterordner – alter Einzelbericht-Modus
         images = []
@@ -107,8 +145,14 @@ def erlebnisberichte(folder):
             with open(text_file_path, 'r', encoding='utf-8') as f:
                 text_content = f.read()
 
-        # multi=False signalisiert im Template den Einzelbericht-Modus
-        return render_template('main/berichte.html', folder_name=folder, images=images, text=text_content, multi=False)
+        return render_template(
+            'main/berichte.html',
+            folder_name=folder,
+            images=images,
+            text=text_content,
+            multi=False
+        )
+
 
 # Janneck: Benötigt damit Zeilenumbrüche aus Text datei angezeigt werden
 @main.app_template_filter('nl2br')
@@ -116,8 +160,6 @@ def nl2br_filter(s):
     if not s:
         return ""
     return Markup(s.replace('\n', '<br>'))
-
-
 
 
 @main.route("/verein", methods=["GET"])
@@ -134,41 +176,53 @@ def kontakt():
 def impressum():
     return render_template("main/impressum.html")
 
+
 @main.route('/veranstaltungen')
 def veranstaltungen():
     return render_template('main/veranstaltungen.html')
+
 
 @main.route('/vereinsdaten')
 def vereinsdaten():
     return render_template('main/vereinsdaten.html')
 
+
 @main.route('/datenschutz')
 def datenschutz():
     return render_template('main/datenschutz.html')
 
+
 @main.route('/robots.txt')
 def robots():
-    return send_from_directory(current_app.static_folder, 'robots.txt')
+    """Dynamisch generierte robots.txt mit BASE_URL aus Config"""
+    base_url = current_app.config.get('BASE_URL', 'https://fahrverein-planetal.de')
+    content = f"""User-agent: *
+Allow: /
+Sitemap: {base_url}/sitemap.xml"""
+    response = make_response(content)
+    response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    return response
+
 
 def generate_sitemap(app):
     """
     Generiert eine Google-konforme XML Sitemap für alle öffentlichen Routen
     """
-    base_url = "https://fahrverein-planetal.de"
-    
+    base_url = app.config.get('BASE_URL', 'https://fahrverein-planetal.de')
+
     # XML Header mit allen erforderlichen Schemas
     sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
     sitemap_xml += '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
     sitemap_xml += '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n'
     sitemap_xml += '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n'
-    
+
     # Liste der Routen die ausgeschlossen werden sollen
     excluded_routes = {
         'static', 'admin', 'login', 'logout', 'register',
         'robots.txt', 'sitemap.xml'
     }
-    
+
     # Dictionary für Seitenprioritäten und Änderungshäufigkeiten
     page_settings = {
         '/': {'priority': '1.0', 'changefreq': 'daily'},
@@ -180,32 +234,36 @@ def generate_sitemap(app):
         '/impressum': {'priority': '0.3', 'changefreq': 'yearly'},
         '/datenschutz': {'priority': '0.3', 'changefreq': 'yearly'}
     }
-    
+
     # Aktuelles Datum und Zeit im ISO 8601 Format
     current_datetime = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S+00:00')
-    
+
     for rule in app.url_map.iter_rules():
         if "GET" in rule.methods and not rule.arguments:
             endpoint = rule.endpoint.split('.')[-1]
             path = rule.rule
-            
+
             # Überspringe ausgeschlossene Routen
             if any(excl in endpoint for excl in excluded_routes) or \
                any(excl in path for excl in excluded_routes):
                 continue
-                
+
             url = urllib.parse.urljoin(base_url, path)
-            settings = page_settings.get(path, {'priority': '0.5', 'changefreq': 'monthly'})
-            
+            settings = page_settings.get(
+                path,
+                {'priority': '0.5', 'changefreq': 'monthly'}
+            )
+
             sitemap_xml += '  <url>\n'
             sitemap_xml += f'    <loc>{url}</loc>\n'
             sitemap_xml += f'    <lastmod>{current_datetime}</lastmod>\n'
             sitemap_xml += f'    <changefreq>{settings["changefreq"]}</changefreq>\n'
             sitemap_xml += f'    <priority>{settings["priority"]}</priority>\n'
             sitemap_xml += '  </url>\n'
-    
+
     sitemap_xml += '</urlset>'
     return sitemap_xml
+
 
 @main.route('/sitemap.xml')
 def sitemap():

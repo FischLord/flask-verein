@@ -132,3 +132,9 @@ getmiportantthings.sh
 flask_project_overview.txt
 
 /app/static/forms/*
+
+# Application logs
+logs/
+
+# SQLite database (should be in .env or generated)
+*.db
