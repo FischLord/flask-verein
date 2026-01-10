@@ -1,17 +1,11 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, abort
 from flask_login import login_user, logout_user, login_required
-from app.auth.forms import LoginForm, RegistrationForm
+from app.auth.forms import LoginForm
 from app.auth import auth
 from app.models import Users
 from app import db, limiter
 
 from app.modules.util.decorators import redirect_if_already_authenticated
-from app.modules.util.auth import (
-    check_if_user_already_exists,
-    check_password_confirmation,
-    check_password_strength,
-)
-from app.modules.util.forms import collect_form_data
 
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -33,60 +27,13 @@ def login():
 
 
 @auth.route("/register", methods=["GET", "POST"])
-@limiter.limit("3 per minute", error_message="Zu viele Registrierungsversuche. Bitte warten.")
-@redirect_if_already_authenticated
 def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        old_form_data = collect_form_data(
-            form.first_name, form.last_name, form.email
-        )
-
-        # Generische Fehlermeldung um Account-Enumeration zu verhindern
-        if check_if_user_already_exists(form.email.data):
-            flash("Registrierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.", "warning")
-            return render_template(
-                "auth/register.html",
-                title="Registrieren",
-                form=form,
-                old_form_data=old_form_data,
-            )
-
-        if not check_password_confirmation(
-            form.password.data, form.repeat_password.data
-        ):
-            flash("Die Passwörter stimmen nicht überein", "warning")
-            return render_template(
-                "auth/register.html",
-                title="Registrieren",
-                form=form,
-                old_form_data=old_form_data,
-            )
-
-        if not check_password_strength(form.password.data):
-            flash("Das Passwort ist nicht stark genug", "warning")
-            return render_template(
-                "auth/register.html",
-                title="Registrieren",
-                form=form,
-                old_form_data=old_form_data,
-            )
-
-        user = Users(
-            email=form.email.data,
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-        )
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-
-        flash("Konto erfolgreich erstellt", "success")
-        return redirect(url_for("auth.login"))
-
-    return render_template(
-        "auth/register.html", title="Registrieren", form=form, old_form_data=None
-    )
+    """
+    Registrierung ist deaktiviert.
+    Admin-Benutzer werden über CLI erstellt: flask admin create
+    """
+    flash("Die Registrierung ist deaktiviert. Bitte wenden Sie sich an den Administrator.", "info")
+    return redirect(url_for("auth.login"))
 
 
 @auth.route("/logout")
