@@ -1,0 +1,21 @@
+{
+  "name": "fahrverein-planetal",
+  "version": "1.0.0",
+  "description": "Frontend-Build für Fahrverein Planetal e.V. Website",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./app/static/src/input.css -o ./app/static/css/style.css --minify",
+    "watch:css": "npx tailwindcss -i ./app/static/src/input.css -o ./app/static/css/style.css --watch",
+    "build": "npm run build:css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "flowbite": "^2.3.0"
+  },
+  "keywords": [
+    "fahrverein",
+    "flask",
+    "tailwindcss"
+  ],
+  "author": "Fahrverein Planetal e.V.",
+  "license": "MIT"
+}

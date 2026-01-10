@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Eigene Anpassungen für den Fahrverein Planetal */
+
+@layer components {
+  /* Flash Messages */
+  .flash-message {
+    @apply p-4 mb-4 text-sm rounded-lg;
+  }
+
+  .flash-success {
+    @apply text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-300;
+  }
+
+  .flash-warning {
+    @apply text-yellow-800 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300;
+  }
+
+  .flash-error {
+    @apply text-red-800 bg-red-100 dark:bg-red-900 dark:text-red-300;
+  }
+
+  .flash-info {
+    @apply text-blue-800 bg-blue-100 dark:bg-blue-900 dark:text-blue-300;
+  }
+}
+
+@layer utilities {
+  /* Smooth carousel transitions */
+  .carousel-smooth {
+    @apply transition-transform duration-700 ease-in-out;
+  }
+}
