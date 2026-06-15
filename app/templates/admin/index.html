@@ -1,0 +1,22 @@
+{#-
+    Admin - Übersicht / Dashboard
+-#}
+{% extends 'admin/layout.html' %}
+{% block content %}
+  <h1 class="text-3xl font-bold text-gray-900 mb-2">Verwaltung</h1>
+  <p class="text-gray-600 mb-8">
+    Willkommen im Verwaltungsbereich. Hier pflegst du die Inhalte
+    der Vereins-Website.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <a href="{{ url_for('admin.termine_list') }}"
+       class="block p-6 bg-white rounded-lg shadow border border-gray-200 hover:bg-gray-100">
+      <h2 class="text-xl font-semibold text-blue-600 mb-2">Termine</h2>
+      <p class="text-sm text-gray-600">
+        Veranstaltungen anlegen, bearbeiten, veröffentlichen oder
+        löschen.
+      </p>
+    </a>
+  </div>
+{% endblock %}
