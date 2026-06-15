@@ -7,11 +7,15 @@
 {#-
     Macro: avatar
     ------------------------------------------------------------
-    This macro generates an avatar image using the ui-avatars.com
-    API. It takes the first and last name of the user, the
-    background and text color of the avatar, and returns an
-    <img> tag with the avatar image.
+    Dieses Makro erzeugt einen runden Initialen-Badge lokal (kein externer Request).
+    Parameter: first_name, last_name, bg_color (hex ohne #), text_color (hex ohne #),
+               size (Zahl in px, wird für Schriftgröße genutzt), class (zusätzliche CSS-Klassen).
 -#}
 {% macro avatar(first_name, last_name, bg_color, text_color, size, class) %}
-    <img src="https://ui-avatars.com/api/?name={{ first_name[0] }}+{{ last_name[0] }}&background={{ bg_color }}&color={{ text_color }}&rounded=true&format=svg&bold=true&size={{ size }}" alt="{{ first_name }}'s avatar" class="{{ class }}">
+    <span
+      aria-label="{{ first_name }} {{ last_name }}"
+      role="img"
+      style="background-color: #{{ bg_color }}; color: #{{ text_color }}; width: {{ size }}px; height: {{ size }}px; font-size: {{ (size / 2.2) | round | int }}px; line-height: {{ size }}px;"
+      class="inline-flex items-center justify-center rounded-full font-bold select-none {{ class }}"
+    >{{ first_name[0] | upper }}{{ last_name[0] | upper }}</span>
 {% endmacro %}

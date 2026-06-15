@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150" role="img" aria-label="Platzhalter Person">
+  <rect width="150" height="150" fill="#e5e7eb"/>
+  <!-- Kopf -->
+  <circle cx="75" cy="55" r="22" fill="#9ca3af"/>
+  <!-- Körper / Schultern -->
+  <ellipse cx="75" cy="115" rx="35" ry="28" fill="#9ca3af"/>
+</svg>
