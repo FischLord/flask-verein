@@ -36,7 +36,7 @@ def erlebnisberichte(jahr):
     berichte = (
         Bericht.query
         .filter_by(jahr=jahr, veroeffentlicht=True)
-        .order_by(Bericht.reihenfolge.asc(), Bericht.id.asc())
+        .order_by(Bericht.reihenfolge.asc(), Bericht.titel.asc())
         .all()
     )
     if not berichte:
