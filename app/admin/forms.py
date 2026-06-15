@@ -1,12 +1,22 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import (
     StringField,
     DateField,
+    IntegerField,
     TextAreaField,
     BooleanField,
     SubmitField,
 )
-from wtforms.validators import DataRequired, Length, Optional
+from wtforms.validators import (
+    DataRequired,
+    Length,
+    Optional,
+    Email,
+    NumberRange,
+)
+
+from app.modules.util.images import ALLOWED_EXTENSIONS
 
 
 class TerminForm(FlaskForm):
@@ -29,11 +39,51 @@ class TerminForm(FlaskForm):
     submit = SubmitField("Speichern")
 
 
+class VorstandForm(FlaskForm):
+    """Anlegen/Bearbeiten eines Vorstandsmitglieds."""
+
+    name = StringField(
+        "Name", validators=[DataRequired(), Length(min=2, max=120)]
+    )
+    funktion = StringField(
+        "Funktion", validators=[DataRequired(), Length(min=2, max=120)]
+    )
+    reihenfolge = IntegerField(
+        "Reihenfolge",
+        default=0,
+        validators=[Optional(), NumberRange(min=0)],
+    )
+    # Kurzes Zitat – reiner Text (kein HTML), public rendert nl2br.
+    spruch = TextAreaField(
+        "Spruch / Zitat (optional)",
+        validators=[Optional(), Length(max=500)],
+    )
+    telefon = StringField(
+        "Telefon (optional)", validators=[Optional(), Length(max=50)]
+    )
+    email = StringField(
+        "E-Mail (optional)",
+        validators=[Optional(), Email(), Length(max=120)],
+    )
+    foto = FileField(
+        "Foto (optional)",
+        validators=[
+            FileAllowed(
+                sorted(ALLOWED_EXTENSIONS),
+                "Nur Bilddateien: jpg, jpeg, png, webp, gif.",
+            )
+        ],
+    )
+    foto_entfernen = BooleanField("Vorhandenes Foto entfernen")
+    sichtbar = BooleanField("Sichtbar auf der Website", default=True)
+    submit = SubmitField("Speichern")
+
+
 class ActionForm(FlaskForm):
     """
     Feldloses Formular – liefert nur das CSRF-Token für
-    POST-Aktionen ohne Eingabefelder (Löschen, Veröffentlicht
-    umschalten).
+    POST-Aktionen ohne Eingabefelder (Löschen, Veröffentlicht/
+    Sichtbar umschalten).
     """
 
     submit = SubmitField("Bestätigen")

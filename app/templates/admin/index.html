@@ -18,5 +18,14 @@
         löschen.
       </p>
     </a>
+
+    <a href="{{ url_for('admin.vorstand_list') }}"
+       class="block p-6 bg-white rounded-lg shadow border border-gray-200 hover:bg-gray-100">
+      <h2 class="text-xl font-semibold text-blue-600 mb-2">Vorstand</h2>
+      <p class="text-sm text-gray-600">
+        Vorstandsmitglieder mit Foto, Funktion und Reihenfolge
+        pflegen.
+      </p>
+    </a>
   </div>
 {% endblock %}

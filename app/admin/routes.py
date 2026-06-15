@@ -1,11 +1,23 @@
-from flask import render_template, redirect, url_for, flash, abort
+import os
+
+from flask import (
+    render_template, redirect, url_for, flash, abort, current_app,
+)
 from flask_login import login_required
 
 from app import db
 from app.admin import admin
-from app.admin.forms import TerminForm, ActionForm
-from app.models import Termin
+from app.admin.forms import TerminForm, VorstandForm, ActionForm
+from app.models import Termin, Vorstandsmitglied
 from app.modules.util.html import clean_html
+from app.modules.util.images import (
+    save_image, delete_image, ImageValidationError,
+)
+
+# Unterordner unter UPLOAD_FOLDER für Vorstands-Fotos. In der Spalte
+# `foto` wird NUR der Dateiname abgelegt (Konvention mit public:
+# public rendert uploads/vorstand/<foto>).
+VORSTAND_SUBDIR = "vorstand"
 
 
 @admin.route("/")
@@ -129,5 +141,184 @@ def termin_loeschen(termin_id):
         "admin/termine/loeschen.html",
         title="Termin löschen",
         termin=termin,
+        form=form,
+    )
+
+
+# ---------------------------------------------------------------------
+# Vorstand
+# ---------------------------------------------------------------------
+
+def _store_foto(form, mitglied):
+    """
+    Verarbeitet das Foto-Feld eines VorstandForm.
+
+    Lädt ggf. ein neues Foto hoch (ersetzt das alte) oder entfernt das
+    vorhandene Foto auf Wunsch. Speichert in der Spalte ``foto`` nur den
+    Dateinamen.
+
+    :raises ImageValidationError: bei ungültiger Bilddatei
+    """
+    upload_folder = current_app.config["UPLOAD_FOLDER"]
+    datei = form.foto.data
+
+    if datei and getattr(datei, "filename", ""):
+        # Neues Foto -> validieren/speichern, danach altes löschen.
+        gespeichert = save_image(
+            datei, upload_folder, subdir=VORSTAND_SUBDIR
+        )
+        if mitglied.foto:
+            delete_image(
+                os.path.join(VORSTAND_SUBDIR, mitglied.foto), upload_folder
+            )
+        mitglied.foto = os.path.basename(gespeichert)
+    elif form.foto_entfernen.data and mitglied.foto:
+        delete_image(
+            os.path.join(VORSTAND_SUBDIR, mitglied.foto), upload_folder
+        )
+        mitglied.foto = None
+
+
+def _apply_vorstand_fields(form, mitglied):
+    """Überträgt die Textfelder des Formulars auf das Modell."""
+    mitglied.name = form.name.data
+    mitglied.funktion = form.funktion.data
+    mitglied.reihenfolge = (
+        form.reihenfolge.data if form.reihenfolge.data is not None else 0
+    )
+    mitglied.spruch = form.spruch.data or None
+    mitglied.telefon = form.telefon.data or None
+    mitglied.email = form.email.data or None
+    mitglied.sichtbar = form.sichtbar.data
+
+
+@admin.route("/vorstand")
+@login_required
+def vorstand_list():
+    """Liste aller Vorstandsmitglieder, sortiert nach Reihenfolge."""
+    mitglieder = Vorstandsmitglied.query.order_by(
+        Vorstandsmitglied.reihenfolge.asc(), Vorstandsmitglied.name.asc()
+    ).all()
+    return render_template(
+        "admin/vorstand/list.html",
+        title="Vorstand",
+        mitglieder=mitglieder,
+        action_form=ActionForm(),
+    )
+
+
+@admin.route("/vorstand/neu", methods=["GET", "POST"])
+@login_required
+def vorstand_neu():
+    """Neues Vorstandsmitglied anlegen."""
+    form = VorstandForm()
+    if form.validate_on_submit():
+        mitglied = Vorstandsmitglied()
+        _apply_vorstand_fields(form, mitglied)
+        try:
+            _store_foto(form, mitglied)
+        except ImageValidationError as exc:
+            flash(str(exc), "danger")
+            return render_template(
+                "admin/vorstand/form.html",
+                title="Vorstandsmitglied anlegen",
+                form=form,
+                modus="neu",
+            )
+        db.session.add(mitglied)
+        db.session.commit()
+        flash("Vorstandsmitglied wurde angelegt.", "success")
+        return redirect(url_for("admin.vorstand_list"))
+
+    return render_template(
+        "admin/vorstand/form.html",
+        title="Vorstandsmitglied anlegen",
+        form=form,
+        modus="neu",
+    )
+
+
+@admin.route("/vorstand/<int:mitglied_id>/bearbeiten",
+             methods=["GET", "POST"])
+@login_required
+def vorstand_bearbeiten(mitglied_id):
+    """Vorstandsmitglied bearbeiten."""
+    mitglied = db.session.get(Vorstandsmitglied, mitglied_id)
+    if mitglied is None:
+        abort(404)
+
+    form = VorstandForm(obj=mitglied)
+    if form.validate_on_submit():
+        _apply_vorstand_fields(form, mitglied)
+        try:
+            _store_foto(form, mitglied)
+        except ImageValidationError as exc:
+            flash(str(exc), "danger")
+            return render_template(
+                "admin/vorstand/form.html",
+                title="Vorstandsmitglied bearbeiten",
+                form=form,
+                modus="bearbeiten",
+                mitglied=mitglied,
+            )
+        db.session.commit()
+        flash("Vorstandsmitglied wurde gespeichert.", "success")
+        return redirect(url_for("admin.vorstand_list"))
+
+    return render_template(
+        "admin/vorstand/form.html",
+        title="Vorstandsmitglied bearbeiten",
+        form=form,
+        modus="bearbeiten",
+        mitglied=mitglied,
+    )
+
+
+@admin.route("/vorstand/<int:mitglied_id>/sichtbar", methods=["POST"])
+@login_required
+def vorstand_sichtbar(mitglied_id):
+    """Sichtbar-Status umschalten (CSRF-geschützt, nur POST)."""
+    mitglied = db.session.get(Vorstandsmitglied, mitglied_id)
+    if mitglied is None:
+        abort(404)
+
+    form = ActionForm()
+    if not form.validate_on_submit():
+        abort(400)
+
+    mitglied.sichtbar = not mitglied.sichtbar
+    db.session.commit()
+    if mitglied.sichtbar:
+        flash("Mitglied ist jetzt öffentlich sichtbar.", "success")
+    else:
+        flash("Mitglied ist jetzt verborgen.", "success")
+    return redirect(url_for("admin.vorstand_list"))
+
+
+@admin.route("/vorstand/<int:mitglied_id>/loeschen",
+             methods=["GET", "POST"])
+@login_required
+def vorstand_loeschen(mitglied_id):
+    """Vorstandsmitglied löschen (mit Bestätigungsseite + Foto)."""
+    mitglied = db.session.get(Vorstandsmitglied, mitglied_id)
+    if mitglied is None:
+        abort(404)
+
+    form = ActionForm()
+    if form.validate_on_submit():
+        if mitglied.foto:
+            delete_image(
+                os.path.join(VORSTAND_SUBDIR, mitglied.foto),
+                current_app.config["UPLOAD_FOLDER"],
+            )
+        db.session.delete(mitglied)
+        db.session.commit()
+        flash("Vorstandsmitglied wurde gelöscht.", "success")
+        return redirect(url_for("admin.vorstand_list"))
+
+    return render_template(
+        "admin/vorstand/loeschen.html",
+        title="Vorstandsmitglied löschen",
+        mitglied=mitglied,
         form=form,
     )

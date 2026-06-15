@@ -1,0 +1,104 @@
+{#-
+    Admin - Vorstand: Anlegen / Bearbeiten (gemeinsames Formular)
+-#}
+{% extends 'admin/layout.html' %}
+{% block content %}
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">
+      {% if modus == 'bearbeiten' %}Vorstandsmitglied bearbeiten{% else %}Vorstandsmitglied anlegen{% endif %}
+    </h1>
+
+    <form method="POST" enctype="multipart/form-data"
+          class="bg-white p-6 rounded-lg shadow border border-gray-200">
+      {{ form.csrf_token }}
+
+      <div class="mb-4">
+        {{ form.name.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.name(class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.name.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.funktion.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.funktion(placeholder="z. B. 1. Vorsitzende", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.funktion.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.reihenfolge.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.reihenfolge(type="number", min="0", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        <p class="text-xs text-gray-600 mt-1">
+          Kleinere Zahl = weiter oben auf der Website.
+        </p>
+        {% for error in form.reihenfolge.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.spruch.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.spruch(rows="3", placeholder="Kurzes Zitat (optional)", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.spruch.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.telefon.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.telefon(class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.telefon.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.email.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.email(type="email", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.email.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.foto.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {% if modus == 'bearbeiten' and mitglied and mitglied.foto %}
+        <div class="flex items-center gap-3 mb-2">
+          <img src="{{ url_for('static', filename='uploads/vorstand/' ~ mitglied.foto) }}"
+               alt="Aktuelles Foto" class="h-16 w-16 rounded-full object-cover bg-gray-100">
+          <div class="flex items-center gap-2">
+            {{ form.foto_entfernen() }}
+            {{ form.foto_entfernen.label(class="text-sm text-gray-700") }}
+          </div>
+        </div>
+        {% endif %}
+        {{ form.foto(class="block w-full text-sm text-gray-700") }}
+        <p class="text-xs text-gray-600 mt-1">
+          Erlaubt: jpg, jpeg, png, webp, gif. Das Bild wird automatisch
+          verkleinert und als WebP gespeichert.
+        </p>
+        {% for error in form.foto.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="flex items-center gap-2 mb-6">
+        {{ form.sichtbar() }}
+        {{ form.sichtbar.label(class="text-sm font-medium text-gray-700") }}
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <button type="submit"
+                class="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-900">
+          Speichern
+        </button>
+        <a href="{{ url_for('admin.vorstand_list') }}" class="text-gray-600 hover:underline">
+          Abbrechen
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
