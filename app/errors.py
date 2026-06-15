@@ -5,7 +5,7 @@ error = Blueprint("error_bp", __name__)
 
 @error.app_errorhandler(400)
 def bad_request(e):
-    return render_template("errors/401.html", title="Bad Request"), 400
+    return render_template("errors/400.html", title="Bad Request"), 400
 
 
 @error.app_errorhandler(401)
@@ -15,12 +15,12 @@ def unauthorized(e):
 
 @error.app_errorhandler(403)
 def forbidden(e):
-    return render_template("errors/401.html", title="Access Forbidden"), 403
+    return render_template("errors/403.html", title="Access Forbidden"), 403
 
 
 @error.app_errorhandler(405)
 def method_not_allowed(e):
-    return render_template("errors/401.html", title="Method Not Allowed"), 405
+    return render_template("errors/405.html", title="Method Not Allowed"), 405
 
 
 @error.app_errorhandler(404)
