@@ -5,7 +5,7 @@
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Fahrverein Planetal e.V.</span>
     </a>
     <button data-collapse-toggle="navbar-default" type="button"
-      class="inline-flex items-center p-2 text-gray-500 rounded-lg md:hidden dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+      class="inline-flex items-center p-2 text-gray-500 rounded-lg md:hidden dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded">
       <span class="sr-only">Menü öffnen</span>
       <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +24,7 @@
         </li>
         <!-- Erlebnisberichte Dropdown -->
         <li class="relative">
-          <button id="dropdownButton" class="flex items-center gap-1 block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white focus:outline-none">
+          <button id="dropdownButton" class="flex items-center gap-1 block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown">
             Erlebnisberichte
             <svg class="w-5 h-5 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
@@ -101,47 +101,4 @@
   </div>
 </nav>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const dropdownButton = document.getElementById('dropdownButton');
-  const dropdown = document.getElementById('dropdown');
-  let isOpen = false;
-
-  dropdownButton.addEventListener('click', function (e) {
-    e.preventDefault();
-    isOpen = !isOpen;
-    if (isOpen) {
-      dropdown.classList.remove('hidden');
-      // Erzwingt ein Reflow, damit die Transition korrekt startet
-      void dropdown.offsetWidth;
-      dropdown.classList.remove('opacity-0', 'scale-95');
-      dropdown.classList.add('opacity-100', 'scale-100');
-      // Icon rotieren lassen
-      dropdownButton.querySelector('svg').classList.add('rotate-180');
-    } else {
-      dropdown.classList.remove('opacity-100', 'scale-100');
-      dropdown.classList.add('opacity-0', 'scale-95');
-      // Icon zurückdrehen
-      dropdownButton.querySelector('svg').classList.remove('rotate-180');
-      setTimeout(() => {
-        dropdown.classList.add('hidden');
-      }, 300); // Dauer entspricht der Transition
-    }
-  });
-
-  // Schließt das Dropdown, wenn außerhalb geklickt wird
-  document.addEventListener('click', function (e) {
-    if (!dropdown.contains(e.target) && !dropdownButton.contains(e.target)) {
-      if (isOpen) {
-        dropdown.classList.remove('opacity-100', 'scale-100');
-        dropdown.classList.add('opacity-0', 'scale-95');
-        dropdownButton.querySelector('svg').classList.remove('rotate-180');
-        setTimeout(() => {
-          dropdown.classList.add('hidden');
-          isOpen = false;
-        }, 300);
-      }
-    }
-  });
-});
-</script>
+<script src="{{ url_for('static', filename='js/nav.js') }}" defer></script>
