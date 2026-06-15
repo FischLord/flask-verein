@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timezone
 from app import db, login
 
 
@@ -10,8 +10,10 @@ class Users(UserMixin, db.Model):
     email: str = db.Column(db.String(120), unique=True)
     first_name: str = db.Column(db.String(15))
     last_name: str = db.Column(db.String(15))
-    password_hash: str = db.Column(db.String(128))
-    created_at: datetime = db.Column(db.DateTime(), default=datetime.utcnow())
+    password_hash: str = db.Column(db.String(256))
+    created_at: datetime = db.Column(
+        db.DateTime(), default=lambda: datetime.now(timezone.utc)
+    )
 
     def __repr__(self):
         return f"<Users {self.id}>"
