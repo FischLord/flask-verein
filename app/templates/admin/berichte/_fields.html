@@ -1,0 +1,57 @@
+{#-
+    Admin - Berichte: gemeinsame Formularfelder (neu + bearbeiten).
+    Wird innerhalb eines <form>-Tags inkludiert; erwartet `form`.
+-#}
+{{ form.csrf_token }}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="mb-4">
+    {{ form.jahr.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+    {{ form.jahr(type="number", min="1900", max="2100", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+    {% for error in form.jahr.errors %}
+    <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+    {% endfor %}
+  </div>
+  <div class="mb-4">
+    {{ form.reihenfolge.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+    {{ form.reihenfolge(type="number", min="0", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+    {% for error in form.reihenfolge.errors %}
+    <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="mb-4">
+  {{ form.titel.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+  {{ form.titel(class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+  {% for error in form.titel.errors %}
+  <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+  {% endfor %}
+</div>
+
+<div class="mb-4">
+  {{ form.text.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+  {{ form.text(rows="8", class="js-wysiwyg w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+  <p class="text-xs text-gray-600 mt-1">
+    Formatierung über die Leiste oben. Eingaben werden beim Speichern
+    automatisch bereinigt.
+  </p>
+  {% for error in form.text.errors %}
+  <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+  {% endfor %}
+</div>
+
+<div class="flex items-center gap-2 mb-6">
+  {{ form.veroeffentlicht() }}
+  {{ form.veroeffentlicht.label(class="text-sm font-medium text-gray-700") }}
+</div>
+
+<div class="flex flex-wrap items-center gap-4">
+  <button type="submit"
+          class="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-900">
+    Speichern
+  </button>
+  <a href="{{ url_for('admin.berichte_list') }}" class="text-gray-600 hover:underline">
+    Abbrechen
+  </a>
+</div>
