@@ -1,36 +1,15 @@
-from flask import render_template, current_app, __version__, abort, url_for, make_response, send_from_directory, current_app
+from flask import render_template, current_app, abort, make_response, send_from_directory
 from app.main import main
 import os
 from markupsafe import Markup
-from platform import python_version
-from pip import __version__ as pip_version
-from flask_login import __version__ as flask_login_version
-from flask_sqlalchemy import __version__ as flask_sqlalchemy_version
-from sqlalchemy import __version__ as sqlalchemy_version
-from jinja2 import __version__ as jinja2_version
-from dotenv import version as dotenv_version
-from flask_wtf import __version__ as flask_wtf_version
-from wtforms import __version__ as wtforms_version
 import urllib.parse
 from datetime import datetime
+from werkzeug.utils import safe_join
 
 
 @main.route("/", methods=["GET"])
 def index():
-    return render_template(
-        "index.html",
-        flask_version=__version__,
-        python_version=python_version(),
-        pip_version=pip_version,
-        jinja2_version=jinja2_version,
-        flask_login_version=flask_login_version,
-        flask_sqlalchemy_version=flask_sqlalchemy_version,
-        sqlalchemy_version=sqlalchemy_version,
-        flask_wtf_version=flask_wtf_version,
-        wtforms_version=wtforms_version,
-        dotenv_version=dotenv_version.__version__,
-        debug_enabled=os.environ.get("FLASK_DEBUG"),
-    )
+    return render_template("index.html")
 
 @main.app_context_processor
 def inject_reports():
@@ -55,10 +34,9 @@ def inject_reports():
 def erlebnisberichte(folder):
     # Pfad zum gewünschten Ordner im static/berichte/-Verzeichnis
     base_path = os.path.join(current_app.static_folder, 'berichte')
-    target_path = os.path.join(base_path, folder)
+    target_path = safe_join(base_path, folder)
 
-    # Prüfen, ob der Ordner existiert
-    if not os.path.isdir(target_path):
+    if target_path is None or not os.path.isdir(target_path):
         abort(404)
 
     # Prüfen, ob der Ordner Unterordner enthält
