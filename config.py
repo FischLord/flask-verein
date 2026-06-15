@@ -21,3 +21,11 @@ class Config(object):
     APP_NAME = os.environ.get("APP_NAME") or "Fv Planetal e.V."
     MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE") or False
     REGISTRATION_ENABLED = os.environ.get("REGISTRATION_ENABLED") or False
+
+    # Datei-Uploads (CMS). UPLOAD_FOLDER wird in der App-Factory auf einen
+    # absoluten Pfad (app/static/uploads) gesetzt, wenn hier nicht via
+    # Umgebungsvariable überschrieben.
+    UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER")
+    MAX_CONTENT_LENGTH = int(
+        os.environ.get("MAX_CONTENT_LENGTH") or 8 * 1024 * 1024
+    )

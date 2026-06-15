@@ -133,6 +133,9 @@ flask_project_overview.txt
 
 /app/static/forms/*
 
+# CMS-Datei-Uploads (Vorstand-Fotos, Bericht-Bilder) – nicht committen
+app/static/uploads/
+
 # Anwendungs-Datenbank – niemals committen (enthält Nutzerdaten)
 app.db
 *.db
