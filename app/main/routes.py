@@ -1,6 +1,6 @@
 from flask import render_template, current_app, abort, make_response, send_from_directory
 from app.main import main
-from app.models import Termin
+from app.models import Termin, Vorstandsmitglied
 import os
 from markupsafe import Markup
 import urllib.parse
@@ -106,7 +106,13 @@ def verein():
 
 @main.route("/kontakt", methods=["GET"])
 def kontakt():
-    return render_template("main/kontakt.html")
+    vorstand = (
+        Vorstandsmitglied.query
+        .filter_by(sichtbar=True)
+        .order_by(Vorstandsmitglied.reihenfolge.asc())
+        .all()
+    )
+    return render_template("main/kontakt.html", vorstand=vorstand)
 
 
 @main.route("/impressum", methods=["GET"])
