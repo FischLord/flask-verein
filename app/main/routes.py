@@ -1,5 +1,6 @@
 from flask import render_template, current_app, abort, make_response, send_from_directory
 from app.main import main
+from app.models import Termin
 import os
 from markupsafe import Markup
 import urllib.parse
@@ -112,9 +113,16 @@ def kontakt():
 def impressum():
     return render_template("main/impressum.html")
 
+
 @main.route('/veranstaltungen')
 def veranstaltungen():
-    return render_template('main/veranstaltungen.html')
+    termine = (
+        Termin.query
+        .filter_by(veroeffentlicht=True)
+        .order_by(Termin.datum.asc())
+        .all()
+    )
+    return render_template('main/veranstaltungen.html', termine=termine)
 
 @main.route('/vereinsdaten')
 def vereinsdaten():

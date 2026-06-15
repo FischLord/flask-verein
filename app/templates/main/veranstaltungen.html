@@ -5,7 +5,7 @@
     <!-- Seitenüberschrift mit strukturierten Daten -->
     <header class="text-center mb-16">
       <h1 class="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">
-        Veranstaltungen & Termine 2025
+        Veranstaltungen &amp; Termine
       </h1>
       <p class="text-lg text-gray-600">
         Entdecken Sie unsere Veranstaltungen, Trainingstage und Fahrsport-Aktivitäten in Reckahn, Brandenburg.
@@ -19,9 +19,52 @@
       </p>
     </div>
 
+    <!-- Termine aus der Datenbank -->
+    <article class="mb-16 mt-4">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Unsere Termine</h2>
+
+      {% if termine %}
+      <div class="space-y-6">
+        {% for termin in termine %}
+        <div class="p-6 bg-white rounded-lg shadow border border-gray-200{% if termin.abgelaufen %} opacity-75{% endif %}"
+             itemscope itemtype="http://schema.org/Event">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <h3 class="text-2xl font-semibold text-gray-700" itemprop="name">{{ termin.titel }}</h3>
+            {% if termin.abgelaufen %}
+            <span class="inline-block px-3 py-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-full">Abgelaufen</span>
+            {% endif %}
+          </div>
+
+          {# Strukturierte Daten (schema.org/Event) für Suchmaschinen #}
+          <meta itemprop="startDate" content="{{ termin.datum.isoformat() }}">
+          {% if termin.ort %}<meta itemprop="location" content="{{ termin.ort }}">{% endif %}
+
+          <ul class="text-gray-600 mb-4 space-y-1">
+            <li><strong>Datum:</strong> {{ termin.datum.strftime('%d.%m.%Y') }}</li>
+            {% if termin.uhrzeit %}<li><strong>Uhrzeit:</strong> {{ termin.uhrzeit }}</li>{% endif %}
+            {% if termin.ort %}<li><strong>Ort:</strong> {{ termin.ort }}</li>{% endif %}
+          </ul>
+
+          {% if termin.beschreibung %}
+          {# beschreibung ist bereits serverseitig (bleach) bereinigtes HTML #}
+          <div class="prose max-w-none text-gray-700" itemprop="description">{{ termin.beschreibung | safe }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="p-6 bg-white rounded-lg shadow border border-gray-200 text-center">
+        <p class="text-lg text-gray-600">
+          Aktuell sind keine Termine eingetragen. Schauen Sie bald wieder vorbei –
+          neue Veranstaltungen werden hier veröffentlicht.
+        </p>
+      </div>
+      {% endif %}
+    </article>
+
     <!-- Zukunftspläne mit semantischer Struktur -->
     <article class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Entwicklungsprojekte 2025 - Fahrverein Planetal</h2>
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Entwicklungsprojekte - Fahrverein Planetal</h2>
       <div class="space-y-6">
         <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
           <h3 class="text-2xl font-semibold text-gray-700 mb-2">Neues Dachdeckerhindernis für Fahrsport-Training</h3>
@@ -32,7 +75,7 @@
         <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
           <h3 class="text-2xl font-semibold text-gray-700 mb-2">Erweiterter Reitplatz für optimales Training</h3>
           <p class="text-gray-600">
-            Unser neuer 40×20m Reitplatz wird Trainingsmöglichkeiten für Reiter und Fahrer bieten. 
+            Unser neuer 40×20m Reitplatz wird Trainingsmöglichkeiten für Reiter und Fahrer bieten.
             Die großzügige Anlage ermöglicht einen Taum für Trainingseinheiten und Veranstaltungen in Reckahn.
           </p>
         </div>
@@ -41,31 +84,28 @@
 
     <!-- Vereins-Logo mit optimiertem Alt-Text -->
     <div class="mb-16 mt-4">
-      <img src="{{ url_for('static', filename='vereinsschriftzug.webp') }}" 
-           alt="Fahrverein Planetal e.V. - Vereinsschriftzug in Reckahn über dem Trainingsplatz" 
+      <img src="{{ url_for('static', filename='vereinsschriftzug.webp') }}"
+           alt="Fahrverein Planetal e.V. - Vereinsschriftzug in Reckahn über dem Trainingsplatz"
            class="w-full h-auto object-contain rounded-lg shadow-md"
            loading="lazy">
     </div>
 
-    <!-- Hauptveranstaltung mit strukturierten Daten -->
-    <article class="mb-16 mt-4" itemscope itemtype="http://schema.org/Event">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4" itemprop="name">11. Reckahner Kutschertag 2025</h2>
+    <!-- Anmeldung & Formulare zum Kutschertag (statische Downloads) -->
+    <article class="mb-16 mt-4">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Anmeldung &amp; Formulare zum Kutschertag</h2>
       <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-        <meta itemprop="startDate" content="2025-09-16T10:00">
-        <meta itemprop="location" content="Reit-/Fahrplatz, Göttiner Landstr., Kloster Lehnin OT Reckahn, Brandenburg">
-        <p class="text-lg text-gray-700 mb-4" itemprop="description">
-          Seien Sie dabei beim 11. Reckahner Kutschertag am xx. September 2025 ab 10:00 Uhr. 
-          Erleben Sie Dressuren (FA2), eine abwechslungsreiche Aktionsralley und 
-          spannungsreiches Hindernisfahren. Treffpunkt: Reit-/Fahrplatz in Kloster Lehnin OT Reckahn, Göttiner Landstr.
+        <p class="text-lg text-gray-700 mb-4">
+          Liebe Pferdesportfreunde und Vereinsmitglieder, hier finden Sie die offiziellen
+          Aufgaben- und Nennungsformulare für unseren Kutschertag zum Herunterladen.
         </p>
-        
+
         <!-- Anmeldeformulare mit verbesserten Beschreibungen -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
             <h3 class="text-xl font-semibold text-gray-800 mb-2">Dressurprüfung FA-2</h3>
             <p class="text-sm text-gray-600 mb-2">Offizielle Fahraufgabe</p>
-            <a href="{{ url_for('static', filename='forms/FA-2 Fahraufgabe.pdf') }}" 
-               download 
+            <a href="{{ url_for('static', filename='forms/FA-2 Fahraufgabe.pdf') }}"
+               download
                class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                title="FA-2 Fahraufgabe herunterladen">
               Aufgabe herunterladen
@@ -73,9 +113,9 @@
           </div>
           <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
             <h3 class="text-xl font-semibold text-gray-800 mb-2">Anmeldung Kutschenfahrer</h3>
-            <p class="text-sm text-gray-600 mb-2">Nennungsformular 2025</p>
-            <a href="{{ url_for('static', filename='forms/Nennungsformular Fahrer 2023.pdf') }}" 
-               download 
+            <p class="text-sm text-gray-600 mb-2">Nennungsformular</p>
+            <a href="{{ url_for('static', filename='forms/Nennungsformular Fahrer 2023.pdf') }}"
+               download
                class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                title="Nennungsformular für Fahrer herunterladen">
               Formular herunterladen
@@ -83,28 +123,16 @@
           </div>
           <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
             <h3 class="text-xl font-semibold text-gray-800 mb-2">Anmeldung Reiter</h3>
-            <p class="text-sm text-gray-600 mb-2">Nennungsformular 2025</p>
-            <a href="{{ url_for('static', filename='forms/Nennungsformular Reiter 2023.pdf') }}" 
-               download 
+            <p class="text-sm text-gray-600 mb-2">Nennungsformular</p>
+            <a href="{{ url_for('static', filename='forms/Nennungsformular Reiter 2023.pdf') }}"
+               download
                class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                title="Nennungsformular für Reiter herunterladen">
               Formular herunterladen
             </a>
           </div>
         </div>
-      </div>
-    </article>
 
-    <!-- Anmeldeinfos mit strukturierten Kontaktdaten -->
-    <article class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Anmeldung zum Kutschertag 2025</h2>
-      <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-        <p class="text-lg text-gray-700 mb-4">
-          Liebe Pferdesportfreunde und Vereinsmitglieder,
-        </p>
-        <p class="text-lg text-gray-700 mb-4">
-          Die Anmeldung für den 11. Reckahner Kutschertag 2025 ist ab August möglich. Sichern Sie sich Ihren Startplatz für unser diesjährigen Kutschertag in Reckahn.
-        </p>
         <div itemscope itemtype="http://schema.org/Organization">
           <h3 class="text-xl font-bold mb-4">Anmeldewege:</h3>
           <ul class="list-disc list-inside text-gray-700 mb-4">
@@ -121,34 +149,4 @@
 
   </div>
 </section>
-
-{# Strukturierte Daten für Google Search #}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SportsEvent",
-  "name": "10. Reckahner Kutschertag 2025",
-  "startDate": "2025-09-16T10:00",
-  "location": {
-    "@type": "Place",
-    "name": "Reit-/Fahrplatz Reckahn",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Göttiner Landstr.",
-      "addressLocality": "Kloster Lehnin OT Reckahn",
-      "addressRegion": "Brandenburg",
-      "addressCountry": "DE"
-    }
-  },
-  "organizer": {
-    "@type": "Organization",
-    "name": "Fahrverein Planetal e.V.",
-    "email": "fvplanetal@web.de"
-  },
-  "description": "Traditioneller Kutschertag mit Dressurprüfung FA2, Aktionsralley und Hindernisfahren. Ein Highlight im Brandenburger Fahrsport.",
-  "eventStatus": "EventScheduled",
-  "eventAttendanceMode": "OfflineEventAttendanceMode",
-  "sport": "Fahrsport"
-}
-</script>
 {% endblock %}
