@@ -2,7 +2,7 @@ from flask import render_template, current_app, abort, make_response, send_from_
 from app.main import main
 from app.models import Termin, Vorstandsmitglied
 import os
-from markupsafe import Markup
+from markupsafe import Markup, escape
 import urllib.parse
 from datetime import datetime
 from werkzeug.utils import safe_join
@@ -94,7 +94,10 @@ def erlebnisberichte(folder):
 def nl2br_filter(s):
     if not s:
         return ""
-    return Markup(s.replace('\n', '<br>'))
+    # Erst HTML escapen (neutralisiert rohes HTML/<script>), dann auf dem
+    # escapten Klartext Zeilenumbrueche in echte <br> umwandeln.
+    escaped = str(escape(s))
+    return Markup(escaped.replace('\n', '<br>\n'))
 
 
 
