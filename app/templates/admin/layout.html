@@ -1,0 +1,56 @@
+{#-
+    Admin/Verwaltung - Layout
+    ------------------------------------------------------------
+    Schlankes, eigenständiges Layout für den geschützten
+    Verwaltungsbereich. Nutzt dieselbe kompilierte Flowbite/
+    Tailwind-CSS wie die öffentliche Seite. Bewusst ohne
+    öffentliche Navigation/Footer – klar und laienfreundlich.
+-#}
+<!DOCTYPE html>
+<html lang="de" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% if title %}{{ title }} – {% endif %}Verwaltung · {{ config['APP_NAME'] }}</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='logo.webp') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/flowbite/flowbite.min.css') }}" />
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+  <header>
+    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 shadow mb-8">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto gap-4">
+        <a href="{{ url_for('admin.index') }}" class="flex items-center">
+          <img src="{{ url_for('static', filename='logo.webp') }}" class="h-8 mr-3" alt="Vereinslogo" />
+          <span class="self-center text-xl font-semibold whitespace-nowrap text-gray-900">Verwaltung</span>
+        </a>
+        <ul class="flex flex-wrap items-center gap-4 text-base font-medium">
+          <li>
+            <a href="{{ url_for('admin.index') }}" class="text-gray-700 hover:underline">Übersicht</a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin.termine_list') }}" class="text-gray-700 hover:underline">Termine</a>
+          </li>
+          <li>
+            <a href="{{ url_for('main.index') }}" class="text-gray-700 hover:underline">Zur Website</a>
+          </li>
+          <li>
+            <a href="{{ url_for('auth.logout') }}" class="inline-block px-4 py-2 text-white bg-gray-800 rounded-lg hover:bg-gray-900">Abmelden</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="max-w-screen-xl mx-auto px-4 mb-10">
+      {% include 'boilerplate/flash_message.html' %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='vendor/flowbite/flowbite.min.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

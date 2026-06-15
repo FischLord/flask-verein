@@ -1,0 +1,84 @@
+{#-
+    Admin - Termine: Anlegen / Bearbeiten (gemeinsames Formular)
+-#}
+{% extends 'admin/layout.html' %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/quill/quill.snow.css') }}" />
+{% endblock %}
+
+{% block content %}
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">
+      {% if modus == 'bearbeiten' %}Termin bearbeiten{% else %}Termin anlegen{% endif %}
+    </h1>
+
+    <form method="POST" class="bg-white p-6 rounded-lg shadow border border-gray-200">
+      {{ form.csrf_token }}
+
+      <div class="mb-4">
+        {{ form.titel.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.titel(class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.titel.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.datum.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.datum(type="date", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.datum.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.uhrzeit.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.uhrzeit(placeholder="z. B. 10:00 Uhr", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.uhrzeit.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.ort.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.ort(placeholder="z. B. Reit-/Fahrplatz Reckahn", class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        {% for error in form.ort.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.beschreibung.label(class="block text-sm font-medium text-gray-700 mb-2") }}
+        {{ form.beschreibung(rows="8", class="js-wysiwyg w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+        <p class="text-xs text-gray-600 mt-1">
+          Formatierung über die Leiste oben (Fett, Listen, Links …).
+          Eingaben werden beim Speichern automatisch bereinigt.
+        </p>
+        {% for error in form.beschreibung.errors %}
+        <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="flex items-center gap-2 mb-6">
+        {{ form.veroeffentlicht() }}
+        {{ form.veroeffentlicht.label(class="text-sm font-medium text-gray-700") }}
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <button type="submit"
+                class="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-900">
+          Speichern
+        </button>
+        <a href="{{ url_for('admin.termine_list') }}" class="text-gray-600 hover:underline">
+          Abbrechen
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='vendor/quill/quill.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/quill/editor.js') }}"></script>
+{% endblock %}
