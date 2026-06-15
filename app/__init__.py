@@ -1,15 +1,29 @@
+import os
 from datetime import datetime
 
 from flask import Flask, abort
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_migrate import Migrate
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from sqlalchemy import MetaData
 
 from .modules.util.config import eval_bool_env_var
 
-db = SQLAlchemy()
+# Benannte Constraints – nötig für sichere SQLite-Migrationen
+# (Flask-Migrate/Alembic mit render_as_batch=True).
+naming_convention = {
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s",
+}
+
+db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
+migrate = Migrate()
 login = LoginManager()
 # Hinweis: Für Mehr-Worker-Produktion sollte ein storage_uri
 # (z. B. Redis) konfiguriert werden.
@@ -25,7 +39,18 @@ def create_app(config_class=Config):
             "SECRET_KEY fehlt – in .env setzen (fester, zufälliger Wert)."
         )
 
+    # Upload-Verzeichnis: absoluter Pfad (app/static/uploads), sofern nicht
+    # per UPLOAD_FOLDER-Umgebungsvariable überschrieben. In .gitignore.
+    if not app.config.get("UPLOAD_FOLDER"):
+        app.config["UPLOAD_FOLDER"] = os.path.join(
+            app.root_path, "static", "uploads"
+        )
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
     db.init_app(app)
+    # render_as_batch=True: SQLite kennt kein vollwertiges ALTER TABLE,
+    # Alembic erzeugt dann Batch-Operationen.
+    migrate.init_app(app, db, render_as_batch=True)
     login.init_app(app)
     login.login_view = "auth.login"
     limiter.init_app(app)
@@ -40,6 +65,10 @@ def create_app(config_class=Config):
     from app.auth import auth as auth
 
     app.register_blueprint(auth)
+
+    from app.admin import admin as admin
+
+    app.register_blueprint(admin, url_prefix="/admin")
 
     from app import errors
 
