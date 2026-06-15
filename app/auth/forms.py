@@ -5,18 +5,20 @@ from wtforms.validators import DataRequired, Email, Length
 
 class RegistrationForm(FlaskForm):
     first_name = StringField(
-        "First Name", validators=[DataRequired(), Length(min=2, max=30)]
+        "Vorname", validators=[DataRequired(), Length(min=2, max=30)]
     )
     last_name = StringField(
-        "Last Name", validators=[DataRequired(), Length(min=2, max=30)]
+        "Nachname", validators=[DataRequired(), Length(min=2, max=30)]
     )
-    email = EmailField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    repeat_password = PasswordField("Password", validators=[DataRequired()])
-    submit = SubmitField("Register")
+    email = EmailField("E-Mail", validators=[DataRequired(), Email()])
+    password = PasswordField("Passwort", validators=[DataRequired()])
+    repeat_password = PasswordField(
+        "Passwort wiederholen", validators=[DataRequired()]
+    )
+    submit = SubmitField("Registrieren")
 
 
 class LoginForm(FlaskForm):
-    email = EmailField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    submit = SubmitField("Login")
+    email = EmailField("E-Mail", validators=[DataRequired(), Email()])
+    password = PasswordField("Passwort", validators=[DataRequired()])
+    submit = SubmitField("Anmelden")
