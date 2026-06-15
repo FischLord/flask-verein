@@ -8,14 +8,15 @@
         <div class="grid gap-8 lg:grid-cols-2 mb-8">
             {% for mitglied in vorstand %}
             <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-                <img src="{% if mitglied.foto %}{{ url_for('static', filename='uploads/' ~ mitglied.foto) }}{% else %}{{ url_for('static', filename='img/placeholder-person.svg') }}{% endif %}"
+                <img src="{% if mitglied.foto %}{{ url_for('static', filename='uploads/vorstand/' ~ mitglied.foto) }}{% else %}{{ url_for('static', filename='img/placeholder-person.svg') }}{% endif %}"
                      alt="{{ mitglied.funktion }}"
                      class="w-32 h-32 rounded-full object-cover mb-4"
                      loading="lazy">
                 <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">{{ mitglied.name }}</h2>
                 <p class="text-lg text-gray-500 dark:text-gray-400 font-bold">{{ mitglied.funktion }}</p>
                 {% if mitglied.spruch %}
-                <p class="text-lg text-gray-500 dark:text-gray-400 italic">„{{ mitglied.spruch }}"</p>
+                {# Klartext: auto-escaped; Zeilenumbrueche per CSS (kein |safe). #}
+                <p class="text-lg text-gray-500 dark:text-gray-400 italic whitespace-pre-line">„{{ mitglied.spruch }}"</p>
                 {% endif %}
                 {% if mitglied.telefon %}
                 <p class="text-gray-500 dark:text-gray-400 mt-4">T. {{ mitglied.telefon }}</p>
