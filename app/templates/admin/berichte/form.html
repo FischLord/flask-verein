@@ -1,0 +1,26 @@
+{#-
+    Admin - Berichte: Anlegen (Felder; Bilder folgen beim Bearbeiten)
+-#}
+{% extends 'admin/layout.html' %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/quill/quill.snow.css') }}" />
+{% endblock %}
+
+{% block content %}
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Bericht anlegen</h1>
+    <form method="POST" class="bg-white p-6 rounded-lg shadow border border-gray-200">
+      {% include 'admin/berichte/_fields.html' %}
+    </form>
+    <p class="text-sm text-gray-600 mt-3">
+      Nach dem Anlegen kannst du auf der Bearbeiten-Seite Bilder
+      hinzufügen.
+    </p>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='vendor/quill/quill.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/quill/editor.js') }}"></script>
+{% endblock %}

@@ -6,6 +6,7 @@ from wtforms import (
     IntegerField,
     TextAreaField,
     BooleanField,
+    MultipleFileField,
     SubmitField,
 )
 from wtforms.validators import (
@@ -76,6 +77,49 @@ class VorstandForm(FlaskForm):
     )
     foto_entfernen = BooleanField("Vorhandenes Foto entfernen")
     sichtbar = BooleanField("Sichtbar auf der Website", default=True)
+    submit = SubmitField("Speichern")
+
+
+class BerichtForm(FlaskForm):
+    """Anlegen/Bearbeiten eines Erlebnisberichts (ohne Bilder)."""
+
+    jahr = IntegerField(
+        "Jahr",
+        validators=[DataRequired(), NumberRange(min=1900, max=2100)],
+    )
+    titel = StringField(
+        "Titel", validators=[DataRequired(), Length(min=2, max=200)]
+    )
+    # HTML aus dem WYSIWYG-Editor; serverseitig mit clean_html bereinigt.
+    text = TextAreaField("Text", validators=[Optional()])
+    reihenfolge = IntegerField(
+        "Reihenfolge",
+        default=0,
+        validators=[Optional(), NumberRange(min=0)],
+    )
+    veroeffentlicht = BooleanField("Sofort veröffentlichen", default=True)
+    submit = SubmitField("Speichern")
+
+
+class BildUploadForm(FlaskForm):
+    """Mehrere Bilder zu einem Bericht hochladen."""
+
+    bilder = MultipleFileField("Bilder hinzufügen")
+    submit = SubmitField("Hochladen")
+
+
+class BildForm(FlaskForm):
+    """Bearbeiten eines einzelnen Bericht-Bilds (Alt-Text/Reihenfolge)."""
+
+    alt_text = StringField(
+        "Bildbeschreibung (Alt-Text)",
+        validators=[Optional(), Length(max=255)],
+    )
+    reihenfolge = IntegerField(
+        "Reihenfolge",
+        default=0,
+        validators=[Optional(), NumberRange(min=0)],
+    )
     submit = SubmitField("Speichern")
 
 
