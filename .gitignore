@@ -132,3 +132,9 @@ getmiportantthings.sh
 flask_project_overview.txt
 
 /app/static/forms/*
+
+# Anwendungs-Datenbank – niemals committen (enthält Nutzerdaten)
+app.db
+*.db
+*.sqlite
+*.sqlite3
