@@ -1,93 +1,49 @@
 from flask import render_template, current_app, abort, make_response, send_from_directory
 from app.main import main
-from app.models import Termin, Vorstandsmitglied
-import os
+from app import db
+from app.models import Termin, Vorstandsmitglied, Bericht
 from markupsafe import Markup, escape
 import urllib.parse
 from datetime import datetime
-from werkzeug.utils import safe_join
+from sqlalchemy.exc import SQLAlchemyError
 
 
 @main.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
 
+
 @main.app_context_processor
 def inject_reports():
-    berichte_path = os.path.join(current_app.static_folder, 'berichte')
-    # Falls `app/static/berichte` nicht existiert, beenden wir früh
-    if not os.path.isdir(berichte_path):
+    """Jahre veroeffentlichter Berichte (absteigend) fuers Nav-Dropdown."""
+    try:
+        rows = (
+            db.session.query(Bericht.jahr)
+            .filter_by(veroeffentlicht=True)
+            .distinct()
+            .order_by(Bericht.jahr.desc())
+            .all()
+        )
+    except SQLAlchemyError:
+        # Context-Processor laeuft auf jeder Seite -> defensiv leer bleiben.
         return dict(reports=[])
+    return dict(reports=[row[0] for row in rows])
 
-    # Alle Ordner in `berichte/` einlesen
-    folder_names = []
-    for name in os.listdir(berichte_path):
-        folder_path = os.path.join(berichte_path, name)
-        # Nur wenn es ein Ordner ist, wird er aufgenommen
-        if os.path.isdir(folder_path):
-            folder_names.append(name)
 
-    # Sortierung (optional, z.B. alphabetisch, oder Jahr absteigend)
-    folder_names.sort(reverse=True)
-
-    return dict(reports=folder_names)
-@main.route('/berichte/<folder>')
-def erlebnisberichte(folder):
-    # Pfad zum gewünschten Ordner im static/berichte/-Verzeichnis
-    base_path = os.path.join(current_app.static_folder, 'berichte')
-    target_path = safe_join(base_path, folder)
-
-    if target_path is None or not os.path.isdir(target_path):
+@main.route('/berichte/<int:jahr>')
+def erlebnisberichte(jahr):
+    """Alle veroeffentlichten Berichte eines Jahres auf einer Seite."""
+    berichte = (
+        Bericht.query
+        .filter_by(jahr=jahr, veroeffentlicht=True)
+        .order_by(Bericht.reihenfolge.asc(), Bericht.id.asc())
+        .all()
+    )
+    if not berichte:
         abort(404)
-
-    # Prüfen, ob der Ordner Unterordner enthält
-    subdirs = [name for name in os.listdir(target_path)
-               if os.path.isdir(os.path.join(target_path, name))]
-
-    if subdirs:
-        # Es gibt Unterordner – wir behandeln dies als Mehrfachberichte (z. B. Jahr mit mehreren Events)
-        events = []
-        for subdir in sorted(subdirs):
-            event_path = os.path.join(target_path, subdir)
-            # Bilder einsammeln
-            images = []
-            for file_name in os.listdir(event_path):
-                if file_name.lower().endswith(('.webp')):
-                    images.append(file_name)
-            images.sort()
-
-            # Textdatei laden (optional)
-            text_file_path = os.path.join(event_path, 'text.txt')
-            text_content = ""
-            if os.path.isfile(text_file_path):
-                with open(text_file_path, 'r', encoding='utf-8') as f:
-                    text_content = f.read()
-
-            events.append({
-                'name': subdir,
-                'images': images,
-                'text': text_content,
-            })
-
-        # multi=True signalisiert im Template, dass mehrere Events vorhanden sind
-        return render_template('main/berichte.html', folder_name=folder, events=events, multi=True)
-    else:
-        # Kein Unterordner – alter Einzelbericht-Modus
-        images = []
-        for file_name in os.listdir(target_path):
-            if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
-                images.append(file_name)
-        images.sort()
-
-        # Textdatei laden (optional)
-        text_file_path = os.path.join(target_path, 'text.txt')
-        text_content = ""
-        if os.path.isfile(text_file_path):
-            with open(text_file_path, 'r', encoding='utf-8') as f:
-                text_content = f.read()
-
-        # multi=False signalisiert im Template den Einzelbericht-Modus
-        return render_template('main/berichte.html', folder_name=folder, images=images, text=text_content, multi=False)
+    return render_template(
+        'main/berichte.html', jahr=jahr, berichte=berichte
+    )
 
 # Janneck: Benötigt damit Zeilenumbrüche aus Text datei angezeigt werden
 @main.app_template_filter('nl2br')
