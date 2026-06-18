@@ -1,7 +1,7 @@
 from flask import render_template, current_app, abort, make_response, send_from_directory
 from app.main import main
 from app import db
-from app.models import Termin, Vorstandsmitglied, Bericht
+from app.models import Termin, Vorstandsmitglied, Bericht, News
 from markupsafe import Markup, escape
 import urllib.parse
 from datetime import datetime
@@ -88,6 +88,21 @@ def veranstaltungen():
         .all()
     )
     return render_template('main/veranstaltungen.html', termine=termine)
+
+
+@main.route('/news')
+def news():
+    """Oeffentliche News-Beitraege (neueste zuerst)."""
+    beitraege = (
+        News.query
+        .filter_by(veroeffentlicht=True)
+        .order_by(News.datum.desc())
+        .all()
+    )
+    return render_template(
+        'main/news.html', title='Neuigkeiten', beitraege=beitraege
+    )
+
 
 @main.route('/vereinsdaten')
 def vereinsdaten():

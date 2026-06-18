@@ -57,6 +57,12 @@
             Veranstaltungen
           </a>
         </li>
+        <li>
+          <a href="{{ url_for('main.news') }}"
+            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white">
+            Neuigkeiten
+          </a>
+        </li>
 
         <li>
           <a href="{{ url_for('formcenter.index') }}"
@@ -65,37 +71,28 @@
           </a>
         </li>
 
-        {#
-        <!-- Auskommentierte Auth-Links -->
-        {% if not current_user.is_authenticated %}
+        {# Auth-Links: Verwaltung/Abmelden nur eingeloggt, sonst Anmelden #}
+        {% if current_user.is_authenticated %}
         <li>
-          <a href="{{ url_for('auth.login') }}"
-            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white">
-            Login
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('auth.register') }}"
-            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white">
-            Registrieren
-          </a>
-        </li>
-        {% else %}
-        <li>
-          <a href="#"
-            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white">
-            {{ user.avatar(current_user.first_name, current_user.last_name, bg_color="ECEFF1", text_color="111827", size=25, class="inline mr-1") }}
-            {{ current_user.first_name }}
+          <a href="{{ url_for('admin.index') }}"
+            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+            Verwaltung
           </a>
         </li>
         <li>
           <a href="{{ url_for('auth.logout') }}"
-            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white">
-            Logout
+            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+            Abmelden
+          </a>
+        </li>
+        {% else %}
+        <li>
+          <a href="{{ url_for('auth.login') }}"
+            class="block py-2 pl-3 pr-4 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-500 md:dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+            Anmelden
           </a>
         </li>
         {% endif %}
-        #}
       </ul>
     </div>
   </div>
