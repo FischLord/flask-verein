@@ -1,0 +1,37 @@
+/*
+ * site.css – projekteigene Ergaenzungen zur vendored Flowbite/Tailwind-CSS.
+ * ---------------------------------------------------------------------------
+ * Hintergrund (vgl. Review FV-09): Es gibt KEINEN lokalen Tailwind-Build.
+ * `vendor/flowbite/flowbite.min.css` enthaelt nur die zur Build-Zeit
+ * erkannten Utility-Klassen. Einige `lg:`-Varianten, die wir fuer die
+ * Navigation brauchen, fehlen dort und werden hier nachgeliefert.
+ *
+ * Tailwind-Breakpoint `lg` = min-width: 1024px.
+ */
+
+@media (min-width: 1024px) {
+  /* lg:text-lg */
+  .lg\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  /* lg:font-medium */
+  .lg\:font-medium {
+    font-weight: 500;
+  }
+  /* lg:bg-white */
+  .lg\:bg-white {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  }
+  /* lg:hover:text-black */
+  .lg\:hover\:text-black:hover {
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity));
+  }
+  /* lg:dark:bg-gray-900 (nur aktiv, wenn .dark auf <html> gesetzt ist) */
+  .dark .lg\:dark\:bg-gray-900 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+  }
+}
