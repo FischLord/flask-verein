@@ -123,6 +123,23 @@ class BildForm(FlaskForm):
     submit = SubmitField("Speichern")
 
 
+class NewsForm(FlaskForm):
+    """Anlegen/Bearbeiten eines News-/Info-Beitrags."""
+
+    titel = StringField(
+        "Titel", validators=[DataRequired(), Length(min=2, max=200)]
+    )
+    # Optionales URL-Kürzel; leer -> wird aus dem Titel erzeugt.
+    slug = StringField(
+        "URL-Kürzel (optional)", validators=[Optional(), Length(max=200)]
+    )
+    datum = DateField("Datum", validators=[Optional()])
+    # HTML aus dem WYSIWYG-Editor; serverseitig mit clean_html bereinigt.
+    inhalt = TextAreaField("Inhalt", validators=[Optional()])
+    veroeffentlicht = BooleanField("Sofort veröffentlichen", default=True)
+    submit = SubmitField("Speichern")
+
+
 class ActionForm(FlaskForm):
     """
     Feldloses Formular – liefert nur das CSRF-Token für
