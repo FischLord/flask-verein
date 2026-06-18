@@ -74,6 +74,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(errors.error)
 
+    from app.cli import import_berichte
+
+    app.cli.add_command(import_berichte)
+
     @app.before_request
     def maintenance_mode():
         # If maintenance mode is enabled, return a 503
