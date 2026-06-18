@@ -141,3 +141,7 @@ app.db
 *.db
 *.sqlite
 *.sqlite3
+
+# Backup-Archive (scripts/backup.sh) – niemals committen
+backups/
+backup-*.tar.gz
