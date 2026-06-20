@@ -145,3 +145,6 @@ app.db
 # Backup-Archive (scripts/backup.sh) – niemals committen
 backups/
 backup-*.tar.gz
+# Node / Tailwind-Build (nur Build-Tooling, kein Runtime-Node)
+node_modules/
+npm-debug.log*
