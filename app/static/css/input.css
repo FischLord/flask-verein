@@ -3,6 +3,48 @@
 @tailwind utilities;
 
 /*
+ * Inter (selbst gehostet, DSGVO-konform – kein Google-CDN).
+ * Quelle: @fontsource/inter; Dateien unter app/static/fonts/inter/.
+ * Pfade relativ zur kompilierten app/static/css/app.css.
+ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-800-normal.woff2") format("woff2");
+}
+
+
+/*
  * Projekt-eigene Komponenten & Basis-Anpassungen.
  * ---------------------------------------------------------------------------
  * Diese Datei wird von Tailwind (CLI) zu app/static/css/app.css kompiliert.
