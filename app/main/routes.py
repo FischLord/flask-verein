@@ -6,6 +6,7 @@ from markupsafe import Markup, escape
 import urllib.parse
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import selectinload
 
 
 @main.route("/", methods=["GET"])
@@ -38,11 +39,51 @@ def inject_reports():
     return dict(reports=[row[0] for row in rows])
 
 
+@main.route('/berichte')
+def berichte_uebersicht():
+    """Uebersichtsseite: alle Jahre mit veroeffentlichten Berichten."""
+    berichte = (
+        Bericht.query
+        .options(selectinload(Bericht.bilder))
+        .filter_by(veroeffentlicht=True)
+        .order_by(Bericht.jahr.desc(), Bericht.reihenfolge.asc(),
+                  Bericht.titel.asc())
+        .all()
+    )
+    # Pro Jahr gruppieren (Reihenfolge der Query bleibt erhalten).
+    jahre = []
+    by_year = {}
+    for b in berichte:
+        if b.jahr not in by_year:
+            by_year[b.jahr] = {
+                'jahr': b.jahr,
+                'anzahl_berichte': 0,
+                'anzahl_bilder': 0,
+                'titelbild': None,
+            }
+            jahre.append(by_year[b.jahr])
+        eintrag = by_year[b.jahr]
+        eintrag['anzahl_berichte'] += 1
+        eintrag['anzahl_bilder'] += len(b.bilder)
+        if eintrag['titelbild'] is None and b.bilder:
+            eintrag['titelbild'] = b.bilder[0].dateiname
+    return render_template(
+        'main/berichte_uebersicht.html', jahre=jahre,
+        title="Erlebnisberichte",
+        meta_description=(
+            "Fotogalerien und Erlebnisberichte des Fahrvereins Planetal "
+            "e.V.: Kutschertage, Ausfahrten und Turniere in Reckahn, "
+            "Brandenburg - nach Jahren sortiert."
+        ),
+    )
+
+
 @main.route('/berichte/<int:jahr>')
 def erlebnisberichte(jahr):
     """Alle veroeffentlichten Berichte eines Jahres auf einer Seite."""
     berichte = (
         Bericht.query
+        .options(selectinload(Bericht.bilder))
         .filter_by(jahr=jahr, veroeffentlicht=True)
         .order_by(Bericht.reihenfolge.asc(), Bericht.titel.asc())
         .all()

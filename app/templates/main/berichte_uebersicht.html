@@ -1,0 +1,54 @@
+{% extends 'boilerplate/layout.html' %}
+{% block content %}
+<div class="container mx-auto px-4 py-8 sm:py-12">
+  <header class="max-w-3xl mx-auto text-center mb-10 sm:mb-14">
+    <p class="text-sm font-semibold uppercase tracking-wider text-accent-600 mb-2">
+      Galerie
+    </p>
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+      Erlebnisberichte
+    </h1>
+    <p class="text-lg text-gray-600">
+      Eindrücke aus vielen Jahren Fahrverein Planetal: Kutschertage,
+      Ausfahrten, Turniere und gemütliche Stunden mit Pferd und Gespann.
+      Wähle ein Jahr und tauche in unsere Fotogalerien ein.
+    </p>
+  </header>
+
+  {% if jahre %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    {% for j in jahre %}
+    <a href="{{ url_for('main.erlebnisberichte', jahr=j.jahr) }}"
+       class="group relative block overflow-hidden rounded-2xl shadow-md hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 transition-shadow duration-300 aspect-[4/3] bg-gray-200">
+      {% if j.titelbild %}
+      <img src="{{ url_for('static', filename='uploads/berichte/' ~ j.titelbild) }}"
+           alt="Fotogalerie {{ j.jahr }} – Fahrverein Planetal e.V."
+           loading="lazy"
+           class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+      {% endif %}
+      <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+        <span class="block text-3xl font-bold drop-shadow-sm">{{ j.jahr }}</span>
+        <span class="mt-1 inline-flex items-center gap-2 text-sm text-white/90">
+          <span>{{ j.anzahl_berichte }}
+            {{ 'Bericht' if j.anzahl_berichte == 1 else 'Berichte' }}</span>
+          <span class="opacity-60">·</span>
+          <span>{{ j.anzahl_bilder }}
+            {{ 'Foto' if j.anzahl_bilder == 1 else 'Fotos' }}</span>
+        </span>
+      </div>
+      <span class="absolute top-4 right-4 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-center text-gray-500 py-12">
+    Aktuell sind noch keine Berichte veröffentlicht. Schau bald wieder vorbei!
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
