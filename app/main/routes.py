@@ -27,23 +27,6 @@ def index():
     )
 
 
-@main.app_context_processor
-def inject_reports():
-    """Jahre veroeffentlichter Berichte (absteigend) fuers Nav-Dropdown."""
-    try:
-        rows = (
-            db.session.query(Bericht.jahr)
-            .filter_by(veroeffentlicht=True)
-            .distinct()
-            .order_by(Bericht.jahr.desc())
-            .all()
-        )
-    except SQLAlchemyError:
-        # Context-Processor laeuft auf jeder Seite -> defensiv leer bleiben.
-        return dict(reports=[])
-    return dict(reports=[row[0] for row in rows])
-
-
 @main.route('/berichte')
 def berichte_uebersicht():
     """Uebersichtsseite: alle Jahre mit veroeffentlichten Berichten."""

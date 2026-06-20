@@ -79,9 +79,11 @@ def create_app(config_class=Config):
 
     from app.cli import import_berichte
     from app.seed import seed_stammdaten
+    from app.cli_admin import create_admin
 
     app.cli.add_command(import_berichte)
     app.cli.add_command(seed_stammdaten)
+    app.cli.add_command(create_admin)
 
     @app.before_request
     def maintenance_mode():
