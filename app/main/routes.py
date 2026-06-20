@@ -111,6 +111,22 @@ def nl2br_filter(s):
     return Markup(escaped.replace('\n', '<br>\n'))
 
 
+# Deutsche Monats-Kuerzel (locale-unabhaengig) fuer Datums-Chips.
+_MONATE_KURZ = [
+    "", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun",
+    "Jul", "Aug", "Sep", "Okt", "Nov", "Dez",
+]
+
+
+@main.app_template_filter('monat_kurz')
+def monat_kurz_filter(d):
+    """Gibt das deutsche Monatskuerzel zu einem date/datetime zurueck."""
+    try:
+        return _MONATE_KURZ[d.month]
+    except (AttributeError, IndexError):
+        return ""
+
+
 
 
 @main.route("/verein", methods=["GET"])
@@ -159,14 +175,24 @@ def impressum():
 
 @main.route('/veranstaltungen')
 def veranstaltungen():
-    termine = (
+    heute = datetime.now().date()
+    kommende = (
         Termin.query
         .filter_by(veroeffentlicht=True)
+        .filter(Termin.datum >= heute)
         .order_by(Termin.datum.asc())
         .all()
     )
+    vergangene = (
+        Termin.query
+        .filter_by(veroeffentlicht=True)
+        .filter(Termin.datum < heute)
+        .order_by(Termin.datum.desc())
+        .all()
+    )
     return render_template(
-        'main/veranstaltungen.html', termine=termine,
+        'main/veranstaltungen.html',
+        kommende=kommende, vergangene=vergangene,
         title="Veranstaltungen & Termine",
         meta_description=(
             "Aktuelle Termine, Trainingstage und der Reckahner "

@@ -1,149 +1,131 @@
 {% extends 'boilerplate/layout.html' %}
+
+{% macro termin_chip(termin) %}
+<div class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-brand-600 text-white leading-none shadow-sm">
+  <span class="text-2xl font-bold">{{ termin.datum.strftime('%d') }}</span>
+  <span class="text-xs font-semibold uppercase tracking-wide">{{ termin.datum | monat_kurz }}</span>
+</div>
+{% endmacro %}
+
 {% block content %}
-<section class="py-16">
+<section class="py-10 sm:py-14">
   <div class="max-w-screen-xl mx-auto px-4 lg:px-12">
-    <!-- Seitenüberschrift mit strukturierten Daten -->
-    <header class="text-center mb-16">
-      <h1 class="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">
+
+    <!-- Kompakter Header -->
+    <header class="text-center mb-10 sm:mb-14">
+      <p class="text-sm font-semibold uppercase tracking-wider text-accent-600 mb-2">
+        Termine
+      </p>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-3">
         Veranstaltungen &amp; Termine
       </h1>
-      <p class="text-lg text-gray-600">
-        Entdecken Sie unsere Veranstaltungen, Trainingstage und Fahrsport-Aktivitäten in Reckahn, Brandenburg.
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Trainingstage, Ausfahrten und natürlich unser Reckahner Kutschertag.
+        Hier seht ihr, was als Nächstes ansteht.
       </p>
     </header>
 
-    <!-- Wichtiger Hinweis -->
-    <div class="mb-12 bg-blue-50 border-l-4 border-blue-500 p-4 rounded mt-4" role="alert">
-      <p class="text-gray-700 text-base">
-        <strong>Wichtiger Hinweis:</strong> Aufgrund der hohen Nachfrage ist bei einigen Veranstaltungen die Teilnehmerzahl begrenzt. Frühe Anmeldung wird empfohlen.
-      </p>
-    </div>
+    <!-- Kommende Termine (Primaersektion) -->
+    <article class="mb-16">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Kommende Termine</h2>
 
-    <!-- Termine aus der Datenbank -->
-    <article class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-6">Unsere Termine</h2>
-
-      {% if termine %}
-      <div class="space-y-6">
-        {% for termin in termine %}
-        <div class="p-6 bg-white rounded-lg shadow border border-gray-200{% if termin.abgelaufen %} opacity-75{% endif %}"
-             itemscope itemtype="http://schema.org/Event">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-            <h3 class="text-2xl font-semibold text-gray-700" itemprop="name">{{ termin.titel }}</h3>
-            {% if termin.abgelaufen %}
-            <span class="inline-block px-3 py-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-full">Abgelaufen</span>
+      {% if kommende %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {% for termin in kommende %}
+        <div class="card p-5 flex gap-4" itemscope itemtype="https://schema.org/Event">
+          {{ termin_chip(termin) }}
+          <div class="min-w-0">
+            <h3 class="text-xl font-semibold text-gray-800" itemprop="name">{{ termin.titel }}</h3>
+            <meta itemprop="startDate" content="{{ termin.datum.isoformat() }}">
+            <ul class="mt-2 space-y-1 text-sm text-gray-600">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-brand-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>{{ termin.datum.strftime('%d.%m.%Y') }}{% if termin.uhrzeit %}, {{ termin.uhrzeit }} Uhr{% endif %}</span>
+              </li>
+              {% if termin.ort %}
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-brand-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span itemprop="location">{{ termin.ort }}</span>
+              </li>
+              {% endif %}
+            </ul>
+            {% if termin.beschreibung %}
+            <div class="prose prose-sm max-w-none text-gray-700 mt-3" itemprop="description">{{ termin.beschreibung | safe }}</div>
             {% endif %}
           </div>
-
-          {# Strukturierte Daten (schema.org/Event) für Suchmaschinen #}
-          <meta itemprop="startDate" content="{{ termin.datum.isoformat() }}">
-          {% if termin.ort %}<meta itemprop="location" content="{{ termin.ort }}">{% endif %}
-
-          <ul class="text-gray-600 mb-4 space-y-1">
-            <li><strong>Datum:</strong> {{ termin.datum.strftime('%d.%m.%Y') }}</li>
-            {% if termin.uhrzeit %}<li><strong>Uhrzeit:</strong> {{ termin.uhrzeit }}</li>{% endif %}
-            {% if termin.ort %}<li><strong>Ort:</strong> {{ termin.ort }}</li>{% endif %}
-          </ul>
-
-          {% if termin.beschreibung %}
-          {# beschreibung ist bereits serverseitig (bleach) bereinigtes HTML #}
-          <div class="prose max-w-none text-gray-700" itemprop="description">{{ termin.beschreibung | safe }}</div>
-          {% endif %}
         </div>
         {% endfor %}
       </div>
       {% else %}
-      <div class="p-6 bg-white rounded-lg shadow border border-gray-200 text-center">
-        <p class="text-lg text-gray-600">
-          Aktuell sind keine Termine eingetragen. Schauen Sie bald wieder vorbei –
-          neue Veranstaltungen werden hier veröffentlicht.
+      <div class="card p-8 text-center">
+        <p class="text-gray-600">
+          Aktuell sind keine neuen Termine eingetragen. Schaut bald wieder
+          vorbei oder folgt uns auf Facebook für aktuelle Ankündigungen.
         </p>
       </div>
       {% endif %}
     </article>
 
-    <!-- Zukunftspläne mit semantischer Struktur -->
-    <article class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Entwicklungsprojekte - Fahrverein Planetal</h2>
-      <div class="space-y-6">
-        <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-          <h3 class="text-2xl font-semibold text-gray-700 mb-2">Neues Dachdeckerhindernis für Fahrsport-Training</h3>
-          <p class="text-gray-600">
-            Wir planen die Wiederherstellung eines Fahrhindernisses mit Berg, das früher als “Dachdeckerhindernis” bekannt war. Dies bietet unseren Mitgliedern die Möglichkeit, ihre fahrerischen Fähigkeiten zu verbessern und herausfordernde Strecken zu meistern.
-          </p>
-        </div>
-        <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-          <h3 class="text-2xl font-semibold text-gray-700 mb-2">Erweiterter Reitplatz für optimales Training</h3>
-          <p class="text-gray-600">
-            Unser neuer 40×20m Reitplatz wird Trainingsmöglichkeiten für Reiter und Fahrer bieten.
-            Die großzügige Anlage ermöglicht einen Taum für Trainingseinheiten und Veranstaltungen in Reckahn.
-          </p>
+    <!-- Vergangene Termine (sekundaer, eingeklappt) -->
+    {% if vergangene %}
+    <article class="mb-16">
+      <details class="group rounded-2xl bg-white shadow-sm ring-1 ring-gray-100">
+        <summary class="flex items-center justify-between cursor-pointer select-none px-6 py-4 text-lg font-semibold text-gray-700">
+          <span>Vergangene Termine ({{ vergangene | length }})</span>
+          <svg class="w-5 h-5 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <ul class="divide-y divide-gray-100 px-6 pb-4">
+          {% for termin in vergangene %}
+          <li class="flex items-center gap-4 py-3 text-sm text-gray-500">
+            <span class="font-medium text-gray-600 tabular-nums whitespace-nowrap">{{ termin.datum.strftime('%d.%m.%Y') }}</span>
+            <span class="text-gray-700">{{ termin.titel }}</span>
+            {% if termin.ort %}<span class="text-gray-400 truncate">· {{ termin.ort }}</span>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </details>
+    </article>
+    {% endif %}
+
+    <!-- Formulare zum Kutschertag: schlanker Callout statt 3 Karten-Block -->
+    <article class="mb-12">
+      <div class="rounded-2xl bg-brand-50 ring-1 ring-brand-100 p-6 sm:p-8">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+          <div class="flex-shrink-0 flex items-center justify-center w-14 h-14 rounded-xl bg-brand-600 text-white">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div class="flex-grow">
+            <h2 class="text-xl font-bold text-gray-800 mb-1">Anmeldung &amp; Formulare zum Kutschertag</h2>
+            <p class="text-gray-600">
+              Fahraufgaben und Nennungsformulare findet ihr gebündelt im
+              Formularcenter, immer aktuell zum Download.
+            </p>
+          </div>
+          <div class="flex-shrink-0">
+            <a href="{{ url_for('formcenter.index') }}" class="btn-primary">
+              Zum Formularcenter
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     </article>
 
-    <!-- Vereins-Logo mit optimiertem Alt-Text -->
-    <div class="mb-16 mt-4">
-      <img src="{{ url_for('static', filename='vereinsschriftzug.webp') }}"
-           alt="Fahrverein Planetal e.V. - Vereinsschriftzug in Reckahn über dem Trainingsplatz"
-           class="w-full h-auto object-contain rounded-lg shadow-md"
-           loading="lazy">
-    </div>
-
-    <!-- Anmeldung & Formulare zum Kutschertag (statische Downloads) -->
-    <article class="mb-16 mt-4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Anmeldung &amp; Formulare zum Kutschertag</h2>
-      <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
-        <p class="text-lg text-gray-700 mb-4">
-          Liebe Pferdesportfreunde und Vereinsmitglieder, hier finden Sie die offiziellen
-          Aufgaben- und Nennungsformulare für unseren Kutschertag zum Herunterladen.
-        </p>
-
-        <!-- Anmeldeformulare mit verbesserten Beschreibungen -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Dressurprüfung FA-2</h3>
-            <p class="text-sm text-gray-600 mb-2">Offizielle Fahraufgabe</p>
-            <a href="{{ url_for('static', filename='forms/FA-2 Fahraufgabe.pdf') }}"
-               download
-               class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-               title="FA-2 Fahraufgabe herunterladen">
-              Aufgabe herunterladen
-            </a>
-          </div>
-          <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Anmeldung Kutschenfahrer</h3>
-            <p class="text-sm text-gray-600 mb-2">Nennungsformular</p>
-            <a href="{{ url_for('static', filename='forms/Nennungsformular Fahrer 2023.pdf') }}"
-               download
-               class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-               title="Nennungsformular für Fahrer herunterladen">
-              Formular herunterladen
-            </a>
-          </div>
-          <div class="p-4 bg-gray-50 rounded-lg shadow text-center">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Anmeldung Reiter</h3>
-            <p class="text-sm text-gray-600 mb-2">Nennungsformular</p>
-            <a href="{{ url_for('static', filename='forms/Nennungsformular Reiter 2023.pdf') }}"
-               download
-               class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-               title="Nennungsformular für Reiter herunterladen">
-              Formular herunterladen
-            </a>
-          </div>
-        </div>
-
-        <div itemscope itemtype="http://schema.org/Organization">
-          <h3 class="text-xl font-bold mb-4">Anmeldewege:</h3>
-          <ul class="list-disc list-inside text-gray-700 mb-4">
-            <li><strong>Persönlich:</strong> Bei Jacquelin und Denise über WhatsApp oder im Vereinsbriefkasten</li>
-            <li><strong>Per E-Mail:</strong> <a href="mailto:fvplanetal@web.de" class="text-blue-600 hover:underline" itemprop="email">fvplanetal@web.de</a></li>
-          </ul>
-          <p class="text-lg text-gray-700">
-            Mit sportlichen Grüßen,<br>
-            <span itemprop="name">Fahrverein Planetal e.V.</span>
-          </p>
-        </div>
+    <!-- Anmeldewege (kompakt, am Seitenende) -->
+    <article>
+      <div class="card p-6" itemscope itemtype="https://schema.org/Organization">
+        <h2 class="text-lg font-bold text-gray-800 mb-3">So meldet ihr euch an</h2>
+        <ul class="space-y-2 text-gray-700">
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span><strong>Persönlich:</strong> bei Jacquelin und Denise über WhatsApp oder im Vereinsbriefkasten</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span><strong>Per E-Mail:</strong>
+              <a href="mailto:fvplanetal@web.de" class="text-brand-700 hover:underline font-medium" itemprop="email">fvplanetal@web.de</a></span>
+          </li>
+        </ul>
       </div>
     </article>
 
