@@ -7,6 +7,12 @@ Flask-Login, Flask-WTF). KEIN zweiter Runtime, kein Stack-Bruch.
 
 > Offene Punkte sind unten in Abschnitt 9 gesammelt und im Text mit „❓" markiert.
 
+> **Nachtrag (2026-06-20):** Der Bereich **News/Infos** wurde nach Umsetzung
+> wieder **vollständig entfernt** (Modell `News`, Public-/Admin-Routen, Templates,
+> Migration `d538194e54b4`). Termine werden ausschließlich über
+> **Veranstaltungen** abgebildet. Nachfolgende Erwähnungen von „News" sind nur
+> noch historisch zu verstehen.
+
 ---
 
 ## 1. Kontext & Ausgangslage

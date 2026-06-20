@@ -135,20 +135,3 @@ class BerichtBild(db.Model):
 
     def __repr__(self):
         return f"<BerichtBild {self.id}>"
-
-
-class News(db.Model):
-    """News-/Info-Beitrag."""
-
-    __tablename__ = "news"
-    id: int = db.Column(db.Integer, primary_key=True)
-    titel: str = db.Column(db.String(200), nullable=False)
-    slug: str = db.Column(db.String(200))
-    inhalt: str = db.Column(db.Text)
-    datum: date = db.Column(db.Date)
-    veroeffentlicht: bool = db.Column(
-        db.Boolean, default=True, nullable=False
-    )
-
-    def __repr__(self):
-        return f"<News {self.id} {self.titel}>"
