@@ -4,6 +4,13 @@ import pathlib
 basedir = pathlib.Path(__file__).parent.absolute()
 
 
+def _eval_bool(value, default=False):
+    """Interpretiert gaengige Wahrheits-Strings aus .env als bool."""
+    if value is None:
+        return default
+    return str(value).strip().lower() in {"1", "true", "t", "yes", "on"}
+
+
 class Config(object):
     """
     Config values for the application (used by Flask and third-party packages).
@@ -28,4 +35,22 @@ class Config(object):
     UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER")
     MAX_CONTENT_LENGTH = int(
         os.environ.get("MAX_CONTENT_LENGTH") or 8 * 1024 * 1024
+    )
+
+    # --- E-Mail-Versand (Kontaktformular) -------------------------------
+    # Werte aus .env. Ohne MAIL_SERVER ist der Versand deaktiviert; das
+    # Kontaktformular zeigt dann einen freundlichen Fallback (mailto).
+    MAIL_SERVER = os.environ.get("MAIL_SERVER")
+    MAIL_PORT = int(os.environ.get("MAIL_PORT") or 587)
+    MAIL_USE_TLS = _eval_bool(os.environ.get("MAIL_USE_TLS"), default=True)
+    MAIL_USE_SSL = _eval_bool(os.environ.get("MAIL_USE_SSL"), default=False)
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    # Absender (Default = MAIL_USERNAME) und Empfaenger der Anfragen.
+    MAIL_DEFAULT_SENDER = (
+        os.environ.get("MAIL_DEFAULT_SENDER")
+        or os.environ.get("MAIL_USERNAME")
+    )
+    CONTACT_RECIPIENT = (
+        os.environ.get("CONTACT_RECIPIENT") or "fvplanetal@web.de"
     )

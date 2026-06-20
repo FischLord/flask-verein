@@ -38,6 +38,82 @@
             </div>
         </div>
 
+        <!-- Kontaktformular -->
+        <div id="kontaktformular" class="max-w-2xl mx-auto mb-16 scroll-mt-24">
+            <div class="card p-6 sm:p-8">
+                <div class="text-center mb-6">
+                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-accent-100 text-accent-600 mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 3v-3z"/></svg>
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Schreib uns</h2>
+                    <p class="text-gray-600 mt-2">
+                        Fragen zur Mitgliedschaft, zu Kutschfahrten oder zu unseren
+                        Veranstaltungen? Wir freuen uns auf deine Nachricht.
+                    </p>
+                </div>
+
+                {% if not mail_aktiv %}
+                <div class="rounded-lg bg-amber-50 ring-1 ring-amber-200 text-amber-800 p-4 text-sm mb-6">
+                    Der Online-Versand ist gerade nicht eingerichtet. Du erreichst uns
+                    jederzeit direkt per E-Mail an
+                    <a href="mailto:fvplanetal@web.de" class="font-semibold underline">fvplanetal@web.de</a>.
+                </div>
+                {% endif %}
+
+                <form method="post" action="{{ url_for('main.kontakt') }}#kontaktformular" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    {# Honeypot: fuer Menschen unsichtbar, fuer Bots ein Koeder. #}
+                    <div class="hidden" aria-hidden="true">
+                        <label>{{ form.website.label }}{{ form.website(tabindex="-1", autocomplete="off") }}</label>
+                    </div>
+
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div>
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-input" ~ (" form-input-error" if form.name.errors else ""), placeholder="Dein Name", autocomplete="name") }}
+                            {% for error in form.name.errors %}
+                            <p class="form-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-input" ~ (" form-input-error" if form.email.errors else ""), placeholder="name@beispiel.de", autocomplete="email", type="email") }}
+                            {% for error in form.email.errors %}
+                            <p class="form-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        {{ form.betreff.label(class="form-label") }}
+                        {{ form.betreff(class="form-input" ~ (" form-input-error" if form.betreff.errors else ""), placeholder="Worum geht es?") }}
+                        {% for error in form.betreff.errors %}
+                        <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-5">
+                        {{ form.nachricht.label(class="form-label") }}
+                        {{ form.nachricht(class="form-input" ~ (" form-input-error" if form.nachricht.errors else ""), rows="6", placeholder="Deine Nachricht an uns …") }}
+                        {% for error in form.nachricht.errors %}
+                        <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <p class="text-xs text-gray-500">
+                            Mit dem Absenden stimmst du der Verarbeitung deiner Angaben
+                            gemäß unserer
+                            <a href="{{ url_for('main.datenschutz') }}" class="underline hover:text-brand-700">Datenschutzerklärung</a>
+                            zu.
+                        </p>
+                        {{ form.submit(class="btn-primary w-full sm:w-auto") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">Unser Vorstand</h2>
 
         {% if vorstand %}

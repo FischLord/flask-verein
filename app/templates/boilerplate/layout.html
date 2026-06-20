@@ -84,6 +84,13 @@
 
   <!-- Hauptinhalt, der den verfügbaren Platz ausfüllt -->
   <main id="main" tabindex="-1" class="flex-grow">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="max-w-screen-xl mx-auto px-4 lg:px-12 pt-6">
+      {% include 'boilerplate/flash_message.html' %}
+    </div>
+    {% endif %}
+    {% endwith %}
     {% block content %}
     {% endblock %}
   </main>
