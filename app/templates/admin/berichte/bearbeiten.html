@@ -23,12 +23,12 @@
       Bilder ({{ bericht.bilder|length }})
     </h2>
     {% if bericht.bilder %}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 items-start">
       {% for bild in bericht.bilder %}
       <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
         <img src="{{ url_for('static', filename='uploads/berichte/' ~ bild.dateiname) }}"
              alt="{{ bild.alt_text or '' }}"
-             class="w-full rounded-md mb-3 object-cover">
+             class="w-full h-48 rounded-md mb-3 object-cover bg-gray-100">
         <form method="POST"
               action="{{ url_for('admin.bericht_bild_aktualisieren', bild_id=bild.id) }}">
           {{ bild_form.csrf_token }}
