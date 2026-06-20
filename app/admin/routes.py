@@ -1,6 +1,4 @@
 import os
-import re
-import unicodedata
 from datetime import date
 
 from flask import (
@@ -12,10 +10,10 @@ from app import db
 from app.admin import admin
 from app.admin.forms import (
     TerminForm, VorstandForm, BerichtForm, BildUploadForm, BildForm,
-    NewsForm, ActionForm,
+    ActionForm,
 )
 from app.models import (
-    Termin, Vorstandsmitglied, Bericht, BerichtBild, News,
+    Termin, Vorstandsmitglied, Bericht, BerichtBild,
 )
 from app.modules.util.html import clean_html
 from app.modules.util.images import (
@@ -574,156 +572,5 @@ def bericht_loeschen(bericht_id):
         "admin/berichte/loeschen.html",
         title="Bericht löschen",
         bericht=bericht,
-        form=form,
-    )
-
-
-# ---------------------------------------------------------------------
-# News / Infos
-# ---------------------------------------------------------------------
-
-def _slugify(value):
-    """Erzeugt ein URL-taugliches Kürzel (mit Umlaut-Ersetzung)."""
-    value = (value or "").strip().lower()
-    for umlaut, ersatz in (
-        ("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss"),
-    ):
-        value = value.replace(umlaut, ersatz)
-    value = (
-        unicodedata.normalize("NFKD", value)
-        .encode("ascii", "ignore")
-        .decode("ascii")
-    )
-    value = re.sub(r"[^a-z0-9]+", "-", value).strip("-")
-    return value or "news"
-
-
-def _unique_news_slug(basis, exclude_id=None):
-    """Stellt ein eindeutiges Slug sicher (haengt -2, -3 ... an)."""
-    slug = basis
-    zaehler = 2
-    while True:
-        query = News.query.filter_by(slug=slug)
-        if exclude_id is not None:
-            query = query.filter(News.id != exclude_id)
-        if query.first() is None:
-            return slug
-        slug = f"{basis}-{zaehler}"
-        zaehler += 1
-
-
-@admin.route("/news")
-@login_required
-def news_list():
-    """Liste aller News-Beiträge."""
-    beitraege = News.query.order_by(
-        News.datum.desc().nullslast(), News.id.desc()
-    ).all()
-    return render_template(
-        "admin/news/list.html",
-        title="News",
-        beitraege=beitraege,
-        action_form=ActionForm(),
-    )
-
-
-@admin.route("/news/neu", methods=["GET", "POST"])
-@login_required
-def news_neu():
-    """Neuen News-Beitrag anlegen."""
-    form = NewsForm()
-    if form.validate_on_submit():
-        basis = _slugify(form.slug.data or form.titel.data)
-        beitrag = News(
-            titel=form.titel.data,
-            slug=_unique_news_slug(basis),
-            inhalt=clean_html(form.inhalt.data),
-            datum=form.datum.data,
-            veroeffentlicht=form.veroeffentlicht.data,
-        )
-        db.session.add(beitrag)
-        db.session.commit()
-        flash("News-Beitrag wurde angelegt.", "success")
-        return redirect(url_for("admin.news_list"))
-
-    if request.method == "GET":
-        form.datum.data = date.today()
-    return render_template(
-        "admin/news/form.html",
-        title="News anlegen",
-        form=form,
-        modus="neu",
-    )
-
-
-@admin.route("/news/<int:news_id>/bearbeiten", methods=["GET", "POST"])
-@login_required
-def news_bearbeiten(news_id):
-    """News-Beitrag bearbeiten."""
-    beitrag = db.session.get(News, news_id)
-    if beitrag is None:
-        abort(404)
-
-    form = NewsForm(obj=beitrag)
-    if form.validate_on_submit():
-        basis = _slugify(form.slug.data or form.titel.data)
-        beitrag.titel = form.titel.data
-        beitrag.slug = _unique_news_slug(basis, exclude_id=beitrag.id)
-        beitrag.inhalt = clean_html(form.inhalt.data)
-        beitrag.datum = form.datum.data
-        beitrag.veroeffentlicht = form.veroeffentlicht.data
-        db.session.commit()
-        flash("News-Beitrag wurde gespeichert.", "success")
-        return redirect(url_for("admin.news_list"))
-
-    return render_template(
-        "admin/news/form.html",
-        title="News bearbeiten",
-        form=form,
-        modus="bearbeiten",
-        beitrag=beitrag,
-    )
-
-
-@admin.route("/news/<int:news_id>/veroeffentlichen", methods=["POST"])
-@login_required
-def news_veroeffentlichen(news_id):
-    """Veröffentlicht-Status umschalten (CSRF, nur POST)."""
-    beitrag = db.session.get(News, news_id)
-    if beitrag is None:
-        abort(404)
-
-    form = ActionForm()
-    if not form.validate_on_submit():
-        abort(400)
-
-    beitrag.veroeffentlicht = not beitrag.veroeffentlicht
-    db.session.commit()
-    if beitrag.veroeffentlicht:
-        flash("Beitrag ist jetzt öffentlich sichtbar.", "success")
-    else:
-        flash("Beitrag ist jetzt verborgen.", "success")
-    return redirect(url_for("admin.news_list"))
-
-
-@admin.route("/news/<int:news_id>/loeschen", methods=["GET", "POST"])
-@login_required
-def news_loeschen(news_id):
-    """News-Beitrag löschen (Bestätigungsseite + POST)."""
-    beitrag = db.session.get(News, news_id)
-    if beitrag is None:
-        abort(404)
-
-    form = ActionForm()
-    if form.validate_on_submit():
-        db.session.delete(beitrag)
-        db.session.commit()
-        flash("News-Beitrag wurde gelöscht.", "success")
-        return redirect(url_for("admin.news_list"))
-
-    return render_template(
-        "admin/news/loeschen.html",
-        title="News löschen",
-        beitrag=beitrag,
         form=form,
     )
