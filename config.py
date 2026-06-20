@@ -18,7 +18,7 @@ class Config(object):
         "DATABASE_URL"
     ) or "sqlite:///" + os.path.join(basedir, "app.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    APP_NAME = os.environ.get("APP_NAME") or "Fv Planetal e.V."
+    APP_NAME = os.environ.get("APP_NAME") or "Fahrverein Planetal e.V."
     MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE") or False
     REGISTRATION_ENABLED = os.environ.get("REGISTRATION_ENABLED") or False
 

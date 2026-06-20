@@ -10,7 +10,15 @@ from sqlalchemy.exc import SQLAlchemyError
 
 @main.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        title="Kutschfahrten & Reitsport in Reckahn",
+        meta_description=(
+            "Fahrverein Planetal e.V. in Reckahn (Brandenburg): "
+            "Kutschfahrten, Reitsport, Ausfahrten und der jährliche "
+            "Kutschertag. Seit 2012 für Pferdefreunde jeden Alters."
+        ),
+    )
 
 
 @main.app_context_processor
@@ -42,7 +50,13 @@ def erlebnisberichte(jahr):
     if not berichte:
         abort(404)
     return render_template(
-        'main/berichte.html', jahr=jahr, berichte=berichte
+        'main/berichte.html', jahr=jahr, berichte=berichte,
+        title="Erlebnisberichte {}".format(jahr),
+        meta_description=(
+            "Fotos und Berichte aus {} vom Fahrverein Planetal e.V.: "
+            "Kutschfahrten, Turniere und Kutschertag in Reckahn, "
+            "Brandenburg.".format(jahr)
+        ),
     )
 
 # Janneck: Benötigt damit Zeilenumbrüche aus Text datei angezeigt werden
@@ -60,7 +74,15 @@ def nl2br_filter(s):
 
 @main.route("/verein", methods=["GET"])
 def verein():
-    return render_template("main/verein.html")
+    return render_template(
+        "main/verein.html",
+        title="Über den Verein",
+        meta_description=(
+            "Lernen Sie den Fahrverein Planetal e.V. kennen: "
+            "Pferdefreunde, Jugendarbeit, Dressurplatz und Fahrsport-"
+            "Tradition seit 2012 in Reckahn, Hoher Fläming."
+        ),
+    )
 
 
 @main.route("/kontakt", methods=["GET"])
@@ -71,12 +93,27 @@ def kontakt():
         .order_by(Vorstandsmitglied.reihenfolge.asc())
         .all()
     )
-    return render_template("main/kontakt.html", vorstand=vorstand)
+    return render_template(
+        "main/kontakt.html", vorstand=vorstand,
+        title="Vorstand & Kontakt",
+        meta_description=(
+            "Kontakt zum Fahrverein Planetal e.V. in Reckahn: Vorstand, "
+            "Ansprechpartner und Anfragen rund um Kutschfahrten, "
+            "Reitsport und Mitgliedschaft."
+        ),
+    )
 
 
 @main.route("/impressum", methods=["GET"])
 def impressum():
-    return render_template("main/impressum.html")
+    return render_template(
+        "main/impressum.html",
+        title="Impressum",
+        meta_description=(
+            "Impressum und Anbieterkennzeichnung des Fahrvereins Planetal "
+            "e.V., Krahner Straße, 14797 Kloster Lehnin OT Reckahn."
+        ),
+    )
 
 
 @main.route('/veranstaltungen')
@@ -87,16 +124,40 @@ def veranstaltungen():
         .order_by(Termin.datum.asc())
         .all()
     )
-    return render_template('main/veranstaltungen.html', termine=termine)
+    return render_template(
+        'main/veranstaltungen.html', termine=termine,
+        title="Veranstaltungen & Termine",
+        meta_description=(
+            "Aktuelle Termine, Trainingstage und der Reckahner "
+            "Kutschertag des Fahrvereins Planetal e.V. Fahrsport-"
+            "Veranstaltungen in Brandenburg entdecken."
+        ),
+    )
 
 
 @main.route('/vereinsdaten')
 def vereinsdaten():
-    return render_template('main/vereinsdaten.html')
+    return render_template(
+        'main/vereinsdaten.html',
+        title="Vereinsdaten & Mitgliedschaft",
+        meta_description=(
+            "Geschäftsadresse, Bankverbindung, Register- und Mitglieds-"
+            "daten des Fahrvereins Planetal e.V. in Reckahn (Kloster "
+            "Lehnin), Brandenburg."
+        ),
+    )
 
 @main.route('/datenschutz')
 def datenschutz():
-    return render_template('main/datenschutz.html')
+    return render_template(
+        'main/datenschutz.html',
+        title="Datenschutz",
+        meta_description=(
+            "Datenschutzerklärung des Fahrvereins Planetal e.V. gemäß "
+            "DSGVO: verarbeitete Daten, Zwecke, Rechtsgrundlagen und "
+            "Ihre Rechte."
+        ),
+    )
 
 @main.route('/robots.txt')
 def robots():
@@ -155,7 +216,28 @@ def generate_sitemap(app):
             sitemap_xml += f'    <changefreq>{settings["changefreq"]}</changefreq>\n'
             sitemap_xml += f'    <priority>{settings["priority"]}</priority>\n'
             sitemap_xml += '  </url>\n'
-    
+
+    # Dynamische Routen: veroeffentlichte Erlebnisberichte je Jahr.
+    # (Die statische Schleife oben ueberspringt Routen mit Argumenten.)
+    try:
+        jahre = (
+            db.session.query(Bericht.jahr)
+            .filter_by(veroeffentlicht=True)
+            .distinct()
+            .order_by(Bericht.jahr.desc())
+            .all()
+        )
+    except SQLAlchemyError:
+        jahre = []
+    for (jahr,) in jahre:
+        url = urllib.parse.urljoin(base_url, f'/berichte/{jahr}')
+        sitemap_xml += '  <url>\n'
+        sitemap_xml += f'    <loc>{url}</loc>\n'
+        sitemap_xml += f'    <lastmod>{current_datetime}</lastmod>\n'
+        sitemap_xml += '    <changefreq>yearly</changefreq>\n'
+        sitemap_xml += '    <priority>0.6</priority>\n'
+        sitemap_xml += '  </url>\n'
+
     sitemap_xml += '</urlset>'
     return sitemap_xml
 
