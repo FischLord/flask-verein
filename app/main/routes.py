@@ -254,6 +254,7 @@ def generate_sitemap(app):
         '/': {'priority': '1.0', 'changefreq': 'daily'},
         '/verein': {'priority': '0.8', 'changefreq': 'weekly'},
         '/veranstaltungen': {'priority': '0.8', 'changefreq': 'daily'},
+        '/berichte': {'priority': '0.7', 'changefreq': 'monthly'},
         '/kontakt': {'priority': '0.7', 'changefreq': 'monthly'},
         '/vereinsdaten': {'priority': '0.7', 'changefreq': 'monthly'},
         '/formcenter/': {'priority': '0.5', 'changefreq': 'weekly'},
@@ -261,9 +262,11 @@ def generate_sitemap(app):
         '/datenschutz': {'priority': '0.3', 'changefreq': 'yearly'}
     }
     
-    # Aktuelles Datum und Zeit im ISO 8601 Format
-    current_datetime = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S+00:00')
-    
+    # Stabiles lastmod fuer statische Info-Seiten: ein fester Stand statt
+    # datetime.utcnow() pro Abruf (sonst signalisiert die Sitemap bei jedem
+    # Crawl 'alles gerade geaendert', was Suchmaschinen abwerten).
+    static_lastmod = '2026-06-20T00:00:00+00:00'
+
     for rule in app.url_map.iter_rules():
         if "GET" in rule.methods and not rule.arguments:
             endpoint = rule.endpoint.split('.')[-1]
@@ -279,12 +282,14 @@ def generate_sitemap(app):
             
             sitemap_xml += '  <url>\n'
             sitemap_xml += f'    <loc>{url}</loc>\n'
-            sitemap_xml += f'    <lastmod>{current_datetime}</lastmod>\n'
+            sitemap_xml += f'    <lastmod>{static_lastmod}</lastmod>\n'
             sitemap_xml += f'    <changefreq>{settings["changefreq"]}</changefreq>\n'
             sitemap_xml += f'    <priority>{settings["priority"]}</priority>\n'
             sitemap_xml += '  </url>\n'
 
     # Dynamische Routen: veroeffentlichte Erlebnisberichte je Jahr.
+    # Stabiles lastmod = Jahresende (Berichte sind historisch, aendern sich
+    # nicht laufend); kein datetime.utcnow() pro Abruf.
     # (Die statische Schleife oben ueberspringt Routen mit Argumenten.)
     try:
         jahre = (
@@ -298,9 +303,10 @@ def generate_sitemap(app):
         jahre = []
     for (jahr,) in jahre:
         url = urllib.parse.urljoin(base_url, f'/berichte/{jahr}')
+        lastmod = f'{jahr}-12-31T00:00:00+00:00'
         sitemap_xml += '  <url>\n'
         sitemap_xml += f'    <loc>{url}</loc>\n'
-        sitemap_xml += f'    <lastmod>{current_datetime}</lastmod>\n'
+        sitemap_xml += f'    <lastmod>{lastmod}</lastmod>\n'
         sitemap_xml += '    <changefreq>yearly</changefreq>\n'
         sitemap_xml += '    <priority>0.6</priority>\n'
         sitemap_xml += '  </url>\n'

@@ -32,11 +32,10 @@
       {% if kommende %}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {% for termin in kommende %}
-        <div class="card p-5 flex gap-4" itemscope itemtype="https://schema.org/Event">
+        <div class="card p-5 flex gap-4">
           {{ termin_chip(termin) }}
           <div class="min-w-0">
-            <h3 class="text-xl font-semibold text-gray-800" itemprop="name">{{ termin.titel }}</h3>
-            <meta itemprop="startDate" content="{{ termin.datum.isoformat() }}">
+            <h3 class="text-xl font-semibold text-gray-800">{{ termin.titel }}</h3>
             <ul class="mt-2 space-y-1 text-sm text-gray-600">
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-brand-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -45,12 +44,12 @@
               {% if termin.ort %}
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-brand-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span itemprop="location">{{ termin.ort }}</span>
+                <span>{{ termin.ort }}</span>
               </li>
               {% endif %}
             </ul>
             {% if termin.beschreibung %}
-            <div class="prose prose-sm max-w-none text-gray-700 mt-3" itemprop="description">{{ termin.beschreibung | safe }}</div>
+            <div class="prose prose-sm max-w-none text-gray-700 mt-3">{{ termin.beschreibung | safe }}</div>
             {% endif %}
           </div>
         </div>
@@ -113,7 +112,7 @@
 
     <!-- Anmeldewege (kompakt, am Seitenende) -->
     <article>
-      <div class="card p-6" itemscope itemtype="https://schema.org/Organization">
+      <div class="card p-6">
         <h2 class="text-lg font-bold text-gray-800 mb-3">So meldet ihr euch an</h2>
         <ul class="space-y-2 text-gray-700">
           <li class="flex items-start gap-2">
@@ -123,7 +122,7 @@
           <li class="flex items-start gap-2">
             <svg class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             <span><strong>Per E-Mail:</strong>
-              <a href="mailto:fvplanetal@web.de" class="text-brand-700 hover:underline font-medium" itemprop="email">fvplanetal@web.de</a></span>
+              <a href="mailto:fvplanetal@web.de" class="text-brand-700 hover:underline font-medium">fvplanetal@web.de</a></span>
           </li>
         </ul>
       </div>
@@ -131,4 +130,36 @@
 
   </div>
 </section>
+
+{# Event-JSON-LD je kommendem Termin (loest die fruehere Microdata ab). #}
+{% for termin in kommende %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": {{ termin.titel | tojson }},
+  "startDate": "{{ termin.datum.isoformat() }}",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  {% if termin.beschreibung %}"description": {{ termin.beschreibung | striptags | tojson }},{% endif %}
+  "location": {
+    "@type": "Place",
+    "name": {{ (termin.ort or 'Fahrverein Planetal e.V., Reckahn') | tojson }},
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Krahner Straße 1",
+      "postalCode": "14797",
+      "addressLocality": "Kloster Lehnin",
+      "addressRegion": "Brandenburg",
+      "addressCountry": "DE"
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Fahrverein Planetal e.V.",
+    "url": "https://fahrverein-planetal.de"
+  }
+}
+</script>
+{% endfor %}
 {% endblock %}
