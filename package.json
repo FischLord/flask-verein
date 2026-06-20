@@ -8,6 +8,7 @@
     "watch:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/app.css --watch"
   },
   "devDependencies": {
+    "@fontsource/inter": "^5.2.8",
     "@tailwindcss/typography": "^0.5.10",
     "flowbite": "^2.5.2",
     "flowbite-typography": "^1.0.5",
