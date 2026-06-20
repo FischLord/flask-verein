@@ -75,8 +75,10 @@ def create_app(config_class=Config):
     app.register_blueprint(errors.error)
 
     from app.cli import import_berichte
+    from app.seed import seed_stammdaten
 
     app.cli.add_command(import_berichte)
+    app.cli.add_command(seed_stammdaten)
 
     @app.before_request
     def maintenance_mode():
