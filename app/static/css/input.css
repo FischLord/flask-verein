@@ -97,4 +97,22 @@
   .card-hover {
     @apply card hover:-translate-y-1 hover:shadow-lg;
   }
+
+  /* Formularfelder (Kontaktformular). Einheitlicher Look, gut bedienbar
+     auch auf Touch-Geraeten (groessere Hoehe, klare Raender). */
+  .form-label {
+    @apply block text-sm font-semibold text-gray-800 mb-1.5;
+  }
+  .form-input {
+    @apply block w-full rounded-lg border border-gray-300 bg-white
+           px-4 py-3 text-base text-gray-900 placeholder-gray-400
+           shadow-sm transition-colors
+           focus:border-brand-500 focus:ring-2 focus:ring-brand-200;
+  }
+  .form-input-error {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-200;
+  }
+  .form-error {
+    @apply mt-1.5 text-sm text-red-600;
+  }
 }

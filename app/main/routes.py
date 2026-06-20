@@ -1,7 +1,12 @@
-from flask import render_template, current_app, abort, make_response, send_from_directory
+from flask import (
+    render_template, current_app, abort, make_response, send_from_directory,
+    redirect, url_for, flash,
+)
 from app.main import main
-from app import db
+from app.main.forms import ContactForm
+from app import db, mail, limiter
 from app.models import Termin, Vorstandsmitglied, Bericht
+from flask_mail import Message
 from markupsafe import Markup, escape
 import urllib.parse
 from datetime import datetime
@@ -142,7 +147,15 @@ def verein():
     )
 
 
-@main.route("/kontakt", methods=["GET"])
+@main.route("/kontakt", methods=["GET", "POST"])
+@limiter.limit(
+    "5 per hour",
+    methods=["POST"],
+    error_message=(
+        "Es wurden zu viele Nachrichten in kurzer Zeit gesendet. "
+        "Bitte versuche es später erneut oder schreib uns direkt per E-Mail."
+    ),
+)
 def kontakt():
     vorstand = (
         Vorstandsmitglied.query
@@ -150,8 +163,56 @@ def kontakt():
         .order_by(Vorstandsmitglied.reihenfolge.asc())
         .all()
     )
+    form = ContactForm()
+    # Mailversand nur moeglich, wenn ein Mailserver konfiguriert ist.
+    mail_aktiv = bool(current_app.config.get("MAIL_SERVER"))
+
+    if form.validate_on_submit():
+        if not mail_aktiv:
+            flash(
+                "Der Online-Versand ist derzeit nicht eingerichtet. Bitte "
+                "schreib uns direkt an fvplanetal@web.de.",
+                "warning",
+            )
+            return redirect(url_for("main.kontakt") + "#kontaktformular")
+
+        empfaenger = current_app.config.get("CONTACT_RECIPIENT")
+        absender = current_app.config.get("MAIL_DEFAULT_SENDER")
+        msg = Message(
+            subject=f"[Kontaktformular] {form.betreff.data}",
+            recipients=[empfaenger],
+            reply_to=form.email.data,
+            sender=absender,
+            body=(
+                "Neue Nachricht über das Kontaktformular der Website:\n\n"
+                f"Name:    {form.name.data}\n"
+                f"E-Mail:  {form.email.data}\n"
+                f"Betreff: {form.betreff.data}\n\n"
+                "Nachricht:\n"
+                f"{form.nachricht.data}\n"
+            ),
+        )
+        try:
+            mail.send(msg)
+        except Exception:  # noqa: BLE001 - Versandfehler dem Nutzer melden
+            current_app.logger.exception("Kontaktformular: Mailversand fehlgeschlagen")
+            flash(
+                "Die Nachricht konnte gerade nicht versendet werden. Bitte "
+                "versuche es später erneut oder schreib uns an fvplanetal@web.de.",
+                "danger",
+            )
+            return redirect(url_for("main.kontakt") + "#kontaktformular")
+
+        flash(
+            "Vielen Dank für deine Nachricht! Wir melden uns so schnell wie "
+            "möglich bei dir.",
+            "success",
+        )
+        return redirect(url_for("main.kontakt") + "#kontaktformular")
+
     return render_template(
-        "main/kontakt.html", vorstand=vorstand,
+        "main/kontakt.html", vorstand=vorstand, form=form,
+        mail_aktiv=mail_aktiv,
         title="Vorstand & Kontakt",
         meta_description=(
             "Kontakt zum Fahrverein Planetal e.V. in Reckahn: Vorstand, "

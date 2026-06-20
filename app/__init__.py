@@ -8,6 +8,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_mail import Mail
 from sqlalchemy import MetaData
 
 from .modules.util.config import eval_bool_env_var
@@ -28,6 +29,7 @@ login = LoginManager()
 # Hinweis: Für Mehr-Worker-Produktion sollte ein storage_uri
 # (z. B. Redis) konfiguriert werden.
 limiter = Limiter(key_func=get_remote_address)
+mail = Mail()
 
 
 def create_app(config_class=Config):
@@ -54,6 +56,7 @@ def create_app(config_class=Config):
     login.init_app(app)
     login.login_view = "auth.login"
     limiter.init_app(app)
+    mail.init_app(app)
 
     from app.main import main as main
 
