@@ -1,13 +1,13 @@
 {% extends 'boilerplate/layout.html' %}
 {% block content %}
-<section class="py-16" itemscope itemtype="http://schema.org/SportsClub">
+<section class="py-16">
   <div class="max-w-screen-xl mx-auto px-4 lg:px-12">
     <!-- Seitenüberschrift -->
     <header class="text-center mb-16">
-      <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 mb-4" itemprop="name">
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">
         Fahrverein Planetal e.V. in Reckahn
       </h1>
-      <p class="text-lg text-gray-600" itemprop="description">
+      <p class="text-lg text-gray-600">
         Tradition und Leidenschaft für Pferde seit 2012 - Kutschfahrten, Reitsport und Gemeinschaft.
       </p>
     </header>
@@ -19,7 +19,7 @@
         <div class="h-2 bg-brand-500"></div>
         <div class="p-6">
           <h2 class="text-2xl font-bold text-gray-800 mb-3">Über den Fahrverein</h2>
-          <div itemprop="description">
+          <div>
             <p class="text-gray-600 text-base">
               Der Fahrverein Planetal e.V. vereint etwa 25 engagierte Pferdeliebhaber im Herzen des Hohen Fläming. 
               Unsere Mitglieder teilen die Begeisterung für Kutschfahrten und Reitsport in der malerischen Umgebung von Reckahn. 
@@ -35,7 +35,7 @@
         <div class="p-6">
           <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsgeschichte in Reckahn</h2>
           <div class="text-gray-600 text-base mb-4">
-        <p class="mb-4" itemprop="foundingDate" content="2012">
+        <p class="mb-4">
           Seit der Gründung im Jahr 2012 hat sich unser Verein kontinuierlich weiterentwickelt. 
           Dank des Engagements unserer Mitglieder verfügen wir heute über moderne Trainingsanlagen.
         </p>
@@ -48,7 +48,7 @@
              alt="Fahrverein Planetal e.V. - Vereinsschriftzug in Reckahn über dem Trainingsplatz" 
              class="w-full h-auto object-cover rounded"
              loading="lazy"
-             itemprop="image">
+            >
           </div>
         </div>
       </article>
@@ -134,7 +134,7 @@
         <div class="h-2 bg-brand-700"></div>
         <div class="p-6">
           <h2 class="text-2xl font-bold text-gray-800 mb-3">Vereinsinformationen</h2>
-          <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+          <div>
             <p class="text-gray-600 text-base mb-4">
               Offizielle Informationen zum Fahrverein Planetal e.V. - 
               Mitgliedschaft, Beiträge und Kontaktdaten.
@@ -183,37 +183,4 @@
     </div>
   </div>
 </section>
-
-{# Strukturierte Daten für Google Search #}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SportsClub",
-  "name": "Fahrverein Planetal e.V.",
-  "description": "Pferdesportverein in Reckahn mit Schwerpunkt auf Kutschfahrten und Reitsport. Aktive Jugendarbeit und regelmäßige Veranstaltungen im Hohen Fläming.",
-  "foundingDate": "2012",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Reckahn",
-    "addressRegion": "Brandenburg",
-    "addressCountry": "DE"
-  },
-  "member": {
-    "@type": "Organization",
-    "name": "Landessportbund Brandenburg"
-  },
-  "event": {
-    "@type": "SportsEvent",
-    "name": "Reckahner Kutschertag",
-    "description": "Jährliches Fahrsport-Event mit Dressurprüfungen und Hindernisfahren"
-  },
-  "facility": [
-    {
-      "@type": "SportsActivityLocation",
-      "name": "Dressurplatz Reckahn",
-      "description": "80x40 Meter Dressurplatz für Training und Wettkämpfe"
-    }
-  ]
-}
-</script>
 {% endblock %}
