@@ -83,7 +83,7 @@ KUTSCHERTAG = {
     "datum": date(2026, 9, 12),
     "uhrzeit": "10:00",
     "ort": (
-        "Reitplatz Reckahn, Krahner Straße 01, "
+        "Reitplatz Reckahn, Krahner Straße 1, "
         "14797 Kloster Lehnin OT Reckahn"
     ),
     "beschreibung": (

@@ -1,8 +1,13 @@
 {% extends 'boilerplate/layout.html' %}
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-6 text-center">Formularcenter</h1>
-  
+<div class="container mx-auto px-4 py-8 sm:py-12">
+  <header class="text-center mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Formulare &amp; Downloads</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      Alle wichtigen Formulare zum Herunterladen, zum Beispiel für die
+      Anmeldung zum Kutschertag. Einfach anklicken und ausfüllen.
+    </p>
+  </header>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     {% for file in files %}
     <div class="bg-white p-4 rounded shadow hover:shadow-lg transition">
@@ -19,10 +24,10 @@
         </div>
       </div>
       <div class="flex space-x-2 mt-4">
-        <a href="{{ url_for('static', filename='forms/' ~ file.name) }}" target="_blank" class="flex-1 text-center px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+        <a href="{{ url_for('static', filename='forms/' ~ file.name) }}" target="_blank" class="flex-1 text-center px-3 py-2 bg-white text-brand-700 ring-1 ring-inset ring-brand-200 rounded hover:bg-brand-50 transition-colors">
           Vorschau
         </a>
-        <a href="{{ url_for('static', filename='forms/' ~ file.name) }}" download class="flex-1 text-center px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <a href="{{ url_for('static', filename='forms/' ~ file.name) }}" download class="flex-1 text-center px-3 py-2 bg-brand-600 text-white rounded hover:bg-brand-700 transition-colors">
           Download
         </a>
       </div>

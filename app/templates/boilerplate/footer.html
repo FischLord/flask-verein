@@ -4,7 +4,7 @@
       <!-- Info Block -->
       <div class="text-center md:text-right">
         <h3 class="text-lg font-semibold">Fahrverein Planetal e.V.</h3>
-        <p class="text-gray-400">© {{ current_year }} Alle Rechte vorbehalten</p>
+        <p class="text-gray-300">© {{ current_year }} Alle Rechte vorbehalten</p>
       </div>
 
       <!-- Vertikale Linie im Desktop-Modus -->
@@ -14,10 +14,10 @@
       <div class="block md:hidden w-full border-t border-gray-600 my-4"></div>
 
       <!-- Links -->
-      <div class="flex flex-col items-center space-y-4 text-center">
-        <a href="{{ url_for('main.impressum') }}" class="text-gray-400 hover:text-white transition-colors">Impressum</a>
-        <a href="{{ url_for('main.datenschutz') }}" class="text-gray-400 hover:text-white transition-colors">Datenschutz</a>
-        <a href="{{ url_for('main.kontakt') }}" class="text-gray-400 hover:text-white transition-colors">Kontakt</a>
+      <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 text-center">
+        <a href="{{ url_for('main.impressum') }}" class="text-gray-300 hover:text-white transition-colors">Impressum</a>
+        <a href="{{ url_for('main.datenschutz') }}" class="text-gray-300 hover:text-white transition-colors">Datenschutz</a>
+        <a href="{{ url_for('main.kontakt') }}" class="text-gray-300 hover:text-white transition-colors">Kontakt</a>
       </div>
     </div>
   </div>
