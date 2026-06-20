@@ -132,6 +132,11 @@ getmiportantthings.sh
 flask_project_overview.txt
 
 /app/static/forms/*
+# Ausnahme: die offiziellen, oeffentlichen Kutschertag-Formulare gehoeren
+# ins Repo, da Veranstaltungsseite und Formularcenter darauf verweisen.
+!/app/static/forms/FA-2 Fahraufgabe.pdf
+!/app/static/forms/Nennungsformular Fahrer 2023.pdf
+!/app/static/forms/Nennungsformular Reiter 2023.pdf
 
 # CMS-Datei-Uploads (Vorstand-Fotos, Bericht-Bilder) – nicht committen
 app/static/uploads/
