@@ -22,36 +22,11 @@
             Der Verein
           </a>
         </li>
-        <!-- Erlebnisberichte Dropdown -->
-        <li class="lg:relative">
-          <button id="dropdownButton" class="w-full lg:w-auto flex items-center justify-between lg:justify-start gap-1 py-3 lg:py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-black lg:p-0 transition-colors focus:outline-none" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown">
+        <li>
+          <a href="{{ url_for('main.berichte_uebersicht') }}"
+            class="block py-3 lg:py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-black lg:p-0 transition-colors">
             Erlebnisberichte
-            <svg class="w-5 h-5 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-            </svg>
-          </button>
-
-          {# Mobil (<lg): Inline-Accordion im Fluss (static, volle Breite).
-             Ab lg: rechtsbuendiges Overlay. #}
-          <div id="dropdown"
-            class="lg:absolute lg:right-0 mt-1 lg:mt-2 w-full lg:w-48 bg-white lg:divide-y lg:divide-gray-100 rounded-lg lg:shadow-lg transition transform duration-300 ease-out opacity-0 scale-95 hidden z-50">
-            <ul class="py-2 text-sm text-gray-700 max-h-60 overflow-y-auto">
-              <li>
-                <a href="{{ url_for('main.berichte_uebersicht') }}"
-                  class="block px-4 py-3 lg:py-2 font-semibold text-brand-700 hover:bg-gray-100">
-                  Alle Berichte
-                </a>
-              </li>
-              {% for jahr in reports %}
-              <li>
-                <a href="{{ url_for('main.erlebnisberichte', jahr=jahr) }}"
-                  class="block px-4 py-3 lg:py-2 hover:bg-gray-100">
-                  {{ jahr }}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
+          </a>
         </li>
         <li>
           <a href="{{ url_for('main.kontakt') }}"
@@ -94,4 +69,3 @@
   </div>
 </nav>
 
-<script src="{{ url_for('static', filename='js/nav.js') }}" defer></script>
