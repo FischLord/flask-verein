@@ -95,6 +95,10 @@ def delete_image(rel_name, upload_folder) -> bool:
     """
     if not rel_name:
         return False
+    # Aufrufer bauen den relativen Namen mit os.path.join -> unter Windows
+    # steckt darin ein "\". Erst auf "/" normalisieren, sonst frisst
+    # secure_filename den Trenner und der Pfad zeigt ins Leere.
+    rel_name = str(rel_name).replace(os.sep, "/").replace("\\", "/")
     # secure_filename pro Pfadsegment -> kein Verzeichniswechsel.
     parts = [secure_filename(p) for p in rel_name.split("/") if p]
     path = os.path.join(upload_folder, *parts)

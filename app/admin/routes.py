@@ -27,6 +27,26 @@ VORSTAND_SUBDIR = "vorstand"
 BERICHTE_SUBDIR = "berichte"
 
 
+def _delete_datei(subdir, dateiname, upload_folder):
+    """
+    Löscht eine Upload-Datei und protokolliert einen Fehlschlag.
+
+    Der DB-Datensatz verschwindet auch dann, wenn die Datei nicht mehr
+    auffindbar ist – ohne Logeintrag würden solche Karteileichen im
+    Upload-Ordner stillschweigend liegenbleiben.
+
+    :return: True, wenn eine Datei gelöscht wurde, sonst False
+    """
+    rel_name = os.path.join(subdir, dateiname)
+    geloescht = delete_image(rel_name, upload_folder)
+    if not geloescht:
+        current_app.logger.warning(
+            "Upload-Datei konnte nicht geloescht werden (nicht gefunden): "
+            "%s in %s", rel_name, upload_folder
+        )
+    return geloescht
+
+
 @admin.route("/")
 @login_required
 def index():
@@ -175,14 +195,10 @@ def _store_foto(form, mitglied):
             datei, upload_folder, subdir=VORSTAND_SUBDIR
         )
         if mitglied.foto:
-            delete_image(
-                os.path.join(VORSTAND_SUBDIR, mitglied.foto), upload_folder
-            )
+            _delete_datei(VORSTAND_SUBDIR, mitglied.foto, upload_folder)
         mitglied.foto = os.path.basename(gespeichert)
     elif form.foto_entfernen.data and mitglied.foto:
-        delete_image(
-            os.path.join(VORSTAND_SUBDIR, mitglied.foto), upload_folder
-        )
+        _delete_datei(VORSTAND_SUBDIR, mitglied.foto, upload_folder)
         mitglied.foto = None
 
 
@@ -314,8 +330,8 @@ def vorstand_loeschen(mitglied_id):
     form = ActionForm()
     if form.validate_on_submit():
         if mitglied.foto:
-            delete_image(
-                os.path.join(VORSTAND_SUBDIR, mitglied.foto),
+            _delete_datei(
+                VORSTAND_SUBDIR, mitglied.foto,
                 current_app.config["UPLOAD_FOLDER"],
             )
         db.session.delete(mitglied)
@@ -513,8 +529,8 @@ def bericht_bild_loeschen(bild_id):
         abort(400)
 
     bericht_id = bild.bericht_id
-    delete_image(
-        os.path.join(BERICHTE_SUBDIR, bild.dateiname),
+    _delete_datei(
+        BERICHTE_SUBDIR, bild.dateiname,
         current_app.config["UPLOAD_FOLDER"],
     )
     db.session.delete(bild)
@@ -560,9 +576,7 @@ def bericht_loeschen(bericht_id):
     if form.validate_on_submit():
         upload_folder = current_app.config["UPLOAD_FOLDER"]
         for bild in list(bericht.bilder):
-            delete_image(
-                os.path.join(BERICHTE_SUBDIR, bild.dateiname), upload_folder
-            )
+            _delete_datei(BERICHTE_SUBDIR, bild.dateiname, upload_folder)
         db.session.delete(bericht)
         db.session.commit()
         flash("Bericht wurde gelöscht.", "success")
