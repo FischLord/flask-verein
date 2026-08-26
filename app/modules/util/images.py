@@ -4,7 +4,7 @@ Bild-Upload-Utilities (Pillow).
 ----------------
 
 Wird ab Phase 2 (Vorstand-Fotos, Bericht-Bilder) genutzt; in Phase 1
-bereits angelegt. Abgeleitet von ``pic_to_webp.py``.
+bereits angelegt.
 
 Härtung (vgl. cms-plan.md §8):
 - Extension-Whitelist,
