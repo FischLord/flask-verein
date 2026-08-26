@@ -137,9 +137,16 @@ flask_project_overview.txt
 !/app/static/forms/FA-2 Fahraufgabe.pdf
 !/app/static/forms/Nennungsformular Fahrer 2023.pdf
 !/app/static/forms/Nennungsformular Reiter 2023.pdf
+!/app/static/forms/Einführung Kutschenführerschein 2017.pdf
+!/app/static/forms/Elies Fahrlehrer aberkannt 2015.pdf
+!/app/static/forms/Sportunfall mit Pferd, Haftpflicht.pdf
 
 # CMS-Datei-Uploads (Vorstand-Fotos, Bericht-Bilder) – nicht committen
 app/static/uploads/
+
+# Alt-Berichte als Import-Quelldaten (~98 MB Originalbilder) – die
+# Originale liegen im Server-Archiv, ins Repo gehoeren sie nicht.
+app/static/berichte/
 
 # Anwendungs-Datenbank – niemals committen (enthält Nutzerdaten)
 app.db
