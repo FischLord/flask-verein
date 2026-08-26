@@ -75,9 +75,9 @@
           </div>
         </div>
         {% endif %}
-        {{ form.foto(class="block w-full text-sm text-gray-700") }}
+        {{ form.foto(accept="image/jpeg,image/png,image/webp", class="block w-full text-sm text-gray-700") }}
         <p class="text-xs text-gray-600 mt-1">
-          Erlaubt: jpg, jpeg, png, webp, gif. Das Bild wird automatisch
+          Erlaubt: jpg, jpeg, png, webp. Das Bild wird automatisch
           verkleinert und als WebP gespeichert.
         </p>
         {% for error in form.foto.errors %}

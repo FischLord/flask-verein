@@ -22,6 +22,39 @@
     ["clean"]
   ];
 
+  // Quill erzeugt die Werkzeugleiste selbst und beschriftet die Knoepfe
+  // nur per CSS-Icon. Ohne Textalternative sagt ein Screenreader lediglich
+  // "Schaltflaeche" an; deshalb hier nachtraeglich beschriften.
+  var BUTTON_LABELS = [
+    ["button.ql-bold", "Fett"],
+    ["button.ql-italic", "Kursiv"],
+    ['button.ql-list[value="ordered"]', "Nummerierte Liste"],
+    ['button.ql-list[value="bullet"]', "Aufzählung"],
+    ["button.ql-blockquote", "Zitat"],
+    ["button.ql-link", "Link einfügen"],
+    ["button.ql-clean", "Formatierung entfernen"]
+  ];
+
+  function labelToolbar(container) {
+    if (!container) {
+      return;
+    }
+    BUTTON_LABELS.forEach(function (eintrag) {
+      var knopf = container.querySelector(eintrag[0]);
+      if (knopf) {
+        knopf.setAttribute("aria-label", eintrag[1]);
+        knopf.setAttribute("title", eintrag[1]);
+      }
+    });
+    // Ueberschriften-Auswahl: Quill ersetzt das <select> durch ein
+    // eigenes Picker-Widget, das ebenfalls unbeschriftet ist.
+    var picker = container.querySelector(".ql-header");
+    if (picker) {
+      picker.setAttribute("aria-label", "Absatzformat");
+      picker.setAttribute("title", "Absatzformat");
+    }
+  }
+
   function initEditor(textarea) {
     var wrapper = document.createElement("div");
     wrapper.className = "js-wysiwyg-editor bg-white";
@@ -38,6 +71,9 @@
 
     // Etwas Höhe, damit das Eingabefeld gut bedienbar ist.
     quill.root.style.minHeight = "12rem";
+
+    var toolbar = quill.getModule("toolbar");
+    labelToolbar(toolbar && toolbar.container);
 
     if (textarea.value) {
       quill.clipboard.dangerouslyPasteHTML(textarea.value);

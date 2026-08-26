@@ -64,9 +64,9 @@
           action="{{ url_for('admin.bericht_bilder_hinzufuegen', bericht_id=bericht.id) }}"
           class="bg-white p-6 rounded-lg shadow border border-gray-200">
       {{ upload_form.csrf_token }}
-      {{ upload_form.bilder(multiple=True, class="block w-full text-sm text-gray-700 mb-3") }}
+      {{ upload_form.bilder(multiple=True, accept="image/jpeg,image/png,image/webp", class="block w-full text-sm text-gray-700 mb-3") }}
       <p class="text-xs text-gray-600 mb-3">
-        Mehrere Dateien möglich. Erlaubt: jpg, jpeg, png, webp, gif.
+        Mehrere Dateien möglich. Erlaubt: jpg, jpeg, png, webp.
         Bilder werden automatisch verkleinert und als WebP gespeichert.
       </p>
       <button type="submit"

@@ -12,7 +12,10 @@
   </div>
 
   {% if termine %}
-  <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
+  {% include 'admin/_scrollhinweis.html' %}
+  {# tabindex: ein scrollbarer Bereich muss auch per Tastatur erreichbar sein. #}
+  <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-200"
+       tabindex="0" role="region" aria-label="Terminliste, horizontal scrollbar">
     <table class="w-full text-left text-sm text-gray-700">
       <thead class="bg-gray-50 text-xs uppercase tracking-wide text-gray-600">
         <tr>
