@@ -9,7 +9,9 @@
     <div class="px-8 py-6 mt-8 text-left bg-white p-4">
         <h3 class="text-2xl font-bold text-center">Willkommen zurück</h3>
         <h4 class="text-lg font-bold text-center text-gray-500">Bitte melde dich an</h4>
-        <form action="{{ url_for('auth.login') }}" method="POST">
+        {#- ?next= muss den POST ueberleben, sonst landet man nach dem
+            Login immer auf der Startseite statt auf der angefragten Seite. -#}
+        <form action="{{ url_for('auth.login', next=request.args.get('next')) }}" method="POST">
             {{ form.csrf_token }}
             <div class="mt-4">
                 <div>

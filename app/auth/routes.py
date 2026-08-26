@@ -1,4 +1,8 @@
-from flask import render_template, redirect, url_for, flash, current_app, abort
+from urllib.parse import urlsplit
+
+from flask import (
+    render_template, redirect, url_for, flash, current_app, abort, request,
+)
 from flask_login import login_user, logout_user, login_required
 from app.auth.forms import LoginForm, RegistrationForm
 from app.auth import auth
@@ -15,6 +19,31 @@ from app.modules.util.forms import collect_form_data
 from app.modules.util.config import eval_bool_env_var
 
 
+def _safe_next_url(target):
+    """
+    Gibt ``target`` zurück, wenn es ein sicherer, repo-interner Pfad ist.
+
+    Schutz gegen Open Redirect: Nur relative Pfade sind erlaubt. Verworfen
+    werden absolute URLs ("https://boese.example/"), schema-relative URLs
+    ("//boese.example") und alles, was ein Schema oder einen Host mitbringt
+    ("javascript:...", "http:/x"). Ungültige Werte ergeben ``None``.
+    """
+    if not target:
+        return None
+    # Browser behandeln "\" in URLs wie "/": "/\host" wuerde sonst als
+    # "//host" auf einen fremden Host aufloesen. Fuer die Pruefung
+    # angleichen, damit solche Varianten nicht durchrutschen.
+    probe = target.replace("\\", "/")
+    # Ein sicherer Pfad beginnt mit genau einem "/". "//host" wuerde der
+    # Browser als schema-relative URL auf einen fremden Host aufloesen.
+    if not probe.startswith("/") or probe.startswith("//"):
+        return None
+    parts = urlsplit(probe)
+    if parts.scheme or parts.netloc:
+        return None
+    return target
+
+
 @auth.route("/login", methods=["GET", "POST"])
 @redirect_if_already_authenticated
 @limiter.limit("5 per minute", methods=["POST"])
@@ -28,7 +57,10 @@ def login():
             return redirect(url_for("auth.login"))
 
         login_user(user)
-        return redirect(url_for("main.index"))
+        # Nach dem Login zurück auf die urspruenglich angefragte Seite
+        # (setzt Flask-Login beim Umleiten als ?next=), sonst Startseite.
+        next_page = _safe_next_url(request.args.get("next"))
+        return redirect(next_page or url_for("main.index"))
 
     return render_template("auth/login.html", title="Anmelden", form=form)
 
