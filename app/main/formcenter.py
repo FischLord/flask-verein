@@ -4,6 +4,7 @@ import os
 
 formcenter = Blueprint('formcenter', __name__, template_folder='templates')
 
+
 @formcenter.route('/', methods=['GET'])
 def index():
     # Ordner, in dem die Formulare abgelegt werden (z. B. PDFs)
@@ -23,4 +24,13 @@ def index():
             })
     # Sortierung nach Dateinamen (anpassbar)
     files = sorted(files, key=lambda x: x['name'])
-    return render_template('main/formcenter.html', files=files)
+    return render_template(
+        'main/formcenter.html',
+        files=files,
+        title='Formularcenter',
+        meta_description=(
+            'Offizielle Nennungs- und Aufgabenformulare des Fahrvereins '
+            'Planetal e.V. zum Download – u. a. für den Reckahner '
+            'Kutschertag.'
+        ),
+    )

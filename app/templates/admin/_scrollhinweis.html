@@ -1,0 +1,13 @@
+{#-
+    Hinweis auf horizontal scrollbare Admin-Tabellen.
+    ------------------------------------------------------------
+    Auf schmalen Screens ragen die Tabellenspalten aus dem Viewport.
+    Ohne Hinweis wirken die abgeschnittenen Spalten (u. a. "Aktionen")
+    schlicht nicht vorhanden. Ab md: ist die Tabelle vollstaendig
+    sichtbar, dort blendet der Hinweis sich aus.
+-#}
+<p class="md:hidden flex items-center justify-end gap-1 mb-2 text-xs text-gray-500">
+  <span aria-hidden="true">&#8592;</span>
+  <span>Tabelle seitlich wischen</span>
+  <span aria-hidden="true">&#8594;</span>
+</p>

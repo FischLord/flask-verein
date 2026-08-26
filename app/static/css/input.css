@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Inter (selbst gehostet, DSGVO-konform – kein Google-CDN).
+ * Quelle: @fontsource/inter; Dateien unter app/static/fonts/inter/.
+ * Pfade relativ zur kompilierten app/static/css/app.css.
+ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../fonts/inter/inter-latin-800-normal.woff2") format("woff2");
+}
+
+
+/*
+ * Projekt-eigene Komponenten & Basis-Anpassungen.
+ * ---------------------------------------------------------------------------
+ * Diese Datei wird von Tailwind (CLI) zu app/static/css/app.css kompiliert.
+ * Inhalte hier ergaenzen die generierten Utilities.
+ */
+
+@layer base {
+  /* Inter-Font wird in layout.html via <link> geladen; hier nur Fallback. */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Sichtbarer Fokusring fuer Tastatur-Nutzer (A11y, ersetzt das frueher
+     kaputte focus-visible:ring-2). Greift global auf interaktive Elemente. */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid theme("colors.brand.500");
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+}
+
+@layer components {
+  /* Wiederverwendbare Buttons (siehe boilerplate/macros/ui.html). */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5
+           text-sm font-semibold transition-colors duration-200
+           focus:outline-none;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800;
+  }
+  .btn-secondary {
+    @apply btn bg-white text-brand-700 ring-1 ring-inset ring-brand-200
+           hover:bg-brand-50 active:bg-brand-100;
+  }
+  .btn-accent {
+    @apply btn bg-accent-500 text-white hover:bg-accent-600 active:bg-accent-700;
+  }
+
+  /* Karten mit dezentem Hover-Lift (das "spielerische" Element). */
+  .card {
+    @apply rounded-2xl bg-white shadow-sm ring-1 ring-gray-100
+           transition duration-200;
+  }
+  .card-hover {
+    @apply card hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Formularfelder (Kontaktformular). Einheitlicher Look, gut bedienbar
+     auch auf Touch-Geraeten (groessere Hoehe, klare Raender). */
+  .form-label {
+    @apply block text-sm font-semibold text-gray-800 mb-1.5;
+  }
+  .form-input {
+    @apply block w-full rounded-lg border border-gray-300 bg-white
+           px-4 py-3 text-base text-gray-900 placeholder-gray-400
+           shadow-sm transition-colors
+           focus:border-brand-500 focus:ring-2 focus:ring-brand-200;
+  }
+  .form-input-error {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-200;
+  }
+  .form-error {
+    @apply mt-1.5 text-sm text-red-600;
+  }
+}

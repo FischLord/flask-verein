@@ -1,84 +1,157 @@
 {% extends 'boilerplate/layout.html' %}
 {% block content %}
-<section>
-    <div class="max-w-screen-xl mx-auto px-4 text-center lg:px-12">
-        <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-12 mb-4">Unser Vorstand</h1>
+<section class="py-10 sm:py-14">
+    <div class="max-w-screen-xl mx-auto px-4 lg:px-12">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-3">Vorstand &amp; Kontakt</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Lernt die Menschen hinter dem Fahrverein Planetal kennen und
+                findet schnell den passenden Draht zu uns.
+            </p>
+        </header>
 
-        <div class="grid gap-8 lg:grid-cols-2 mb-8">
-            <!-- Vorsitzende -->
-            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-                <img src="https://fakeimg.pl/150x150?text=In+work" alt="Vorsitzende" class="w-32 h-32 rounded-full mb-4">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Jacquelin Bredt</h2>
-                <p class="text-lg text-gray-500 dark:text-gray-400 font-bold">Vorsitzende</p>
-                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Diejenige, die den Laden zusammenhält – mit Charme und einem Telefon in der Hand."</p>
-                <p class="text-gray-500 dark:text-gray-400 mt-4">T. 0162 9177860</p>
-                <p class="text-gray-500 dark:text-gray-400">
-                    <a href="mailto:jacquelin.bredt@web.de" class="text-gray-700 hover:text-black dark:text-gray-400 dark:hover:text-white">
-                        jacquelin.bredt@web.de
-                    </a>
-                </p>
+        <!-- So erreichen Sie uns -->
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-14 max-w-5xl mx-auto">
+            <a href="mailto:fvplanetal@web.de"
+               class="card-hover p-6 flex flex-col items-center text-center">
+                <span class="flex items-center justify-center w-12 h-12 rounded-full bg-brand-100 text-brand-700 mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </span>
+                <span class="font-semibold text-gray-800">E-Mail</span>
+                <span class="text-brand-700 break-words">fvplanetal@web.de</span>
+            </a>
+            <a href="tel:+4901629177860"
+               class="card-hover p-6 flex flex-col items-center text-center">
+                <span class="flex items-center justify-center w-12 h-12 rounded-full bg-brand-100 text-brand-700 mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                </span>
+                <span class="font-semibold text-gray-800">Telefon</span>
+                <span class="text-brand-700">0162 9177860</span>
+                <span class="text-xs text-gray-500 mt-1">Jacquelin Bredt (Vorsitzende)</span>
+            </a>
+            <div class="card p-6 flex flex-col items-center text-center sm:col-span-2 lg:col-span-1">
+                <span class="flex items-center justify-center w-12 h-12 rounded-full bg-brand-100 text-brand-700 mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </span>
+                <span class="font-semibold text-gray-800">Anschrift</span>
+                <span class="text-gray-600">Krahner Straße 1<br>14797 Kloster Lehnin OT Reckahn</span>
             </div>
-
-            <!-- Stellvertretende Vorsitzende -->
-            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-                <img src="https://fakeimg.pl/150x150?text=In+work" alt="Stellvertretende Vorsitzende" class="w-32 h-32 rounded-full mb-4">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Denise Matthe</h2>
-                <p class="text-lg text-gray-500 dark:text-gray-400 font-bold">Stellvertretende Vorsitzende</p>
-                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Die ruhige Hand, die das Ruder übernimmt, wenn's mal stürmisch wird."</p>
-            </div>
-
-            <!-- Kassenwart -->
-            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-                <img src="https://fakeimg.pl/150x150?text=In+work" alt="Kassenwart" class="w-32 h-32 rounded-full mb-4">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Stefanie-Kirstin Sailer</h2>
-                <p class="text-lg text-gray-500 dark:text-gray-400 font-bold">Kassenwart</p>
-                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Die, die weiß, wo jeder Cent steckt – und immer den Überblick behält."</p>
-            </div>
-
-            <!-- Jugendwart -->
-            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-                <img src="https://fakeimg.pl/150x150?text=In+work" alt="Jugendwart" class="w-32 h-32 rounded-full mb-4">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Janneck Lehmann</h2>
-                <p class="text-lg text-gray-500 dark:text-gray-400 font-bold">Jugendwart & Internetseite</p>
-                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Der Jugendflüsterer und Web-Guru – bringt alles ins Netz."</p>
-            </div>
-
-            <!-- Schriftführer -->
-            <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-                <img src="https://fakeimg.pl/150x150?text=In+work" alt="Schriftführer" class="w-32 h-32 rounded-full mb-4">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Sarah Hohmann</h2>
-                <p class="text-lg text-gray-500 dark:text-gray-400 font-bold">Schriftführer</p>
-                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Schreibt schneller als die meisten reden können."</p>
-            </div>
-
-            <!-- Social Media -->
-            <!-- <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-                <img src="https://fakeimg.pl/150x150?text=In+work" alt="Social Media" class="w-32 h-32 rounded-full mb-4">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Christina Herrmann</h2>
-                <p class="text-lg text-gray-500 dark:text-gray-400 font-bold">Facebook & Social Media</p>
-                <p class="text-lg text-gray-500 dark:text-gray-400 italic">"Teilt alles – und findet immer den perfekten Hashtag."</p>
-            </div> -->
         </div>
 
-        <!-- Kontaktformular (optional) -->
-        <!-- <div class="mt-12">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Kontaktieren Sie uns</h2>
-            <form action="/send" method="post" class="grid gap-6">
-                <div>
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ihr Name</label>
-                    <input type="text" id="name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white rounded-lg block w-full p-3">
+        <!-- Kontaktformular -->
+        <div id="kontaktformular" class="max-w-2xl mx-auto mb-16 scroll-mt-24">
+            <div class="card p-6 sm:p-8">
+                <div class="text-center mb-6">
+                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-accent-100 text-accent-600 mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 3v-3z"/></svg>
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Schreib uns</h2>
+                    <p class="text-gray-600 mt-2">
+                        Fragen zur Mitgliedschaft, zu Kutschfahrten oder zu unseren
+                        Veranstaltungen? Wir freuen uns auf deine Nachricht.
+                    </p>
                 </div>
-                <div>
-                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ihre E-Mail</label>
-                    <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white rounded-lg block w-full p-3">
+
+                {% if not mail_aktiv %}
+                <div class="rounded-lg bg-amber-50 ring-1 ring-amber-200 text-amber-800 p-4 text-sm mb-6">
+                    Der Online-Versand ist gerade nicht eingerichtet. Du erreichst uns
+                    jederzeit direkt per E-Mail an
+                    <a href="mailto:fvplanetal@web.de" class="font-semibold underline">fvplanetal@web.de</a>.
                 </div>
-                <div>
-                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nachricht</label>
-                    <textarea id="message" name="message" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white rounded-lg block w-full p-3"></textarea>
-                </div>
-                <button type="submit" class="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Nachricht senden</button>
-            </form>
-        </div> -->
+                {% endif %}
+
+                <form method="post" action="{{ url_for('main.kontakt') }}#kontaktformular" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    {# Honeypot: fuer Menschen unsichtbar, fuer Bots ein Koeder. #}
+                    <div class="hidden" aria-hidden="true">
+                        <label>{{ form.website.label }}{{ form.website(tabindex="-1", autocomplete="off") }}</label>
+                    </div>
+
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div>
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-input" ~ (" form-input-error" if form.name.errors else ""), placeholder="Dein Name", autocomplete="name") }}
+                            {% for error in form.name.errors %}
+                            <p class="form-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-input" ~ (" form-input-error" if form.email.errors else ""), placeholder="name@beispiel.de", autocomplete="email", type="email") }}
+                            {% for error in form.email.errors %}
+                            <p class="form-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        {{ form.betreff.label(class="form-label") }}
+                        {{ form.betreff(class="form-input" ~ (" form-input-error" if form.betreff.errors else ""), placeholder="Worum geht es?") }}
+                        {% for error in form.betreff.errors %}
+                        <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-5">
+                        {{ form.nachricht.label(class="form-label") }}
+                        {{ form.nachricht(class="form-input" ~ (" form-input-error" if form.nachricht.errors else ""), rows="6", placeholder="Deine Nachricht an uns …") }}
+                        {% for error in form.nachricht.errors %}
+                        <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <p class="text-xs text-gray-500">
+                            Mit dem Absenden stimmst du der Verarbeitung deiner Angaben
+                            gemäß unserer
+                            <a href="{{ url_for('main.datenschutz') }}" class="underline hover:text-brand-700">Datenschutzerklärung</a>
+                            zu.
+                        </p>
+                        {{ form.submit(class="btn-primary w-full sm:w-auto") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">Unser Vorstand</h2>
+
+        {% if vorstand %}
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {% for mitglied in vorstand %}
+            <div class="card-hover p-6 flex flex-col items-center text-center">
+                <img src="{% if mitglied.foto %}{{ url_for('static', filename='uploads/vorstand/' ~ mitglied.foto) }}{% else %}{{ url_for('static', filename='img/placeholder-person.svg') }}{% endif %}"
+                     alt="{{ mitglied.name }}{% if mitglied.funktion %} – {{ mitglied.funktion }}{% endif %}"
+                     class="w-32 h-32 rounded-full object-cover mb-4 ring-4 ring-brand-50"
+                     loading="lazy">
+                <h3 class="text-xl font-semibold text-gray-900">{{ mitglied.name }}</h3>
+                <p class="text-brand-700 font-bold mb-2">{{ mitglied.funktion }}</p>
+                {% if mitglied.spruch %}
+                {# Klartext: auto-escaped; Zeilenumbrueche per CSS (kein |safe). #}
+                <p class="text-gray-600 italic whitespace-pre-line">„{{ mitglied.spruch }}"</p>
+                {% endif %}
+                {% if mitglied.telefon %}
+                <p class="text-gray-600 mt-4">
+                    <a href="tel:{{ mitglied.telefon | replace(' ', '') }}" class="hover:text-brand-700 transition-colors">T. {{ mitglied.telefon }}</a>
+                </p>
+                {% endif %}
+                {% if mitglied.email %}
+                <p class="text-gray-600">
+                    <a href="mailto:{{ mitglied.email }}" class="hover:text-brand-700 transition-colors break-words">
+                        {{ mitglied.email }}
+                    </a>
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="max-w-2xl mx-auto card p-6 text-center">
+            <p class="text-lg text-gray-600">
+                Die Vorstandsdaten werden derzeit aktualisiert. Schauen Sie bald wieder vorbei.
+            </p>
+        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

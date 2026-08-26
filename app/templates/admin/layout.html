@@ -1,0 +1,72 @@
+{#-
+    Admin/Verwaltung - Layout
+    ------------------------------------------------------------
+    Schlankes, eigenständiges Layout für den geschützten
+    Verwaltungsbereich. Nutzt dieselbe kompilierte Flowbite/
+    Tailwind-CSS wie die öffentliche Seite. Bewusst ohne
+    öffentliche Navigation/Footer – klar und laienfreundlich.
+-#}
+<!DOCTYPE html>
+<html lang="de" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% if title %}{{ title }} – {% endif %}Verwaltung · {{ config['APP_NAME'] }}</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='logo.webp') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+  <header>
+    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 shadow mb-8">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto gap-y-2">
+        <a href="{{ url_for('admin.index') }}" class="flex items-center shrink-0">
+          <img src="{{ url_for('static', filename='logo.webp') }}" class="h-8 mr-3" alt="Vereinslogo" />
+          <span class="self-center text-xl font-semibold whitespace-nowrap text-gray-900">Verwaltung</span>
+        </a>
+        <button data-collapse-toggle="admin-navbar" type="button"
+          class="inline-flex items-center p-2 text-gray-600 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+          aria-controls="admin-navbar" aria-expanded="false">
+          <span class="sr-only">Menü öffnen</span>
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3 5h14a1 1 0 110 2H3a1 1 0 010-2zm0 5h14a1 1 0 110 2H3a1 1 0 010-2zm0 5h14a1 1 0 110 2H3a1 1 0 010-2z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <div class="hidden w-full lg:block lg:w-auto" id="admin-navbar">
+          <ul class="flex flex-col mt-4 lg:mt-0 lg:flex-row lg:items-center gap-1 lg:gap-4 text-base font-medium border-t border-gray-100 lg:border-0 pt-2 lg:pt-0">
+            <li>
+              <a href="{{ url_for('admin.index') }}" class="block py-2 px-2 rounded text-gray-700 hover:bg-gray-100 lg:hover:bg-transparent lg:hover:underline lg:px-0">Übersicht</a>
+            </li>
+            <li>
+              <a href="{{ url_for('admin.termine_list') }}" class="block py-2 px-2 rounded text-gray-700 hover:bg-gray-100 lg:hover:bg-transparent lg:hover:underline lg:px-0">Termine</a>
+            </li>
+            <li>
+              <a href="{{ url_for('admin.vorstand_list') }}" class="block py-2 px-2 rounded text-gray-700 hover:bg-gray-100 lg:hover:bg-transparent lg:hover:underline lg:px-0">Vorstand</a>
+            </li>
+            <li>
+              <a href="{{ url_for('admin.berichte_list') }}" class="block py-2 px-2 rounded text-gray-700 hover:bg-gray-100 lg:hover:bg-transparent lg:hover:underline lg:px-0">Berichte</a>
+            </li>
+            <li>
+              <a href="{{ url_for('main.index') }}" class="block py-2 px-2 rounded text-gray-700 hover:bg-gray-100 lg:hover:bg-transparent lg:hover:underline lg:px-0">Zur Website</a>
+            </li>
+            <li class="mt-2 lg:mt-0">
+              <a href="{{ url_for('auth.logout') }}" class="block lg:inline-block text-center px-4 py-2 text-white bg-gray-800 rounded-lg hover:bg-gray-900">Abmelden</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="max-w-screen-xl mx-auto px-4 mb-10">
+      {% include 'boilerplate/flash_message.html' %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='vendor/flowbite/flowbite.min.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
