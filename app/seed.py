@@ -117,7 +117,9 @@ def seed_stammdaten(dry_run):
     if Termin.query.filter_by(datum=KUTSCHERTAG["datum"]).first():
         click.echo(f"  · Termin vorhanden:  {KUTSCHERTAG['titel']}")
     else:
-        click.secho(f"  + Termin neu:        {KUTSCHERTAG['titel']}", fg="green")
+        click.secho(
+            f"  + Termin neu:        {KUTSCHERTAG['titel']}", fg="green"
+        )
         neu_termin += 1
         if not dry_run:
             db.session.add(Termin(veroeffentlicht=True, **KUTSCHERTAG))

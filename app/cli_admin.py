@@ -9,10 +9,11 @@ Konto-Verwaltung reproduzierbar (die SQLite-DB ist gitignored).
 Aufruf::
 
     # Neues Konto anlegen oder Passwort aktualisieren
-    flask --app app create-admin --email admin@example.com --password "Geheim123"
+    flask --app app create-admin -e admin@example.com -p "Geheim123"
 
     # Vor- und Nachname optional setzen
-    flask --app app create-admin -e a@b.de -p "Geheim123" --first Max --last Muster
+    flask --app app create-admin -e a@b.de -p "Geheim123" \
+        --first Max --last Muster
 
 Hinweise:
 - Ist die E-Mail bereits vergeben, wird das Passwort (und optional der
@@ -32,8 +33,12 @@ from app.models import Users
     "--password", "-p", required=True,
     help="Passwort (wird nur als Hash gespeichert).",
 )
-@click.option("--first", "first_name", default=None, help="Vorname (optional).")
-@click.option("--last", "last_name", default=None, help="Nachname (optional).")
+@click.option(
+    "--first", "first_name", default=None, help="Vorname (optional).",
+)
+@click.option(
+    "--last", "last_name", default=None, help="Nachname (optional).",
+)
 @with_appcontext
 def create_admin(email, password, first_name, last_name):
     """Legt ein Verwaltungs-Konto an oder setzt dessen Passwort neu."""

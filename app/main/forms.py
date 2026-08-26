@@ -19,7 +19,8 @@ class ContactForm(FlaskForm):
     email = StringField(
         "E-Mail",
         validators=[DataRequired(message="Bitte gib deine E-Mail an."),
-                    Email(message="Bitte eine gültige E-Mail-Adresse angeben."),
+                    Email(message="Bitte eine gültige E-Mail-Adresse "
+                                  "angeben."),
                     Length(max=120)],
     )
     betreff = StringField(

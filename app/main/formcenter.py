@@ -4,6 +4,7 @@ import os
 
 formcenter = Blueprint('formcenter', __name__, template_folder='templates')
 
+
 @formcenter.route('/', methods=['GET'])
 def index():
     # Ordner, in dem die Formulare abgelegt werden (z. B. PDFs)

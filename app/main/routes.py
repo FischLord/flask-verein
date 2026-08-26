@@ -88,6 +88,7 @@ def erlebnisberichte(jahr):
         ),
     )
 
+
 # Janneck: Benötigt damit Zeilenumbrüche aus Text datei angezeigt werden
 @main.app_template_filter('nl2br')
 def nl2br_filter(s):
@@ -113,8 +114,6 @@ def monat_kurz_filter(d):
         return _MONATE_KURZ[d.month]
     except (AttributeError, IndexError):
         return ""
-
-
 
 
 @main.route("/verein", methods=["GET"])
@@ -178,10 +177,13 @@ def kontakt():
         try:
             mail.send(msg)
         except Exception:  # noqa: BLE001 - Versandfehler dem Nutzer melden
-            current_app.logger.exception("Kontaktformular: Mailversand fehlgeschlagen")
+            current_app.logger.exception(
+                "Kontaktformular: Mailversand fehlgeschlagen"
+            )
             flash(
                 "Die Nachricht konnte gerade nicht versendet werden. Bitte "
-                "versuche es später erneut oder schreib uns an fvplanetal@web.de.",
+                "versuche es später erneut oder schreib uns an "
+                "fvplanetal@web.de.",
                 "danger",
             )
             return redirect(url_for("main.kontakt") + "#kontaktformular")
@@ -258,6 +260,7 @@ def vereinsdaten():
         ),
     )
 
+
 @main.route('/datenschutz')
 def datenschutz():
     return render_template(
@@ -270,29 +273,34 @@ def datenschutz():
         ),
     )
 
+
 @main.route('/robots.txt')
 def robots():
     return send_from_directory(current_app.static_folder, 'robots.txt')
+
 
 def generate_sitemap(app):
     """
     Generiert eine Google-konforme XML Sitemap für alle öffentlichen Routen
     """
     base_url = "https://fahrverein-planetal.de"
-    
+
     # XML Header mit allen erforderlichen Schemas
+    schema_url = 'http://www.sitemaps.org/schemas/sitemap/0.9'
     sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
-    sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
-    sitemap_xml += '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
-    sitemap_xml += '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n'
-    sitemap_xml += '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n'
-    
+    sitemap_xml += f'<urlset xmlns="{schema_url}"\n'
+    sitemap_xml += (
+        '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
+    )
+    sitemap_xml += f'        xsi:schemaLocation="{schema_url}\n'
+    sitemap_xml += f'        {schema_url}/sitemap.xsd">\n'
+
     # Liste der Routen die ausgeschlossen werden sollen
     excluded_routes = {
         'static', 'admin', 'login', 'logout', 'register',
         'robots.txt', 'sitemap.xml'
     }
-    
+
     # Dictionary für Seitenprioritäten und Änderungshäufigkeiten
     page_settings = {
         '/': {'priority': '1.0', 'changefreq': 'daily'},
@@ -305,7 +313,7 @@ def generate_sitemap(app):
         '/impressum': {'priority': '0.3', 'changefreq': 'yearly'},
         '/datenschutz': {'priority': '0.3', 'changefreq': 'yearly'}
     }
-    
+
     # Stabiles lastmod fuer statische Info-Seiten: ein fester Stand statt
     # datetime.utcnow() pro Abruf (sonst signalisiert die Sitemap bei jedem
     # Crawl 'alles gerade geaendert', was Suchmaschinen abwerten).
@@ -315,20 +323,24 @@ def generate_sitemap(app):
         if "GET" in rule.methods and not rule.arguments:
             endpoint = rule.endpoint.split('.')[-1]
             path = rule.rule
-            
+
             # Überspringe ausgeschlossene Routen
             if any(excl in endpoint for excl in excluded_routes) or \
                any(excl in path for excl in excluded_routes):
                 continue
-                
+
             url = urllib.parse.urljoin(base_url, path)
-            settings = page_settings.get(path, {'priority': '0.5', 'changefreq': 'monthly'})
-            
+            settings = page_settings.get(
+                path, {'priority': '0.5', 'changefreq': 'monthly'}
+            )
+            changefreq = settings['changefreq']
+            priority = settings['priority']
+
             sitemap_xml += '  <url>\n'
             sitemap_xml += f'    <loc>{url}</loc>\n'
             sitemap_xml += f'    <lastmod>{static_lastmod}</lastmod>\n'
-            sitemap_xml += f'    <changefreq>{settings["changefreq"]}</changefreq>\n'
-            sitemap_xml += f'    <priority>{settings["priority"]}</priority>\n'
+            sitemap_xml += f'    <changefreq>{changefreq}</changefreq>\n'
+            sitemap_xml += f'    <priority>{priority}</priority>\n'
             sitemap_xml += '  </url>\n'
 
     # Dynamische Routen: veroeffentlichte Erlebnisberichte je Jahr.
@@ -357,6 +369,7 @@ def generate_sitemap(app):
 
     sitemap_xml += '</urlset>'
     return sitemap_xml
+
 
 @main.route('/sitemap.xml')
 def sitemap():
