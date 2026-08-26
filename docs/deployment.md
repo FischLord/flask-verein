@@ -31,6 +31,81 @@ Kurzreferenz für den Produktionsbetrieb (ergänzt `docs/cms-plan.md` §8).
 - SQLite-Datei `app.db` liegt im Repo-Verzeichnis und ist in
   `.gitignore` – **niemals committen** (enthält Nutzerdaten).
 
+### 3.1 ⚠️ Einmaliger Schritt beim Erst-Deploy: `db stamp`
+
+Die **bestehende Produktions-DB wurde ohne Flask-Migrate angelegt**
+(`db.create_all()`) und besitzt deshalb keine `alembic_version`-Tabelle.
+Alembic hält sie für leer und will die Baseline-Migration erneut fahren –
+`db upgrade` bricht mit `table users already exists` ab und hinterlässt
+einen halb migrierten Zustand.
+
+Deshalb **vor dem allerersten `db upgrade`** die Baseline stempeln:
+
+```bash
+flask --app app db stamp 7c9e6b2eb1b4   # Baseline: users-Tabelle
+flask --app app db upgrade              # spielt nur cms_tables + drop_news
+```
+
+- Nur **einmalig** nötig. Prüfen, ob es schon erledigt ist:
+  `sqlite3 app.db "select * from alembic_version;"` – liefert die Abfrage
+  eine Zeile, ist die DB unter Alembic-Kontrolle und `db stamp` entfällt.
+- Bei einer **frisch angelegten, leeren** DB entfällt der Stamp ebenfalls;
+  dort läuft `db upgrade` von `None` aus komplett durch.
+- Vor dem Stamp eine Kopie der `app.db` ziehen (siehe §5).
+
+### 3.2 Ablauf Erst-Deploy (Reihenfolge)
+
+1. Code holen (`git fetch && git reset --hard origin/main` – das
+   Server-Repo hat nach dem History-Purge eine abweichende History).
+2. Python-Abhängigkeiten: `pip install -r requirements.txt`.
+3. **CSS bauen** – siehe §3.3.
+4. `flask --app app db stamp 7c9e6b2eb1b4` (nur beim Erst-Deploy, §3.1).
+5. `flask --app app db upgrade`.
+6. `flask --app app seed-stammdaten` – legt die Stammdaten (Vorstand,
+   Kutschertag-Termine) an. Idempotent, kann gefahrlos wiederholt werden.
+7. Berichte importieren – siehe §3.4.
+8. Dienst neu starten: `systemctl restart flaskapp`.
+
+### 3.3 CSS-Build gehört in den Deploy
+
+`app/static/css/app.css` ist ein **Build-Artefakt und `.gitignore`d** –
+nach einem frischen Checkout ist die Seite ohne diesen Schritt ungestylt:
+
+```bash
+npm ci
+npm run build:css
+```
+
+Alternative, wenn auf dem Server kein Node installiert werden soll: lokal
+`npm run build:css` laufen lassen und die erzeugte `app/static/css/app.css`
+per `scp`/`rsync` hochladen. Der Schritt muss nach **jedem** Deploy laufen,
+bei dem sich Templates oder `input.css` geändert haben (Tailwind erzeugt
+nur die tatsächlich genutzten Utility-Klassen).
+
+### 3.4 Berichte-Quelldaten vor `import-berichte` bereitstellen
+
+`flask --app app import-berichte` liest aus
+`app/static/berichte/<jahr>/…`. Dieses Verzeichnis ist **untracked** und
+nach `git reset --hard` nicht zwingend vorhanden. Die Originale liegen auf
+dem VPS unter `/home/flaskuser/berichte-archiv` (98 MB) und müssen vorher
+zurückkopiert werden:
+
+```bash
+cp -a /home/flaskuser/berichte-archiv/. \
+      /home/flaskuser/flask-verein/app/static/berichte/
+flask --app app import-berichte --dry-run   # Vorschau prüfen (9 Berichte)
+flask --app app import-berichte             # echter Import
+```
+
+Der Importer liest die Quelldateien nur, er verschiebt oder löscht nichts.
+Die konvertierten Bilder landen unter `UPLOAD_FOLDER/berichte/`.
+
+### 3.5 Weitere untracked Pfade, die den Deploy überleben müssen
+
+`app/static/forms/` (bis auf die im Repo geführten Formulare),
+`app/static/uploads/` und `app/static/berichte/` sind nicht im Git und
+überstehen `git reset --hard` – trotzdem vor dem Deploy sichern.
+
 ## 4. Dateirechte & Uploads
 
 - `app/static/uploads/` (Vorstand-Fotos, Bericht-Bilder) ist in
